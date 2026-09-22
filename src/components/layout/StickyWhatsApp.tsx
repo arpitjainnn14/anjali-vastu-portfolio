@@ -10,8 +10,13 @@ import { WhatsAppIcon } from '@/components/ui/Icons';
  * tablets only (hidden from 1024px up, where the page has room for its own).
  *
  * It never doubles up: while any element marked `data-hides-sticky` is on
- * screen — the hero, the contact section, a service page's at-a-glance card,
- * each of which has its own WhatsApp button — it steps out of the way.
+ * screen — the hero, the teaching button, the contact section, a service
+ * page's at-a-glance card, each of which has its own WhatsApp button — it
+ * steps out of the way.
+ *
+ * A round icon rather than a labelled pill: the pill was ~190px wide and sat
+ * on top of body copy in every section. The WhatsApp glyph needs no label to
+ * be recognised; the accessible name comes from aria-label.
  *
  * Starts hidden, so it never flashes over the hero before hydration.
  */
@@ -48,17 +53,17 @@ export function StickyWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-hidden={!visible}
+      aria-label={contactSection.stickyLabel}
       tabIndex={visible ? undefined : -1}
       className={
-        'fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-30 inline-flex h-[52px] items-center gap-2.5 ' +
-        'rounded-full bg-sindoor pl-5 pr-6 text-[15.5px] font-semibold text-card no-underline ' +
+        'fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-30 inline-flex h-14 w-14 items-center justify-center ' +
+        'rounded-full bg-sindoor text-card no-underline ' +
         'shadow-[0_10px_30px_rgba(35,28,22,.28)] transition-[opacity,transform,background-color] duration-300 ease-out ' +
         'hover:bg-sindoor-deep motion-reduce:transition-none lg:hidden ' +
         (visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0')
       }
     >
-      <WhatsAppIcon size={20} />
-      {contactSection.stickyLabel}
+      <WhatsAppIcon size={24} />
     </a>
   );
 }

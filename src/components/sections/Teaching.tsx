@@ -37,7 +37,8 @@ export function Teaching({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
               {teaching.lead}
             </p>
 
-            <div className="flex flex-col items-start gap-4 pt-2 sm:flex-row sm:items-center sm:gap-6" data-reveal-item>
+            {/* Has its own WhatsApp button, so the floating one steps aside while this row is on screen. */}
+            <div className="flex flex-col items-start gap-4 pt-2 sm:flex-row sm:items-center sm:gap-6" data-reveal-item data-hides-sticky>
               <ButtonLink href={whatsappHref(whatsappMessages.teaching)}>
                 <WhatsAppIcon size={19} />
                 {teaching.cta.label}

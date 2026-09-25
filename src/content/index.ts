@@ -16,6 +16,7 @@ export * from './site';
 export * from './navigation';
 export * from './hero';
 export * from './services';
+export * from './picker';
 export * from './about';
 export * from './teaching';
 export * from './testimonials';

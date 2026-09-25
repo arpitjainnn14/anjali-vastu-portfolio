@@ -3,7 +3,6 @@
 import { site } from './site';
 
 export const contactSection = {
-  eyebrow: 'Contact',
   heading: 'Tell Anjali what you *want to know*',
   lead:
     'WhatsApp is the quickest way to reach her. If you would rather write, leave ' +

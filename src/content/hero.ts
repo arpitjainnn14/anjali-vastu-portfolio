@@ -3,7 +3,8 @@
 import { contact } from './site';
 
 export const hero = {
-  eyebrow: 'Vedic astrology, numerology & Vastu in Palwal',
+  /* Sits above the headline as a plain line, not a tracked-out caps label. */
+  standfirst: 'Vedic astrology, numerology and Vastu in Palwal, Haryana',
   /** Two lines: "Astrology that gives you / a *straight* answer." */
   headingLine1: 'Astrology that gives you',
   headingLine2Before: 'a ',
@@ -24,9 +25,12 @@ export const hero = {
     name: 'Ginni Sharma',
     role: 'client',
   },
-  trust: [
-    { value: 'Since 2017', label: 'Reading professionally' },
-    { value: 'Ph.D.', label: 'in Astrology & Vastu' },
-    { value: 'EN · हिं', label: 'Consults in English and Hindi' },
-  ],
+  /*
+   * One line, not a row of stat boxes: the boxed "2017 | Ph.D. | EN" trio is
+   * the most recognisable template furniture on a services site, and these
+   * three facts read perfectly well as a sentence.
+   */
+  credentials:
+    'Learning since 1995 · Reading professionally since 2017 · ' +
+    'Ph.D. in Astrology and Vastu · Consultations in English and Hindi',
 } as const;

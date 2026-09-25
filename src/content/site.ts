@@ -21,6 +21,18 @@ export const site = {
   replyWithin: 'within 24 hours',
 } as const;
 
+/**
+ * The seal: her stamp, the way a practitioner inks a chart she has read.
+ * Devanagari around the top, place and year around the bottom, name inside.
+ */
+export const seal = {
+  arcTop: 'ज्योतिष · अंकशास्त्र · वास्तु',
+  arcBottom: 'PALWAL · SINCE 2017',
+  name: ['अंजलि', 'जैन'],
+  /** Screen readers get the plain-English meaning, not the ornament. */
+  alt: 'Seal of Astrologer Anjali Jain, Palwal, practising since 2017',
+} as const;
+
 export const contact = {
   /**
    * Text only, no calls for now. The site deliberately offers no tel: link and

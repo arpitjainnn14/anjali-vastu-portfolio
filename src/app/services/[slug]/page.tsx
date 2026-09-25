@@ -8,7 +8,7 @@ import {
   whatsappMessages,
   serviceDetail,
 } from '@/content';
-import { Section, Container, Eyebrow } from '@/components/ui/Section';
+import { Section, Container } from '@/components/ui/Section';
 import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 import { whatsappHref } from '@/lib/whatsapp';
@@ -88,7 +88,7 @@ export default async function ServiceDetailPage({
             the button is on the first screen rather than after every step.
           */}
           <div className="flex flex-col gap-5" data-reveal-group>
-            <Eyebrow data-reveal-item>{service.question}</Eyebrow>
+            <p className="t-small m-0 text-muted" data-reveal-item>{service.question}</p>
             <h1 className="t-h1 m-0 flex items-center gap-4 text-ink" data-reveal-item>
               <Icon size={44} strokeWidth={1.2} className="shrink-0 text-haldi" />
               {service.name}
@@ -98,7 +98,7 @@ export default async function ServiceDetailPage({
 
           {/* At a glance */}
           <aside data-hides-sticky className="flex h-fit flex-col gap-5 rounded-card border border-line-strong bg-card p-6 md:p-8 lg:sticky lg:top-28 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-            <span className="t-label text-muted">
+            <span className="font-display text-[19px] text-ink">
               {serviceDetail.glanceHeading}
             </span>
 
@@ -106,7 +106,7 @@ export default async function ServiceDetailPage({
               {glance.map((row, i) => (
                 <div
                   key={row.label}
-                  className={`flex justify-between gap-4 border-t border-dashed border-line-strong py-3 ${
+                  className={`flex justify-between gap-4 border-t border-line py-3 ${
                     i === glance.length - 1 ? 'border-b' : ''
                   }`}
                 >
@@ -163,7 +163,7 @@ export default async function ServiceDetailPage({
                   {steps.map((step, i) => (
                     <li key={step.title} className="contents">
                       <span className="font-display text-[22px] italic text-sindoor md:text-[26px]">
-                        {String(i + 1).padStart(2, '0')}
+                        {i + 1}
                       </span>
                       <div
                         className={`flex flex-col gap-1.5 ${

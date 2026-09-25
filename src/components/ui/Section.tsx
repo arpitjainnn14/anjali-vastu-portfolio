@@ -51,33 +51,8 @@ export function Container({
 }
 
 /**
- * The label above a heading: a small sindoor diamond, then the words.
- * The diamond is the kundli's centre house, repeated as a mark.
- */
-export function Eyebrow({
-  children,
-  className = '',
-  ...rest
-}: { children: React.ReactNode; className?: string } & React.HTMLAttributes<HTMLSpanElement>) {
-  return (
-    <span {...rest} className={`inline-flex items-center gap-2.5 t-label text-sindoor in-[.on-night]:text-haldi-light ${className}`}>
-      <Diamond />
-      {children}
-    </span>
-  );
-}
-
-export function Diamond({ className = '' }: { className?: string }) {
-  return (
-    <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true" className={`shrink-0 ${className}`}>
-      <path d="M5 0 10 5 5 10 0 5Z" fill="currentColor" />
-    </svg>
-  );
-}
-
-/**
  * Renders a heading string, setting any word wrapped in *asterisks* as the
- * italic accent. Keeps emphasis in content.ts without putting markup there.
+ * italic accent. Keeps the emphasis in content.ts without putting markup there.
  */
 export function Accented({ text }: { text: string }) {
   const parts = text.split(/(\*[^*]+\*)/g);
@@ -96,14 +71,18 @@ export function Accented({ text }: { text: string }) {
   );
 }
 
-/** Left-aligned section header: label, h2, lead. Split in two on wide screens. */
+/**
+ * Section header: an h2, and a lead paragraph set beside it on wide screens.
+ *
+ * No label above the heading. A tracked-out caps label over every section is
+ * the most obvious template signature there is, and here each one only said
+ * again, in smaller letters, what the heading below it already said.
+ */
 export function SectionHeader({
-  eyebrow,
   heading,
   lead,
   className = '',
 }: {
-  eyebrow: string;
   heading: string;
   lead?: string | null;
   className?: string;
@@ -113,12 +92,9 @@ export function SectionHeader({
       className={`grid gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-20 ${className}`}
       data-reveal
     >
-      <div className="flex flex-col gap-5">
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <h2 className="t-h2 m-0 max-w-[16ch] text-balance text-ink in-[.on-night]:text-cream">
-          <Accented text={heading} />
-        </h2>
-      </div>
+      <h2 className="t-h2 m-0 max-w-[16ch] text-balance text-ink in-[.on-night]:text-cream">
+        <Accented text={heading} />
+      </h2>
       {lead && <p className="t-body m-0 max-w-[46ch] lg:pb-2">{lead}</p>}
     </div>
   );

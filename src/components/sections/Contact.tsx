@@ -1,6 +1,6 @@
 import { contactSection } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
-import { Section, Container, Eyebrow, Accented } from '@/components/ui/Section';
+import { Section, Container, Accented } from '@/components/ui/Section';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 import { ContactForm } from '@/components/sections/ContactForm';
@@ -34,8 +34,7 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
         <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-24">
           <div className="flex flex-col gap-7">
             <div className="flex flex-col gap-5" data-reveal>
-              <Eyebrow>{contactSection.eyebrow}</Eyebrow>
-              <Heading className="t-h2 m-0 max-w-[14ch] text-balance text-ink">
+              <Heading className="t-h2 m-0 max-w-[16ch] text-balance text-ink">
                 <Accented text={contactSection.heading} />
               </Heading>
               <p className="t-body m-0 max-w-[46ch]">{contactSection.lead}</p>
@@ -49,12 +48,12 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
               {contactSection.whatsappCta}
             </ButtonLink>
 
-            <dl className="m-0 mt-2 grid grid-cols-2 border-t border-line-strong">
+            <dl className="m-0 mt-2 grid gap-5 sm:grid-cols-2 sm:gap-x-10">
               {contactSection.details.map((detail) => {
                 const href = detail.link ? presentHref(detail.link.href) : null;
 
                 return (
-                  <div key={detail.label} className="flex flex-col gap-1 border-b border-line-strong py-4 odd:pr-4 sm:odd:pr-6">
+                  <div key={detail.label} className="flex flex-col gap-0.5">
                     <dt className="t-caption text-muted">{detail.label}</dt>
                     <dd className="m-0 flex flex-col gap-1">
                       <span className="t-small font-medium text-ink">{detail.value}</span>
@@ -79,7 +78,7 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
           </div>
 
           <div data-reveal>
-            <h3 className="t-h3 m-0 mb-5 text-ink">{contactSection.formTitle}</h3>
+            <h3 className="t-h3 m-0 mb-6 text-ink">{contactSection.formTitle}</h3>
             <ContactForm />
           </div>
         </div>

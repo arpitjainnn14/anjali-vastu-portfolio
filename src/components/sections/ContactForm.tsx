@@ -11,7 +11,8 @@ import {
   CheckboxField,
   Honeypot,
 } from '@/components/ui/Field';
-import { ArrowRightIcon, CheckIcon } from '@/components/ui/Icons';
+import { AlertIcon, ArrowRightIcon } from '@/components/ui/Icons';
+import { Seal } from '@/components/art/Seal';
 import { Button } from '@/components/ui/Button';
 import {
   validate,
@@ -102,11 +103,11 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="flex flex-col gap-3 rounded-card border border-line-strong bg-card p-7 md:p-10"
+        className="flex flex-col items-start gap-4 border-t-2 border-ink pt-8"
       >
-        <CheckIcon className="text-sindoor" />
+        <Seal id="sent" size={92} />
         <span className="t-h3 text-ink">{form.states.success.heading}</span>
-        <span className="t-body">{form.states.success.body}</span>
+        <span className="t-body max-w-[42ch]">{form.states.success.body}</span>
         <a
           href={whatsappHref()}
           target="_blank"
@@ -125,9 +126,9 @@ export function ContactForm() {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="flex flex-col gap-5 rounded-card border border-line-strong bg-card p-6 md:p-10"
+      className="flex flex-col gap-7 border-t-2 border-ink pt-8"
     >
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-7 md:grid-cols-2 md:gap-x-10">
         <TextField
           id={form.fields.name.id}
           name={form.fields.name.name}
@@ -150,7 +151,7 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-7 md:grid-cols-2 md:gap-x-10">
         <TextField
           id={form.fields.email.id}
           name={form.fields.email.name}
@@ -204,22 +205,26 @@ export function ContactForm() {
       {status === 'error' && (
         <div
           role="alert"
-          className="flex flex-col gap-2 border-l-2 border-sindoor bg-sindoor-soft px-5 py-4"
+          className="flex gap-2.5 text-sindoor"
         >
-          <span className="text-[16px] font-semibold text-ink">{form.states.error.heading}</span>
-          <span className="t-small text-body">{form.states.error.body}</span>
+          <AlertIcon size={18} className="mt-0.5 shrink-0" />
+          <span className="t-small text-body">
+            <span className="font-semibold text-ink">{form.states.error.heading}.</span>{' '}
+            {form.states.error.body}
+          </span>
         </div>
       )}
 
       {status === 'rateLimited' && (
         <div
           role="alert"
-          className="flex flex-col gap-2 border-l-2 border-sindoor bg-sindoor-soft px-5 py-4"
+          className="flex gap-2.5 text-sindoor"
         >
-          <span className="text-[16px] font-semibold text-ink">
-            {form.states.rateLimited.heading}
+          <AlertIcon size={18} className="mt-0.5 shrink-0" />
+          <span className="t-small text-body">
+            <span className="font-semibold text-ink">{form.states.rateLimited.heading}.</span>{' '}
+            {form.states.rateLimited.body}
           </span>
-          <span className="t-small text-body">{form.states.rateLimited.body}</span>
         </div>
       )}
 

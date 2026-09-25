@@ -2,10 +2,9 @@
 
 /** DRAFTED from what Anjali said. Needs her sign-off before launch. */
 export const about = {
-  eyebrow: 'About Anjali',
   heading: 'She was once the client who never got a *straight answer*',
   paragraphs: [
-    'Anjali started learning astrology at nineteen, from books and from teachers. ' +
+    'Anjali started learning astrology in 1995, from books and from teachers. ' +
       'Then life took over, and she set it aside for years.',
     'She came back to it after a difficult period of her own. She went to an ' +
       'astrologer for help, paid far more than it was worth, and still did not get ' +
@@ -15,9 +14,7 @@ export const about = {
       'love and marriage, and the things that do not fit neatly into either. She ' +
       'reads in English and Hindi.',
   ],
-  /** The line set large beside the story. Drawn from paragraph two. */
-  pullQuote: 'If she ever did this work, she would do it differently.',
-  facts: ['Ph.D. in Astrology & Vastu', 'Reading since 2017', 'Teaches all three subjects'],
+  facts: ['Learning since 1995', 'Reading professionally since 2017', 'Ph.D. in Astrology & Vastu'],
   portrait: {
     src: '/portrait/anjali.png',
     alt: 'Astrologer Anjali Jain',

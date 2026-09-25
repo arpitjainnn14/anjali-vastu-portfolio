@@ -198,7 +198,6 @@ export function Nav() {
                   className="enter flex min-h-16 items-baseline gap-4 border-b border-line-strong font-display text-[32px] text-ink no-underline"
                   style={{ '--d': `${0.04 * i}s` } as React.CSSProperties}
                 >
-                  <span className="font-body text-[13px] text-muted">{String(i + 1).padStart(2, '0')}</span>
                   {link.label}
                 </Link>
               ))}

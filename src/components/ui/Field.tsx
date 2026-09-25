@@ -5,10 +5,13 @@ import { AlertIcon } from '@/components/ui/Icons';
 /**
  * Form field. Section 5 and 6.
  *
- * 52px tall, card fill, a visible line-strong border, and **16px text
- * always** — below 16px iOS Safari zooms the viewport on focus.
+ * Ruled fields, not boxes: each control is a line you write on, the way a
+ * printed form is ruled. Six outlined rectangles stacked in an outlined card
+ * is the most boxed-in shape on a page, and it made the friendliest part of
+ * the site look like a tax return.
  *
- * Focus darkens the border to ink and adds a soft sindoor ring.
+ * Text stays 16px — below that iOS Safari zooms the viewport on focus.
+ * Focus darkens the rule to ink; the keyboard outline is the global one.
  * Errors are sindoor, with `aria-invalid` and an icon, so colour never
  * carries the meaning alone.
  *
@@ -16,21 +19,20 @@ import { AlertIcon } from '@/components/ui/Icons';
  */
 
 const CONTROL =
-  'w-full rounded-[4px] border bg-card px-4 text-[16px] text-ink ' +
-  'transition-[border-color,box-shadow] duration-[160ms] ease-out ' +
-  'placeholder:text-muted ' +
-  'focus:border-ink focus:shadow-[0_0_0_4px_rgba(165,52,28,.12)] focus:outline-none ' +
+  'w-full rounded-none border-0 border-b bg-transparent px-0 text-[16px] text-ink ' +
+  'transition-colors duration-[160ms] ease-out ' +
+  'placeholder:text-muted hover:border-muted focus:border-ink ' +
   'disabled:opacity-60 disabled:cursor-not-allowed';
 
 function border(error?: string) {
-  return error ? 'border-sindoor' : 'border-line-strong';
+  return error ? 'border-sindoor' : 'border-line-strong hover:border-muted';
 }
 
 function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
   return (
     <label
       htmlFor={htmlFor}
-      className="text-[14px] font-semibold text-ink"
+      className="t-caption text-muted"
     >
       {children}
     </label>
@@ -87,7 +89,7 @@ export function TextField({
         disabled={disabled}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className={`h-[52px] ${CONTROL} ${border(error)}`}
+        className={`h-11 ${CONTROL} ${border(error)}`}
       />
       {error && <FieldError id={errorId} message={error} />}
     </div>
@@ -116,12 +118,12 @@ export function SelectField({
         disabled={disabled}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className={`h-[52px] appearance-none ${CONTROL} ${border(error)}`}
+        className={`h-11 appearance-none ${CONTROL} ${border(error)}`}
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236C6053' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'right 16px center',
+          backgroundPosition: 'right 2px center',
         }}
       >
         {options.map((option) => (
@@ -158,7 +160,7 @@ export function TextAreaField({
         disabled={disabled}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className={`resize-y py-3.5 leading-[1.55] ${CONTROL} ${border(error)}`}
+        className={`resize-y py-2 leading-[1.55] ${CONTROL} ${border(error)}`}
       />
       {error && <FieldError id={errorId} message={error} />}
     </div>

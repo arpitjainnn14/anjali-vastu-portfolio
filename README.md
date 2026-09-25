@@ -71,3 +71,29 @@ A primitive in `ui/` never imports a section, and nothing imports from `app/`.
 - **Pinned WhatsApp button (phones):** it hides while any element marked
   `data-hides-sticky` is on screen, so it never sits beside another WhatsApp
   button. Mark any new section that has its own WhatsApp button.
+
+## Design rules: what not to reintroduce
+
+The site was audited (Sept 2026) because it read as AI-generated. The cause was
+one decorative formula stamped on every section. If you are adding a section or
+a component, these patterns are out — they are what made it look generated:
+
+- **No coloured bar down the left of a quote or an alert.** Quotes are set with
+  a hanging quotation mark; form alerts are a line of text with an icon.
+- **No tracked-out caps label above a heading.** The heading says it already.
+  (One plain-text label inside the service picker card is the only exception.)
+- **No zero-padded `01 / 02 / 03` numbering.** Plain numerals where a sequence
+  genuinely matters, none where it does not.
+- **No rules boxing in small groups** — contact details, fact lists, stat rows.
+  Alignment and space do that job. Ruled tables are kept only where the content
+  is a table (the course spec, "at a glance").
+- **No boxed stat trio** (`2017 │ Ph.D. │ EN`). Credentials run as a sentence.
+- **No pull quote repeating the sentence next to it.**
+- **No dashed borders**, and no outlined card around the contact form: its
+  fields are ruled lines, not boxes.
+
+What carries the design instead: the paper-and-ink palette, Fraunces with one
+italic accent word per heading (`*asterisks*` in content, underlined by the
+inked `.accent` stroke), the kundli chart, the portrait, and her seal
+(`components/art/Seal.tsx`) — used three times only, where emphasis is needed.
+Each `Seal` needs a unique `id`, since its curved text hangs off path ids.

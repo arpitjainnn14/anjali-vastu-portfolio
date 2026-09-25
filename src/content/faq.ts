@@ -6,7 +6,6 @@
  * reasons for not messaging: cost, distance, language, and the birth time.
  */
 export const faq = {
-  eyebrow: 'Before you message',
   heading: 'Questions people usually ask *first*',
   items: [
     {

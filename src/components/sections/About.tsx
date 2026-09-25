@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { about } from '@/content';
-import { Section, Container, Eyebrow, Accented, Diamond } from '@/components/ui/Section';
+import { Section, Container, Accented } from '@/components/ui/Section';
+import { Seal } from '@/components/art/Seal';
 import { presentAll } from '@/lib/todo';
 
 /**
@@ -43,9 +44,7 @@ export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
           </figure>
 
           <div className="flex flex-col gap-6 lg:pt-6" data-reveal-group>
-            <Eyebrow data-reveal-item>{about.eyebrow}</Eyebrow>
-
-            <Heading className="t-h2 m-0 max-w-[18ch] text-balance text-ink" data-reveal-item>
+            <Heading className="t-h2 m-0 max-w-[20ch] text-balance text-ink" data-reveal-item>
               <Accented text={about.heading} />
             </Heading>
 
@@ -57,25 +56,18 @@ export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
               ))}
             </div>
 
-            <blockquote
-              className="m-0 my-2 border-l-2 border-sindoor pl-5 font-display text-[24px] italic leading-[1.3] text-ink md:pl-7 md:text-[30px]"
-              data-reveal-item
-            >
-              {about.pullQuote}
-            </blockquote>
-
-            <ul className="m-0 flex list-none flex-wrap gap-x-7 gap-y-3 p-0" data-reveal-item>
-              {about.facts.map((fact) => (
-                <li key={fact} className="flex items-center gap-2.5 t-small font-medium text-ink">
-                  <Diamond className="text-haldi" />
-                  {fact}
-                </li>
-              ))}
-            </ul>
+            {/*
+              Her seal closes the story, the way she would stamp a chart she
+              had read. It carries the emphasis the old bar-and-pull-quote did.
+            */}
+            <div className="flex flex-wrap items-center justify-between gap-6 pt-1" data-reveal-item>
+              <p className="t-small m-0 max-w-[46ch] text-muted">{about.facts.join(' · ')}</p>
+              <Seal id="about" size={104} className="-mt-1" />
+            </div>
 
             {refusals.length > 0 && (
               <div className="flex flex-col gap-3 border border-line-strong bg-card px-6 py-6" data-reveal-item>
-                <span className="t-label text-sindoor">{about.willNotDo.heading}</span>
+                <span className="font-display text-[19px] text-ink">{about.willNotDo.heading}</span>
                 <ul className="m-0 flex list-none flex-col gap-2 p-0">
                   {refusals.map((item) => (
                     <li key={item} className="t-body">

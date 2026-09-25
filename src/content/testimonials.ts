@@ -59,7 +59,7 @@ export const testimonials: Testimonial[] = [
       'Anjali Ji has a beautiful ability to combine astrological insight with human understanding, making every consultation feel personal and meaningful.',
       'Thank you, Anjali Ji, for being not just an astrologer, but a trusted guide and a reassuring presence. 🌟',
     ].join('\n\n'),
-    name: 'Alok Sharma',
+    name: 'Vipul Parnami',
     city: 'TODO(city-2)',
     service: 'Vedic astrology',
   },
@@ -92,7 +92,6 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const testimonialsSection = {
-  eyebrow: 'Testimonials',
   heading: 'What clients say *after* a consultation',
   swipeHint: 'Swipe',
   /** Opens the full testimonial in a dialog. */

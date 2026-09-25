@@ -67,8 +67,8 @@ export default function PrivacyPage() {
             ))}
           </div>
 
-          <div className="mt-10 flex flex-col gap-2.5 border-l-2 border-sindoor bg-paper-deep px-5 py-5">
-            <span className="t-label text-sindoor">{privacy.reachHeading}</span>
+          <div className="mt-10 flex flex-col gap-2 border-t border-line-strong pt-6">
+            <span className="font-display text-[19px] text-ink">{privacy.reachHeading}</span>
             <span className="t-body">
               <SmartLink
                 href={whatsappHref()}

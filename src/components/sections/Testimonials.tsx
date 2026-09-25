@@ -28,7 +28,7 @@ export function Testimonials() {
       <div className="relative z-10">
         <TestimonialsRail
           quotes={quotes}
-          header={<SectionHeader eyebrow={testimonialsSection.eyebrow} heading={testimonialsSection.heading} />}
+          header={<SectionHeader heading={testimonialsSection.heading} />}
         />
       </div>
     </Section>

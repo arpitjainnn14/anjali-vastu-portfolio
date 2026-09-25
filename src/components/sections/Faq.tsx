@@ -1,5 +1,5 @@
 import { faq } from '@/content';
-import { Section, Container, Eyebrow, Accented } from '@/components/ui/Section';
+import { Section, Container, Accented } from '@/components/ui/Section';
 
 /**
  * The questions that stop people messaging: cost, distance, language, and
@@ -14,8 +14,7 @@ export function Faq() {
       <Container>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-24">
           <div className="flex flex-col gap-5 lg:sticky lg:top-32 lg:self-start" data-reveal>
-            <Eyebrow>{faq.eyebrow}</Eyebrow>
-            <h2 className="t-h2 m-0 max-w-[12ch] text-balance text-ink">
+            <h2 className="t-h2 m-0 max-w-[14ch] text-balance text-ink">
               <Accented text={faq.heading} />
             </h2>
           </div>

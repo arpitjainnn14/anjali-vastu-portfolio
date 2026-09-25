@@ -1,7 +1,6 @@
 /** Teaching: the course, the tracks, the next batch. */
 
 export const teaching = {
-  eyebrow: 'Learn with Anjali',
   heading: 'Learn to read a chart *yourself*',
   lead:
     'Anjali teaches all three subjects she practises: Vedic astrology, numerology and ' +

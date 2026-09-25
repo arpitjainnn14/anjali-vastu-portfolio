@@ -70,9 +70,7 @@ export const services: Service[] = [
   },
 ];
 
-/** Headings: a word wrapped in *asterisks* is set as the italic accent. */
 export const servicesSection = {
-  eyebrow: 'Consultations',
   heading: 'Three ways Anjali can *help*',
   lead:
     'Each one suits a different kind of question. Not sure which you need? Tell her ' +

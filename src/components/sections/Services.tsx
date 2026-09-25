@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { services, servicesSection } from '@/content';
+import { services, servicesSection, picker } from '@/content';
 import { Section, Container, SectionHeader } from '@/components/ui/Section';
 import { serviceIcons, ArrowRightIcon } from '@/components/ui/Icons';
 
@@ -21,7 +21,6 @@ export function Services() {
     <Section id="services" tone="deep">
       <Container>
         <SectionHeader
-          eyebrow={servicesSection.eyebrow}
           heading={servicesSection.heading}
           lead={servicesSection.lead}
         />
@@ -34,7 +33,7 @@ export function Services() {
           }
           data-reveal-group
         >
-          {services.map((service, i) => {
+          {services.map((service) => {
             const Icon = serviceIcons[service.icon];
             return (
               <li
@@ -47,17 +46,11 @@ export function Services() {
                   className={
                     'group relative flex w-full flex-col gap-4 rounded-card border border-line bg-card p-6 no-underline ' +
                     'transition-colors duration-300 pointer-fine:hover:bg-paper ' +
-                    'md:grid md:grid-cols-[88px_minmax(0,4fr)_minmax(0,6fr)_48px] md:gap-8 md:rounded-none md:border-0 ' +
+                    'md:grid md:grid-cols-[minmax(0,4fr)_minmax(0,6fr)_48px] md:gap-10 md:rounded-none md:border-0 ' +
                     'md:bg-transparent md:px-4 md:py-11'
                   }
                 >
-                  {/* Phones: number left, icon right, as the card's header row. */}
-                  <div className="flex items-center justify-between md:block">
-                    <span className="font-display text-[22px] italic text-muted transition-colors duration-300 group-hover:text-sindoor md:pt-2 md:text-[24px]">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <Icon size={30} strokeWidth={1.3} className="text-haldi md:hidden" />
-                  </div>
+                  <Icon size={30} strokeWidth={1.3} className="text-haldi md:hidden" />
 
                   <div className="flex flex-col gap-2">
                     <h3 className="t-h3 m-0 flex items-center gap-3 text-ink">
@@ -97,6 +90,20 @@ export function Services() {
         <p className="t-small m-0 mt-6 text-muted md:mt-8" data-reveal>
           {servicesSection.footnote}
         </p>
+
+        {/*
+          The picker is a page of its own: inline it was a 500px interactive
+          block in the middle of a page whose job is to get someone to
+          WhatsApp. Here it is one line.
+        */}
+        <Link
+          href={picker.href}
+          className="group mt-6 inline-flex min-h-11 items-center gap-2 text-[15.5px] font-semibold text-sindoor no-underline md:mt-8"
+          data-reveal
+        >
+          {picker.linkLabel}
+          <ArrowRightIcon size={15} className="nudge" />
+        </Link>
       </Container>
     </Section>
   );

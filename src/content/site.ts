@@ -5,11 +5,15 @@ export const site = {
   // Spelling confirmed as "Anjali Jain". Her Rotary badge reads ANJALLI;
   // that spelling is not used anywhere on this site.
   legalName: 'Anjali Jain',
-  title: 'Astrologer Anjali Jain — Vedic Astrology, Numerology and Vastu in Palwal',
+  /**
+   * Home page search title and description. Titles stay under ~60 characters
+   * and descriptions under ~160 so Google shows them whole; the search people
+   * actually type ("astrologer in Palwal") leads.
+   */
+  title: 'Astrologer in Palwal | Vedic Astrology & Vastu | Anjali Jain',
   description:
-    'Vedic astrology, numerology and Vastu consultations with Astrologer Anjali Jain, ' +
-    'Ph.D. in Astrology and Vastu. In person in Palwal or by phone, in English and Hindi. ' +
-    'Practising since 2017.',
+    'Vedic astrology, numerology and Vastu with Anjali Jain, Ph.D. in Astrology and Vastu. ' +
+    'In person in Palwal or by phone, in English or Hindi.',
   locale: 'en-IN',
   city: 'Palwal',
   state: 'Haryana',

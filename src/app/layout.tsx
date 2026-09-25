@@ -5,6 +5,8 @@ import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
 import { Motion } from '@/components/motion/Motion';
 import { StickyWhatsApp } from '@/components/layout/StickyWhatsApp';
+import { siteUrl } from '@/lib/site-url';
+import { siteGraph, jsonLd } from '@/lib/structured-data';
 import './globals.css';
 
 /* Self-hosted by next/font. No third-party request, no layout shift. */
@@ -35,61 +37,24 @@ const tiroDeva = Tiro_Devanagari_Hindi({
 });
 
 /**
- * The host lives in an env var so pointing the custom domain at this is a
- * one-line change. Never hardcode it into OG tags or canonicals.
+ * Site-wide defaults only. Canonicals, Open Graph and Twitter tags are set per
+ * page through lib/metadata.ts: set here, they leak into every page that
+ * doesn't override them, including the 404, which then claims to be the home
+ * page. The host comes from lib/site-url.ts; never hardcode it.
  */
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: site.title,
-    template: `%s — ${site.name}`,
+    template: `%s | ${site.name}`,
   },
   description: site.description,
-  alternates: { canonical: '/' },
-  openGraph: {
-    type: 'website',
-    locale: 'en_IN',
-    siteName: site.name,
-    title: site.title,
-    description: site.description,
-    url: '/',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: site.title,
-    description: site.description,
-  },
-  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
   themeColor: '#F7F1E6',
   colorScheme: 'light',
 };
-
-/**
- * LocalBusiness rather than Organization: a one-person practice in a named
- * city with a phone number is exactly what this type is for. No price data —
- * there is none to publish.
- */
-function structuredData() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    name: site.name,
-    description: site.description,
-    areaServed: `${site.city}, ${site.state}`,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: site.city,
-      addressRegion: site.state,
-      addressCountry: 'IN',
-    },
-    availableLanguage: ['English', 'Hindi'],
-    foundingDate: String(site.practisingSince),
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
-  };
-}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -107,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-paper font-body text-body antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+          dangerouslySetInnerHTML={jsonLd(siteGraph())}
         />
         <a
           href="#main"

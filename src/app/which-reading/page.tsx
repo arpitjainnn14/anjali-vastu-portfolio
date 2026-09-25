@@ -4,6 +4,7 @@ import { picker, servicesSection } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
 import { ArrowRightIcon } from '@/components/ui/Icons';
 import { ServicePicker } from '@/components/sections/ServicePicker';
+import { pageMetadata } from '@/lib/metadata';
 
 /**
  * "Which reading do I need?"
@@ -13,11 +14,11 @@ import { ServicePicker } from '@/components/sections/ServicePicker';
  * getting a stranger to WhatsApp. Here it is the whole point of the page, and
  * the services section links to it in one line.
  */
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: picker.pageTitle,
   description: picker.pageDescription,
-  alternates: { canonical: picker.href },
-};
+  path: picker.href,
+});
 
 export default function WhichReadingPage() {
   return (

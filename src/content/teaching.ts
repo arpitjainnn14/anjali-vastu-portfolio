@@ -1,6 +1,12 @@
 /** Teaching: the course, the tracks, the next batch. */
 
 export const teaching = {
+  meta: {
+    title: 'Learn Astrology, Numerology and Vastu Online',
+    description:
+      'Three-month courses in Vedic astrology, numerology and Vastu with Anjali Jain. ' +
+      'Live over video call, in small groups of four or five students.',
+  },
   heading: 'Learn to read a chart *yourself*',
   lead:
     'Anjali teaches all three subjects she practises: Vedic astrology, numerology and ' +

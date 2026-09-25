@@ -3,6 +3,12 @@
 import { site } from './site';
 
 export const contactSection = {
+  meta: {
+    title: 'Contact Astrologer Anjali Jain in Palwal',
+    description:
+      'WhatsApp is the quickest way to reach Anjali. Or leave your details and she will ' +
+      'reply herself, usually within 24 hours. In English or Hindi.',
+  },
   heading: 'Tell Anjali what you *want to know*',
   lead:
     'WhatsApp is the quickest way to reach her. If you would rather write, leave ' +

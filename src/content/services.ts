@@ -8,6 +8,8 @@ export type Service = {
   /** One line: the kind of question this service answers. */
   question: string;
   summary: string;
+  /** Search result title and description. Keep under ~60 and ~160 characters. */
+  meta: { title: string; description: string };
   detailLinkLabel: string;
   /** Service detail page: 4–5 lines, each naming something she actually looks at. */
   covers: string[];
@@ -25,6 +27,12 @@ export const services: Service[] = [
       'Your birth chart, read against the question you came with. Anjali looks at ' +
       'where the planets sit and which dasha you are running, then explains what ' +
       'this period is likely to bring and when things may shift.',
+    meta: {
+      title: 'Vedic Astrology Consultation in Palwal',
+      description:
+        'Your birth chart read for career, marriage and timing, in person in Palwal or by ' +
+        'phone, in English or Hindi. Bring your birth date, time and place.',
+    },
     detailLinkLabel: 'What a reading covers',
     covers: [
       'TODO(vedic-covers-1)',
@@ -42,6 +50,12 @@ export const services: Service[] = [
     summary:
       'Your name and date of birth, worked through number by number. She tells you ' +
       'what they point to, and whether a name correction is actually worth making.',
+    meta: {
+      title: 'Numerologist in Palwal: Name and Date Readings',
+      description:
+        'Your name and date of birth, worked through number by number, and a straight ' +
+        'answer on whether a name correction is worth it. In Palwal or by phone.',
+    },
     detailLinkLabel: 'What a reading covers',
     covers: [
       'TODO(numerology-covers-1)',
@@ -59,6 +73,12 @@ export const services: Service[] = [
     summary:
       'Direction, layout and placement for a home or a shop, assessed around the ' +
       'people who actually live and work in it.',
+    meta: {
+      title: 'Vastu Consultant in Palwal for Homes and Shops',
+      description:
+        'Vastu for a home or shop: direction, layout and placement, assessed around the ' +
+        'people who use it. In person in Palwal or by phone, in English or Hindi.',
+    },
     detailLinkLabel: 'What a consultation covers',
     covers: [
       'TODO(vastu-covers-1)',

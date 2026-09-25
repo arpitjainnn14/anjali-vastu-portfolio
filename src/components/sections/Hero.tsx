@@ -37,6 +37,8 @@ export function Hero() {
             <span className="line-mask">
               <span style={delay(0.1)}>{hero.headingLine1}</span>
             </span>
+            {/* The lines are blocks; without this, extracted text reads "youa". */}
+            {' '}
             <span className="line-mask">
               <span style={delay(0.22)}>
                 {hero.headingLine2Before}

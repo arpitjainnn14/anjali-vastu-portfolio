@@ -1,18 +1,10 @@
 import type { Metadata } from 'next';
 import { Teaching } from '@/components/sections/Teaching';
 import { Contact } from '@/components/sections/Contact';
-import { teaching, site } from '@/content';
+import { teaching } from '@/content';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Teaching',
-  description: teaching.lead,
-  alternates: { canonical: '/teaching' },
-  openGraph: {
-    title: `Teaching — ${site.name}`,
-    description: teaching.lead,
-    url: '/teaching',
-  },
-};
+export const metadata: Metadata = pageMetadata({ ...teaching.meta, path: '/teaching' });
 
 export default function TeachingPage() {
   return (

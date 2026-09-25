@@ -36,7 +36,8 @@ export const picker = {
   /** The page itself. */
   pageTitle: 'Which reading do I need?',
   pageDescription:
-    'Three questions that point you to Vedic astrology, numerology or Vastu, and write your message to Anjali for you.',
+    'Not sure whether you need Vedic astrology, numerology or Vastu? Answer three ' +
+    'questions and get your WhatsApp message to Anjali written for you.',
   pageHeading: 'Which reading do you *need*?',
   pageLead:
     'Three questions, about thirty seconds. Nothing is sent or stored — the answers stay in your browser and only write your message for you.',

@@ -4,6 +4,7 @@ import { SmartLink } from '@/components/ui/SmartLink';
 import { whatsappHref } from '@/lib/whatsapp';
 import { Section, Container } from '@/components/ui/Section';
 import { present, isTodo } from '@/lib/todo';
+import { pageMetadata } from '@/lib/metadata';
 
 /**
  * How your details are used.
@@ -21,9 +22,7 @@ import { present, isTodo } from '@/lib/todo';
  * delete the `robots` block below.
  */
 export const metadata: Metadata = {
-  title: privacy.heading,
-  description: privacy.metaDescription,
-  alternates: { canonical: '/privacy' },
+  ...pageMetadata({ title: privacy.heading, description: privacy.metaDescription, path: '/privacy' }),
   robots: { index: false, follow: true },
 };
 

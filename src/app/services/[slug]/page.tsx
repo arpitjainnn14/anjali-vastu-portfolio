@@ -13,6 +13,8 @@ import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icon
 import { ButtonLink } from '@/components/ui/Button';
 import { whatsappHref } from '@/lib/whatsapp';
 import { presentAll, present } from '@/lib/todo';
+import { pageMetadata } from '@/lib/metadata';
+import { serviceBreadcrumb, jsonLd } from '@/lib/structured-data';
 
 /** Three pages from one typed array, never three hand-written files. */
 export function generateStaticParams() {
@@ -28,16 +30,7 @@ export async function generateMetadata({
   const service = services.find((s) => s.slug === slug);
   if (!service) return {};
 
-  return {
-    title: service.name,
-    description: service.summary,
-    alternates: { canonical: `/services/${service.slug}` },
-    openGraph: {
-      title: `${service.name} — ${site.name}`,
-      description: service.summary,
-      url: `/services/${service.slug}`,
-    },
-  };
+  return pageMetadata({ ...service.meta, path: `/services/${service.slug}` });
 }
 
 export default async function ServiceDetailPage({
@@ -67,6 +60,7 @@ export default async function ServiceDetailPage({
 
   return (
     <Section className="pt-28 md:pt-40">
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(serviceBreadcrumb(service))} />
       <Container>
         <nav aria-label={serviceDetail.breadcrumbLabel} className="flex items-center gap-3">
           <Link

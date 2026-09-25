@@ -2,6 +2,12 @@
 
 /** DRAFTED from what Anjali said. Needs her sign-off before launch. */
 export const about = {
+  meta: {
+    title: 'About Astrologer Anjali Jain',
+    description:
+      'Anjali Jain has studied astrology since 1995 and read professionally since 2017. ' +
+      'Ph.D. in Astrology and Vastu, consulting in Palwal in English and Hindi.',
+  },
   heading: 'She was once the client who never got a *straight answer*',
   paragraphs: [
     'Anjali started learning astrology in 1995, from books and from teachers. ' +

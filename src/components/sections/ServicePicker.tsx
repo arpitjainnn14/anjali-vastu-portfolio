@@ -134,14 +134,18 @@ export function ServicePicker({ showIntro = true }: { showIntro?: boolean }) {
               straight to the next question, so nothing is ever left "checked".
               Announcing them as radios would promise a selection that does not
               exist.
+
+              Each row is ruled underneath and there is no rule above the
+              first: a top rule sits directly under the question and makes it
+              scan as a fifth option rather than as the prompt.
             */}
-            <div role="group" aria-labelledby={`picker-${question.id}`} className="flex flex-col gap-2.5">
+            <div role="group" aria-labelledby={`picker-${question.id}`} className="flex flex-col">
               {question.options.map((option, i) => (
                 <button
                   key={option.label}
                   type="button"
                   onClick={() => choose(i)}
-                  className="group flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-4 border border-line bg-paper px-5 py-3 text-left transition-colors duration-200 hover:border-sindoor hover:bg-sindoor-soft"
+                  className="group -mx-2 flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-4 border-b border-line bg-transparent px-2 py-3.5 text-left transition-colors duration-200 hover:bg-sindoor-soft"
                 >
                   <span className="t-body text-ink">{option.label}</span>
                   <ArrowRightIcon

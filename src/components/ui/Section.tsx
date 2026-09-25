@@ -1,8 +1,14 @@
 /**
  * Section shell and the small typographic parts that repeat down the page.
  *
- * 128px section padding desktop / 80 mobile, 80px gutter desktop / 20 mobile,
+ * 128px section padding desktop / 88 mobile, 80px gutter desktop / 24 mobile,
  * 1280 content width inside a 1440 frame.
+ *
+ * The mobile padding is what separates one section from the next. The page
+ * alternates paper / deep / night bands already; at the old 64px they ran
+ * together into one scroll, and the fix people reach for — a rule or a mark at
+ * every join — is the decorative formula the audit stripped out. Space does it
+ * instead. See "Design rules" in the README.
  */
 
 type Tone = 'paper' | 'deep' | 'night';
@@ -28,7 +34,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden py-16 md:py-32 ${TONES[tone]} ${className}`}
+      className={`relative overflow-hidden py-22 md:py-32 ${TONES[tone]} ${className}`}
       {...rest}
     >
       {children}
@@ -44,7 +50,7 @@ export function Container({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`relative z-10 mx-auto w-full max-w-[1440px] px-5 md:px-20 ${className}`}>
+    <div className={`relative z-10 mx-auto w-full max-w-[1440px] px-6 md:px-20 ${className}`}>
       {children}
     </div>
   );

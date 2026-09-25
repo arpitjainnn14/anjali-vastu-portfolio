@@ -74,7 +74,7 @@
   .t-h2 {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(29px, 8.2vw, 34px);
+    font-size: clamp(27px, 7.6vw, 30px);
     line-height: 1.12;
     letter-spacing: -0.015em;
     font-variation-settings: "SOFT" 60, "opsz" 96;
@@ -82,18 +82,27 @@
   .t-h3 {
     font-family: var(--font-display);
     font-weight: 450;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.2;
     letter-spacing: -0.01em;
     font-variation-settings: "SOFT" 50, "opsz" 36;
   }
   /*
-   * Phone sizes a step lighter than before (lead 18 -> 17, body 17 -> 16 at a
-   * tighter leading). At the old sizes a 390px column set every paragraph as a
-   * wall; desktop sizes below are unchanged.
+   * Phone sizes.
+   *
+   * Measured against the desktop scale, every phone size was ~3x larger as a
+   * share of the viewport (body 41 per 1000px of width against desktop's 12.5),
+   * and the scale itself was compressed: h3 at 24px sat nearer h2 (32) than
+   * body (16), so a card title read almost as loud as a section heading and
+   * nothing receded.
+   *
+   * Body stays at 16px — reading distance sets that, not the viewport — and the
+   * display size is already the one that works. The middle of the scale comes
+   * down instead, which is what lets the headings lead again. Desktop sizes in
+   * the 768px block below are unchanged.
    */
   .t-lead {
-    font-size: 17px;
+    font-size: 16.5px;
     line-height: 1.58;
   }
   .t-body {
@@ -101,12 +110,22 @@
     line-height: 1.62;
   }
   .t-small {
-    font-size: 15px;
+    font-size: 14.5px;
     line-height: 1.55;
   }
   .t-caption {
-    font-size: 13.5px;
+    font-size: 13px;
     line-height: 1.5;
+  }
+  /*
+   * The opening paragraph of a long run, a size up from body. Phones only:
+   * it gives a section of solid text somewhere to start from, which is what
+   * stops three paragraphs reading as one screen-high block. The desktop
+   * column is short enough not to need it, so there it matches body exactly.
+   */
+  .t-open {
+    font-size: 16.5px;
+    line-height: 1.58;
   }
   @media (min-width: 768px) {
     .t-display { font-size: 84px; }
@@ -116,6 +135,8 @@
     .t-lead { font-size: 21px; }
     .t-body { font-size: 18px; }
     .t-small { font-size: 15.5px; }
+    .t-caption { font-size: 13.5px; }
+    .t-open { font-size: 18px; line-height: 1.62; }
   }
 
   /*
@@ -437,6 +458,18 @@ body::before {
     transform: none;
   }
 
+}
+/* ---------------------------------------------------------------------------
+   The testimonial rail holds still on phones as well as under reduced motion.
+
+   A rail that drifts on its own never frames a card long enough to read on a
+   390px screen — a card is always half off one edge — and it fights the thumb
+   that tries to hold it still. Below 768px it is an ordinary snap-scrolling
+   row. The drift returns above that, where a whole card stays visible while it
+   moves. The padding matches the section gutter at each size.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce), (max-width: 767px) {
   .marquee-track {
     animation: none;
     will-change: auto;

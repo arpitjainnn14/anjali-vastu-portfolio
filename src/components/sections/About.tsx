@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Image from 'next/image';
 import { about } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
@@ -16,6 +17,8 @@ import { presentAll } from '@/lib/todo';
 export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
   const Heading = heading;
   const refusals = presentAll(about.willNotDo.items);
+  /* The phone seal sits before the closing paragraph; -1 when there is no room. */
+  const sealAfter = about.paragraphs.length - 2;
 
   return (
     <Section id="about">
@@ -36,7 +39,7 @@ export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
                   height={680}
                   priority
                   sizes="(max-width: 1024px) 100vw, 480px"
-                  className="h-[420px] w-full object-cover object-[52%_28%] md:h-[560px] lg:h-[620px] lg:object-[55%_40%]"
+                  className="h-[340px] w-full object-cover object-[52%_28%] md:h-[560px] lg:h-[620px] lg:object-[55%_40%]"
                 />
               </div>
             </div>
@@ -50,19 +53,30 @@ export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
 
             <div className="flex flex-col gap-5" data-reveal-item>
               {about.paragraphs.map((paragraph, i) => (
-                <p key={i} className="t-body m-0 max-w-[60ch]">
-                  {paragraph}
-                </p>
+                <Fragment key={i}>
+                  <p className={`m-0 max-w-[60ch] ${i === 0 ? 't-open text-ink md:text-body' : 't-body'}`}>
+                    {paragraph}
+                  </p>
+                  {i === sealAfter && (
+                    <Seal id="about-phone" size={76} className="my-1 self-end md:hidden" />
+                  )}
+                </Fragment>
               ))}
             </div>
 
             {/*
               Her seal closes the story, the way she would stamp a chart she
               had read. It carries the emphasis the old bar-and-pull-quote did.
+
+              On a phone it moves up, between the second and third paragraphs,
+              where it breaks the longest run of text on the site. The two
+              instances are mutually exclusive by breakpoint — never both in
+              the same layout — and each needs its own id, since the curved
+              text hangs off path ids.
             */}
             <div className="flex flex-wrap items-center justify-between gap-6 pt-1" data-reveal-item>
-              <p className="t-small m-0 max-w-[46ch] text-muted">{about.facts.join(' · ')}</p>
-              <Seal id="about" size={104} className="-mt-1" />
+              <p className="t-small m-0 max-w-[46ch] pl-5 text-muted md:pl-0">{about.facts.join(' · ')}</p>
+              <Seal id="about" size={104} className="-mt-1 hidden md:block" />
             </div>
 
             {refusals.length > 0 && (

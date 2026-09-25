@@ -28,7 +28,7 @@ export function Services() {
         <ol
           className={
             'm-0 mt-10 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto p-0 ' +
-            '-mx-5 px-5 pb-3 scroll-px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ' +
+            '-mx-6 px-6 pb-3 scroll-px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ' +
             'md:mx-0 md:mt-20 md:block md:overflow-visible md:border-t md:border-line-strong md:px-0 md:pb-0'
           }
           data-reveal-group
@@ -38,7 +38,7 @@ export function Services() {
             return (
               <li
                 key={service.slug}
-                className="flex w-[84%] max-w-[340px] shrink-0 snap-start md:block md:w-auto md:max-w-none md:border-b md:border-line-strong"
+                className="flex w-[80%] max-w-[330px] shrink-0 snap-start md:block md:w-auto md:max-w-none md:border-b md:border-line-strong"
                 data-reveal-item
               >
                 <Link
@@ -50,7 +50,7 @@ export function Services() {
                     'md:bg-transparent md:px-4 md:py-11'
                   }
                 >
-                  <Icon size={30} strokeWidth={1.3} className="text-haldi md:hidden" />
+                  <Icon size={22} strokeWidth={1.3} className="text-haldi md:hidden" />
 
                   <div className="flex flex-col gap-2">
                     <h3 className="t-h3 m-0 flex items-center gap-3 text-ink">
@@ -61,7 +61,7 @@ export function Services() {
                   </div>
 
                   <div className="flex flex-1 flex-col gap-3">
-                    <p className="t-body m-0 line-clamp-4 max-w-[52ch] text-body md:line-clamp-none">{service.summary}</p>
+                    <p className="t-body m-0 line-clamp-3 max-w-[52ch] text-body md:line-clamp-none">{service.summary}</p>
                     <p className="t-small m-0 text-muted">
                       <span className="font-semibold text-ink">{servicesSection.needLabel}:</span>{' '}
                       {service.youWillNeed.charAt(0).toLowerCase() + service.youWillNeed.slice(1)}.

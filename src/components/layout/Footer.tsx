@@ -10,13 +10,13 @@ const FOOTER_LINK =
 export function Footer() {
   return (
     <footer className="on-night bg-night text-cream-muted">
-      <div className="mx-auto max-w-[1440px] px-5 md:px-20">
+      <div className="mx-auto max-w-[1440px] px-6 md:px-20">
         {/* A sign-off line, set large, before the practical columns. */}
         <div className="flex flex-wrap items-end justify-between gap-10 border-b border-night-line py-14 md:py-24">
           <p className="m-0 max-w-[20ch] font-display text-[30px] italic leading-[1.1] text-cream md:text-[60px]">
             {footer.signoff}
           </p>
-          <Seal id="footer" size={116} className="text-haldi-light" />
+          <Seal id="footer" size={116} className="h-[84px] w-[84px] text-haldi-light md:h-[116px] md:w-[116px]" />
         </div>
 
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 md:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] md:gap-12 md:py-16">

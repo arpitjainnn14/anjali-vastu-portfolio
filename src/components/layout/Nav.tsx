@@ -107,7 +107,7 @@ export function Nav() {
             scrolled ? 'opacity-100' : 'opacity-0'
           }`}
         />
-        <div className="relative mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 md:h-20 md:px-20">
+        <div className="relative mx-auto flex h-16 max-w-[1440px] items-center justify-between px-6 md:h-20 md:px-20">
           <Link href="/" className="group flex min-h-11 items-center gap-3 no-underline md:min-h-0">
             <KundliMark size={22} className="text-sindoor transition-transform duration-500 group-hover:rotate-90" />
             <span className="font-display text-[20px] leading-none tracking-[-0.01em] text-ink md:text-[22px]">
@@ -160,7 +160,7 @@ export function Nav() {
           aria-label={nav.labels.menu}
           className="fixed inset-0 z-50 overflow-y-auto bg-paper lg:hidden"
         >
-          <div className="flex min-h-full flex-col px-5 pb-10">
+          <div className="flex min-h-full flex-col px-6 pb-10">
             <div className="flex h-16 items-center justify-between">
               <Link
                 href="/"

@@ -17,8 +17,12 @@ import { ArrowRightIcon } from '@/components/ui/Icons';
  * The motion is a CSS animation on one HTML element's transform, so it runs on
  * the compositor and costs no layout. It stops for hover, keyboard focus, an
  * open dialog, the pause button (WCAG 2.2.2: anything that moves on its own
- * for more than five seconds must be stoppable), and prefers-reduced-motion,
- * where it becomes an ordinary swipeable row. See `.marquee` in globals.css.
+ * for more than five seconds must be stoppable), and prefers-reduced-motion.
+ *
+ * It does not run on phones at all. Below 768px it is an ordinary snap-
+ * scrolling row: a 300px card on a 390px screen is always half off one edge
+ * while the rail drifts, so nothing can be read and the thumb ends up racing
+ * it. See `.marquee` in globals.css.
  */
 
 /** Fewer than this and a loop reads as a glitch, so the row stays still. */
@@ -239,7 +243,7 @@ export function TestimonialsRail({
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1440px] items-end justify-between gap-6 px-5 md:px-20">
+      <div className="mx-auto flex w-full max-w-[1440px] items-end justify-between gap-6 px-6 md:px-20">
         <div className="min-w-0 flex-1">{header}</div>
         {moving && (
           <div className="marquee-toggle shrink-0 pb-1">
@@ -298,7 +302,7 @@ export function TestimonialsRail({
       ) : (
         <div
           data-quote-rail
-          className="mx-auto mt-10 flex w-full max-w-[1440px] flex-wrap gap-6 px-5 md:mt-12 md:gap-8 md:px-20"
+          className="mx-auto mt-10 flex w-full max-w-[1440px] flex-wrap gap-6 px-6 md:mt-12 md:gap-8 md:px-20"
         >
           {quotes.map((testimonial, index) => (
             <QuoteCard key={index} testimonial={testimonial} onOpen={() => setOpenIndex(index)} />

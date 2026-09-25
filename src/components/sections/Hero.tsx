@@ -28,8 +28,8 @@ function delay(seconds: number) {
 
 export function Hero() {
   return (
-    <section id="top" data-hides-sticky className="relative overflow-hidden pb-12 pt-24 md:pb-24 md:pt-40">
-      <div className="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 px-5 md:px-20 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-16">
+    <section id="top" data-hides-sticky className="relative overflow-hidden pb-12 pt-20 md:pb-24 md:pt-40">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 px-6 md:px-20 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-16">
         <div className="flex flex-col gap-6 md:gap-8">
           <p className="t-small enter order-1 m-0 text-muted lg:order-none">{hero.standfirst}</p>
 
@@ -48,16 +48,16 @@ export function Hero() {
             </span>
           </h1>
 
-          {/* Phone-only chart, straight under the headline. */}
-          <div className="order-3 mx-auto w-full max-w-[272px] py-1 lg:hidden" aria-hidden="true">
-            <Kundli size={272} className="w-full" />
+          {/* Phone-only chart, under the headline and pushed to the right. */}
+          <div className="order-3 ml-auto w-full max-w-[200px] py-1 lg:hidden" aria-hidden="true">
+            <Kundli size={200} className="w-full" />
           </div>
 
           <p className="t-lead enter order-5 m-0 max-w-[40ch] text-body lg:order-none" style={delay(0.45)}>
             {hero.lead}
           </p>
 
-          <div className="enter order-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 lg:order-none" style={delay(0.6)}>
+          <div className="enter order-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 lg:order-none" style={delay(0.6)}>
             <ButtonLink href={whatsappHref()}>
               <WhatsAppIcon size={19} />
               {hero.primaryCta.label}
@@ -89,7 +89,7 @@ export function Hero() {
       </div>
 
       {/* Her credentials, as a line of text rather than a row of stat boxes. */}
-      <div className="relative z-10 mx-auto mt-10 w-full max-w-[1440px] px-5 md:mt-16 md:px-20">
+      <div className="relative z-10 mx-auto mt-10 w-full max-w-[1440px] px-6 md:mt-16 md:px-20">
         <p className="t-small enter m-0 max-w-[62ch] text-muted" style={delay(0.9)}>
           {hero.credentials}
         </p>

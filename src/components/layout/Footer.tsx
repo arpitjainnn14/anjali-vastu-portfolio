@@ -12,14 +12,14 @@ export function Footer() {
     <footer className="on-night bg-night text-cream-muted">
       <div className="mx-auto max-w-[1440px] px-6 md:px-20">
         {/* A sign-off line, set large, before the practical columns. */}
-        <div className="flex flex-wrap items-end justify-between gap-10 border-b border-night-line py-14 md:py-24">
+        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-night-line py-10 md:gap-10 md:py-24">
           <p className="m-0 max-w-[20ch] font-display text-[30px] italic leading-[1.1] text-cream md:text-[60px]">
             {footer.signoff}
           </p>
           <Seal id="footer" size={116} className="h-[84px] w-[84px] text-haldi-light md:h-[116px] md:w-[116px]" />
         </div>
 
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 md:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] md:gap-12 md:py-16">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-9 md:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] md:gap-12 md:py-16">
           <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
             <div className="flex items-center gap-3">
               <KundliMark size={22} className="text-haldi-light" />
@@ -46,7 +46,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-2 border-t border-night-line py-6 pb-24 t-caption lg:pb-10 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 border-t border-night-line py-5 pb-20 t-caption lg:pb-10 sm:flex-row sm:items-center sm:justify-between">
           <span>{footer.copyright}</span>
           <span>{site.credential}</span>
         </div>

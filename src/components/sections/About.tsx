@@ -23,7 +23,7 @@ export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
   return (
     <Section id="about">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-24">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-24">
           {/*
             Portrait, mounted like a print: a paper margin inside a hairline,
             with a turmeric corner block offset behind it.
@@ -39,7 +39,7 @@ export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
                   height={680}
                   priority
                   sizes="(max-width: 1024px) 100vw, 480px"
-                  className="h-[340px] w-full object-cover object-[52%_28%] md:h-[560px] lg:h-[620px] lg:object-[55%_40%]"
+                  className="h-[250px] w-full object-cover object-[52%_28%] md:h-[560px] lg:h-[620px] lg:object-[55%_40%]"
                 />
               </div>
             </div>

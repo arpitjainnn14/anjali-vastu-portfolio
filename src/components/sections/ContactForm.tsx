@@ -103,7 +103,7 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="flex flex-col items-start gap-4 border-t-2 border-ink pt-8"
+        className="flex flex-col items-start gap-4 border-t-2 border-ink pt-6 md:pt-8"
       >
         <Seal id="sent" size={92} />
         <span className="t-h3 text-ink">{form.states.success.heading}</span>
@@ -126,9 +126,9 @@ export function ContactForm() {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="flex flex-col gap-7 border-t-2 border-ink pt-8"
+      className="flex flex-col gap-5 border-t-2 border-ink pt-6 md:gap-7 md:pt-8"
     >
-      <div className="grid gap-7 md:grid-cols-2 md:gap-x-10">
+      <div className="grid gap-5 md:grid-cols-2 md:gap-7 md:gap-x-10">
         <TextField
           id={form.fields.name.id}
           name={form.fields.name.name}
@@ -151,7 +151,7 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid gap-7 md:grid-cols-2 md:gap-x-10">
+      <div className="grid gap-5 md:grid-cols-2 md:gap-7 md:gap-x-10">
         <TextField
           id={form.fields.email.id}
           name={form.fields.email.name}

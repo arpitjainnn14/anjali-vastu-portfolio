@@ -31,8 +31,8 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
   return (
     <Section id="contact" tone="deep" data-hides-sticky>
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-24">
-          <div className="flex flex-col gap-7">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-24">
+          <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-5" data-reveal>
               <Heading className="t-h2 m-0 max-w-[16ch] text-balance text-ink">
                 <Accented text={contactSection.heading} />
@@ -78,7 +78,7 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
           </div>
 
           <div data-reveal>
-            <h3 className="t-h3 m-0 mb-6 text-ink">{contactSection.formTitle}</h3>
+            <h3 className="t-h3 m-0 mb-5 text-ink">{contactSection.formTitle}</h3>
             <ContactForm />
           </div>
         </div>

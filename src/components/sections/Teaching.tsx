@@ -25,7 +25,7 @@ export function Teaching({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
   return (
     <Section id="teaching" tone="deep">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-start lg:gap-24">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-start lg:gap-24">
           <div className="flex flex-col gap-6" data-reveal-group>
             <Heading className="t-h2 m-0 max-w-[16ch] text-balance text-ink" data-reveal-item>
               <Accented text={teaching.heading} />
@@ -69,14 +69,14 @@ export function Teaching({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
           </div>
 
           {spec.length > 0 && (
-            <div className="relative border border-line-strong bg-card p-6 md:p-9" data-reveal>
+            <div className="relative border border-line-strong bg-card p-5 md:p-9" data-reveal>
               <KundliMark size={28} className="absolute right-6 top-6 text-haldi md:right-9 md:top-9" />
               <span className="font-display text-[19px] text-ink">{teaching.specHeading}</span>
               <dl className="m-0 mt-6 flex flex-col">
                 {spec.map((row) => (
                   <div
                     key={row.label}
-                    className="grid grid-cols-[110px_1fr] gap-4 border-t border-line py-4 md:grid-cols-[130px_1fr]"
+                    className="grid grid-cols-[110px_1fr] gap-4 border-t border-line py-3 md:grid-cols-[130px_1fr] md:py-4"
                   >
                     <dt className="t-small text-muted">{row.label}</dt>
                     <dd className="m-0 t-small font-medium text-ink">{row.value}</dd>

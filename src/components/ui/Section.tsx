@@ -1,14 +1,18 @@
 /**
  * Section shell and the small typographic parts that repeat down the page.
  *
- * 128px section padding desktop / 88 mobile, 80px gutter desktop / 24 mobile,
+ * 128px section padding desktop / 56 mobile, 80px gutter desktop / 24 mobile,
  * 1280 content width inside a 1440 frame.
  *
  * The mobile padding is what separates one section from the next. The page
- * alternates paper / deep / night bands already; at the old 64px they ran
- * together into one scroll, and the fix people reach for — a rule or a mark at
- * every join — is the decorative formula the audit stripped out. Space does it
- * instead. See "Design rules" in the README.
+ * alternates paper / deep / night bands already; at 64px they ran together into
+ * one scroll, and the fix people reach for — a rule or a mark at every join —
+ * is the decorative formula the audit stripped out. Space does it instead.
+ *
+ * Only as much space as a phone can spare, though: at 88px the bands read as
+ * separate but a screen held almost nothing, which is its own kind of wrong.
+ * 56px separates them and still lets the page move. See "Design rules" in the
+ * README.
  */
 
 type Tone = 'paper' | 'deep' | 'night';
@@ -34,7 +38,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden py-22 md:py-32 ${TONES[tone]} ${className}`}
+      className={`relative overflow-hidden py-14 md:py-32 ${TONES[tone]} ${className}`}
       {...rest}
     >
       {children}

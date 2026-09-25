@@ -27,7 +27,7 @@ export function Services() {
 
         <ol
           className={
-            'm-0 mt-10 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto p-0 ' +
+            'm-0 mt-8 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto p-0 ' +
             '-mx-6 px-6 pb-3 scroll-px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ' +
             'md:mx-0 md:mt-20 md:block md:overflow-visible md:border-t md:border-line-strong md:px-0 md:pb-0'
           }
@@ -44,7 +44,7 @@ export function Services() {
                 <Link
                   href={`/services/${service.slug}`}
                   className={
-                    'group relative flex w-full flex-col gap-4 rounded-card border border-line bg-card p-6 no-underline ' +
+                    'group relative flex w-full flex-col gap-3 rounded-card border border-line bg-card p-5 no-underline ' +
                     'transition-colors duration-300 pointer-fine:hover:bg-paper ' +
                     'md:grid md:grid-cols-[minmax(0,4fr)_minmax(0,6fr)_48px] md:gap-10 md:rounded-none md:border-0 ' +
                     'md:bg-transparent md:px-4 md:py-11'

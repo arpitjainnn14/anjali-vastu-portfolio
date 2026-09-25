@@ -54,11 +54,11 @@ function attributionOf(t: Testimonial) {
 function quoteType(t: Testimonial, size: 'card' | 'dialog') {
   if (t.lang === 'hi') {
     return size === 'card'
-      ? 'font-deva text-[18px] leading-[1.75]'
+      ? 'font-deva text-[16px] leading-[1.75] md:text-[18px]'
       : 'font-deva text-[19px] leading-[1.8] md:text-[20px]';
   }
   return size === 'card'
-    ? 'font-display text-[19px] leading-[1.5]'
+    ? 'font-display text-[16.5px] leading-[1.5] md:text-[19px]'
     : 'font-display text-[19px] leading-[1.6] md:text-[21px]';
 }
 
@@ -129,8 +129,8 @@ function QuoteCard({
       lang={hindi ? 'hi' : undefined}
       aria-hidden={duplicate || undefined}
       className={
-        'quote-card relative isolate m-0 flex w-[300px] shrink-0 flex-col gap-4 overflow-hidden ' +
-        'rounded-[22px] border border-night-line p-7 sm:w-[420px] md:px-9 md:pb-8 md:pt-9 ' +
+        'quote-card relative isolate m-0 flex w-[300px] shrink-0 flex-col gap-3 overflow-hidden ' +
+        'rounded-[22px] border border-night-line p-5 sm:w-[420px] md:gap-4 md:px-9 md:pb-8 md:pt-9 ' +
         (duplicate ? 'marquee-dup' : '')
       }
     >
@@ -163,8 +163,15 @@ function QuoteCard({
         <ArrowRightIcon size={15} className="nudge" />
       </button>
 
-      {/* "Read more" takes the free space, so it lines up across cards whether or not a card has a headline. */}
-      <figcaption className="flex items-center gap-3.5 border-t border-night-line/70 pt-5">
+      {/*
+        "Read more" takes the free space, so it lines up across cards whether or
+        not a card has a headline — on desktop, where several cards are visible
+        at once. Phones size each card to its own content instead: stretched to
+        the tallest card (the Devanagari one), a short quote left ~180px of dead
+        air above its footer, and a snap rail shows one card at a time anyway,
+        so there is nothing for it to line up with.
+      */}
+      <figcaption className="flex items-center gap-3.5 border-t border-night-line/70 pt-4 md:pt-5">
         <Monogram name={testimonial.name} hindi={hindi} />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="truncate text-[16px] font-semibold text-cream">{testimonial.name}</span>
@@ -272,7 +279,7 @@ export function TestimonialsRail({
             >
               {/* Two identical halves; the track slides by exactly one. */}
               {[0, 1].map((half) => (
-                <div key={half} className="flex shrink-0 gap-6 pr-6 md:gap-8 md:pr-8">
+                <div key={half} className="flex shrink-0 items-start gap-6 pr-6 md:items-stretch md:gap-8 md:pr-8">
                   {pass.map(({ testimonial, index, duplicate }, i) => (
                     <QuoteCard
                       key={`${half}-${i}`}

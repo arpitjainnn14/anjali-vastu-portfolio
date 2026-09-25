@@ -12,7 +12,7 @@ export function Faq() {
   return (
     <Section id="faq">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-24">
+        <div className="grid gap-9 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-24">
           <div className="flex flex-col gap-5 lg:sticky lg:top-32 lg:self-start" data-reveal>
             <h2 className="t-h2 m-0 max-w-[14ch] text-balance text-ink">
               <Accented text={faq.heading} />

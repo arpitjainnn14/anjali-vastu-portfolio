@@ -22,17 +22,14 @@ export const booking = {
   calBaseUrl: 'https://cal.id',
   calUsername: 'anjali-jain13',
   /**
-   * Cal ID's inline embed, from the Embed dialog in Cal ID. null shows a
-   * plain link to the Cal ID page instead of an embedded calendar.
-   *
-   * Off for now. In a headless Playwright check (Sept 2026) the Cal ID
-   * frame was refused (X-Frame-Options SAMEORIGIN), but cal.id serves
-   * automated browsers a Cloudflare challenge page, so this needs
-   * re-checking in a real browser before switching on. Values from Cal
-   * ID's Embed dialog: scriptUrl https://cal.id/embed-link/embed.js,
-   * origin https://cal.id.
+   * Cal ID's inline embed, from the Embed dialog in Cal ID. Checked in a
+   * real browser (Sept 2026): the calendar renders. Headless browsers get a
+   * Cloudflare challenge from cal.id instead, so automated checks show an
+   * empty box. null shows a plain link to the Cal ID page instead.
    */
-  embed: null as { scriptUrl: string; origin: string } | null,
+  embed: { scriptUrl: 'https://cal.id/embed-link/embed.js', origin: 'https://cal.id' } as
+    | { scriptUrl: string; origin: string }
+    | null,
   ctaLabel: (fee: string) => `Book a consultation · ${fee}`,
   unsureLink: 'Not sure? Ask on WhatsApp',
   /** DRAFTED. What the fee buys beyond the session itself. */

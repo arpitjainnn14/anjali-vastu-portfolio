@@ -2,6 +2,7 @@
   "name": "anjali-payments-check",
   "private": true,
   "type": "module",
+  "engines": { "node": ">=22.12.0" },
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
@@ -9,7 +10,7 @@
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "typescript": "^5",
     "vitest": "^5.0.2",
     "wrangler": "^4.141.0"

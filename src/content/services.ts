@@ -78,7 +78,8 @@ export const services: Service[] = [
     question: 'For a home or shop that does not feel right',
     summary:
       'Direction, layout and placement for a home or a shop, assessed around the ' +
-      'people who actually live and work in it.',
+      'people who actually live and work in it. ' +
+      'It is a package: one fee, with site visits until the building is complete. Message her on WhatsApp for the details.',
     meta: {
       title: 'Vastu Consultant in Palwal for Homes and Shops',
       description:
@@ -180,7 +181,7 @@ export const serviceDetail = {
   glanceWhere: 'In person in Palwal, or by phone',
   /** Services booked online only. The calendar blocks an hour; she does not stop at one. */
   glanceLength: 'No fixed time limit',
-  glanceFees: 'Shared on WhatsApp',
+  glanceFees: 'A package; details on WhatsApp',
   ctaLabel: 'Ask about this on WhatsApp',
   reassurance: 'Anjali replies herself. There is no assistant.',
   otherHeading: 'Other consultations',

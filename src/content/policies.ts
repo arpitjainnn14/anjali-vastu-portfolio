@@ -56,8 +56,7 @@ export const terms = {
     {
       heading: 'Vastu',
       body:
-        'Vastu consultations are arranged on WhatsApp, not booked on this site. ' +
-        'The fee is agreed with Anjali before anything is arranged.',
+        'Vastu consultations are a package, arranged on WhatsApp rather than booked on this site: one fee, with site visits until the building is complete. The fee and what it covers are agreed with Anjali before anything is arranged.',
     },
     {
       heading: 'What a consultation is',

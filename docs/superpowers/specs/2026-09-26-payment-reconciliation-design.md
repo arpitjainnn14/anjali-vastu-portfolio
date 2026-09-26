@@ -65,7 +65,7 @@ Each unit has one job and can be tested alone.
 | `index.ts` | `scheduled` handler: fetch, reconcile, format, send. Catches every error and sends the failure message. `fetch` handler returns 404 (no public endpoint). | all below |
 | `http.ts` | `getJson(url, headers)`: GET only (throws on any other method), 10 s timeout, 3 retries with backoff on 429 and 5xx. | — |
 | `razorpay.ts` | `listPayments(from, to)`: pages through `GET /v1/payments` (`count=100`, `skip`). Basic auth with key ID and secret. | `http.ts` |
-| `calid.ts` | `listBookings(afterCreated)`: pages through `GET https://api.cal.id/booking/` for each of `upcoming`, `past`, `cancelled` (the endpoint defaults to `upcoming` and has no "all"). Bearer auth. | `http.ts` |
+| `calid.ts` | `listBookings(afterCreated)`: pages through `GET https://api.cal.id/booking/` for each of `upcoming`, `past`, `cancelled`, `unconfirmed` (the endpoint defaults to `upcoming` and has no "all"). Bookings seen in two buckets are counted once. Bearer auth. | `http.ts` |
 | `reconcile.ts` | Pure function `reconcile(payments, bookings, now) → Report`. No I/O. | — |
 | `format.ts` | Pure function `format(report, now) → string` (Telegram message). | — |
 | `telegram.ts` | `send(text)`: `POST sendMessage` to the group. The only non-GET call, and only to Telegram. Retries 3 times. | — |
@@ -79,7 +79,7 @@ A test fails if any Razorpay or Cal ID call uses another method.
   `order_id`, `status` (`created`, `authorized`, `captured`, `refunded`,
   `failed`), `amount`, `amount_refunded`, `refund_status`, `created_at`,
   `description`, and whatever marks the payment as Cal ID's (see Stage 0).
-- **Cal ID:** bookings created in the last 30 days, all three statuses.
+- **Cal ID:** bookings created in the last 30 days, all four status buckets.
   Fields used: `id`, `uid`, `status`, `paid`, `startTime`, `createdAt`,
   `fromReschedule`, `attendees[0].name`, `eventType.price`,
   `eventType.currency`, and `payment[]`.
@@ -98,17 +98,17 @@ cover the **previous IST calendar day**. Payments created in the last
 
 | Finding | Rule | Severity |
 |---|---|---|
-| Matched | Captured payment, linked booking not cancelled, amount = event price | ✅ counted |
-| Paid, no booking | Captured Cal ID payment with no linked booking | 🔴 |
+| Matched | Captured payment linked to an accepted booking, amount = Cal ID's payment record | ✅ counted |
+| Paid, no booking | Captured payment (not fully refunded) linked to no booking. Anjali takes no other Razorpay payments, so every unlinked payment is treated as this. | 🔴 |
+| Paid, booking not confirmed | Captured payment linked to a booking that is still pending | 🔴 |
 | Booking, no payment | Booking with price > 0 and no captured payment on it or on its reschedule chain | 🔴 |
 | Double charge | More than one captured payment linked to one booking | 🔴 |
-| Wrong amount | Captured amount ≠ event price | 🔴 |
+| Wrong amount | Razorpay's captured amount ≠ the amount in Cal ID's payment record for the same payment. (Not the current event price: a later price change must not flag old bookings.) | 🔴 |
 | Held, not taken | Payment `authorized` for more than 24 hours | 🟠 |
 | Can't verify | Any record whose shape or status the checker does not recognise | 🟠 |
 | Older than 30 days | A problem whose payment or booking is about to leave the window | 🔴 "check manually" |
 | Cancelled, not refunded | Cancelled booking with a captured, unrefunded payment | 🟡 listed, human decides |
 | Refunded | Payment with `amount_refunded > 0` | ℹ️ listed |
-| Other payment | Captured payment not created by Cal ID | ℹ️ listed |
 | Failed | `failed` payment with no booking | counted only |
 | Free | Booking with price 0 | ignored |
 
@@ -240,6 +240,6 @@ issued by hand in Razorpay.
 - The booking–payment link field (Stage 0).
 - Whether Anjali's key lists Cal ID-created payments (Stage 0).
 - Exact shape of Cal ID `payment[]` records (Stage 0).
-- Whether Cal ID marks payments with an app identifier the checker can read
-  (the dashboard shows App ID `Ohwvot9wcU4Zp7`) or whether "created by Cal ID"
-  must be inferred from the link alone.
+- Whether Cal ID's list endpoint returns `payment[]` for each booking (the
+  single-booking endpoint does). If it does not, one call per booking would
+  exceed the free plan's 50 subrequests; stop and redesign.

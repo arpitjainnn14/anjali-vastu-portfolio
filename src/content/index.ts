@@ -24,3 +24,4 @@ export * from './testimonials';
 export * from './faq';
 export * from './contact';
 export * from './privacy';
+export * from './policies';

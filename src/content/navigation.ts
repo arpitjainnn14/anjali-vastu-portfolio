@@ -47,6 +47,8 @@ export const footer = {
         { label: 'Testimonials', href: '/#testimonials' },
         { label: 'Contact', href: '/contact' },
         { label: 'How your details are used', href: '/privacy' },
+        { label: 'Terms of consultation', href: '/terms' },
+        { label: 'Refunds and cancellations', href: '/refund-policy' },
       ],
     },
     {

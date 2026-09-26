@@ -1,4 +1,4 @@
-import { site } from '@/content';
+import { contact, policyPages, site } from '@/content';
 import { SmartLink } from '@/components/ui/SmartLink';
 import { Section, Container } from '@/components/ui/Section';
 import { whatsappHref } from '@/lib/whatsapp';
@@ -22,6 +22,7 @@ export type PolicyDoc = {
 export function PolicyDocument({ doc }: { doc: PolicyDoc }) {
   const lastUpdated = present(doc.lastUpdated);
   const sections = visibleSections(doc.sections);
+  const email = present(contact.email);
 
   return (
     <Section className="pt-28 md:pt-40">
@@ -57,6 +58,17 @@ export function PolicyDocument({ doc }: { doc: PolicyDoc }) {
               </SmartLink>
               {doc.reachNote}
             </span>
+            {email && (
+              <span className="t-body">
+                {policyPages.emailPrefix}
+                <SmartLink
+                  href={`mailto:${email}`}
+                  className="ink-link inline-flex min-h-11 items-center text-sindoor md:min-h-0"
+                >
+                  {email}
+                </SmartLink>
+              </span>
+            )}
             <span className="t-small text-muted">
               {site.city}, {site.state}
             </span>

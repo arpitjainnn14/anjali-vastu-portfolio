@@ -1,5 +1,7 @@
 /** Online booking: Cal ID for the calendar, Razorpay for payment. */
 
+import { whatsappMessages } from './site';
+
 /**
  * The fee for the consultations booked online. `display` is written out, not
  * formatted at render, so other content modules (the FAQ) can quote it; a test
@@ -28,4 +30,22 @@ export const booking = {
   unsureLink: 'Not sure? Ask on WhatsApp',
   /** DRAFTED. What the fee buys beyond the session itself. */
   offerLine: 'Includes three months of calling Anjali directly.',
+  /** The /book pages. DRAFTED. */
+  page: {
+    metaTitleFor: (name: string) => `Book a ${name} Consultation with Anjali Jain`,
+    metaDescription:
+      'Book a Vedic astrology or numerology consultation with Anjali Jain and pay ' +
+      'online. In person in Palwal or by phone, in English or Hindi.',
+    heading: 'Book a consultation',
+    lead: 'Choose a time that suits you and pay online. Your booking is confirmed straight away.',
+    detailsNote:
+      'Nothing else is asked for here. After booking, you send Anjali your birth ' +
+      'details on WhatsApp.',
+    chooseLabel: 'Choose a consultation',
+    pickTime: 'Choose a time',
+    openCalendar: 'Open the calendar in a new tab',
+    vastuNote: 'Looking for Vastu? It is arranged on WhatsApp.',
+    vastuLink: 'Ask about Vastu',
+    vastuMessage: whatsappMessages.service('Vastu'),
+  },
 } as const;

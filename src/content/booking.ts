@@ -43,8 +43,9 @@ export const booking = {
     heading: 'Book a consultation',
     lead: 'Choose a time that suits you and pay online. Your booking is confirmed straight away.',
     detailsNote:
-      'Nothing else is asked for here. After booking, you send Anjali your birth ' +
-      'details on WhatsApp.',
+      'The booking asks only for your name, email and phone. After booking, you ' +
+      'send Anjali your birth details on WhatsApp.',
+    lengthNote: 'The calendar holds an hour, but the consultation runs as long as it needs.',
     chooseLabel: 'Choose a consultation',
     pickTime: 'Choose a time',
     openCalendar: 'Open the calendar in a new tab',

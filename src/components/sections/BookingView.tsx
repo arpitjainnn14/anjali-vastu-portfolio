@@ -94,6 +94,8 @@ export function BookingView({ chosen }: { chosen: BookableService }) {
           )}
         </div>
 
+        <p className="t-small m-0 mt-4 text-muted">{page.lengthNote}</p>
+
         {/* Has its own WhatsApp link, so the floating one steps aside while this line is on screen. */}
         <p className="t-small m-0 mt-8 text-muted" data-hides-sticky>
           {page.vastuNote}{' '}

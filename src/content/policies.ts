@@ -37,8 +37,8 @@ export const terms = {
       heading: 'Before your consultation',
       body:
         'For a chart reading, send Anjali your date, time and place of birth. For ' +
-        'numerology, your full name and date of birth. Your confirmation has a ' +
-        'link to send them on WhatsApp.',
+        'numerology, your full name and date of birth. The page you see after ' +
+        'booking has a button to send them on WhatsApp.',
     },
     {
       heading: 'Rescheduling',

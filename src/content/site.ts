@@ -47,7 +47,7 @@ export const contact = {
   whatsappNumber: '919729133317',
   whatsappUrl: 'https://wa.me/919729133317',
   /** Written route for data requests. Required by the privacy notice. */
-  email: 'TODO(email-address)',
+  email: 'astrologeranjali@gmail.com',
   forminitFormId: 'uu1xst97189',
   forminitEndpoint: 'https://forminit.com/f/uu1xst97189',
 } as const;

@@ -4,9 +4,10 @@ import { Section, Container } from '@/components/ui/Section';
 import { ButtonLink } from '@/components/ui/Button';
 import { SmartLink } from '@/components/ui/SmartLink';
 import { ArrowRightIcon } from '@/components/ui/Icons';
-import { bookableServices, bookPageHref, calUrl, type BookableService } from '@/lib/booking';
+import { bookableServices, bookPageHref, calLink, calUrl, type BookableService } from '@/lib/booking';
 import { whatsappHref } from '@/lib/whatsapp';
 import { pageMetadata } from '@/lib/metadata';
+import { CalInline } from '@/components/ui/CalInline';
 
 /**
  * Kept out of search until booking is live: an indexed page offering a
@@ -65,14 +66,32 @@ export function BookingView({ chosen }: { chosen: BookableService }) {
         </nav>
 
         <div className="mt-8">
-          <div className="flex flex-col items-start gap-4 rounded-card border border-line-strong bg-card p-6 md:p-8">
-            <span className="font-display text-[22px] text-ink md:text-[24px]">{chosen.name}</span>
-            <span className="t-small text-muted">{chosen.question}</span>
-            <ButtonLink href={calUrl(chosen)}>
-              {page.pickTime}
-              <ArrowRightIcon size={17} className="nudge" />
-            </ButtonLink>
-          </div>
+          {booking.embed ? (
+            <>
+              <CalInline
+                key={chosen.slug}
+                namespace={chosen.slug}
+                calLink={calLink(chosen)}
+                scriptUrl={booking.embed.scriptUrl}
+                origin={booking.embed.origin}
+              />
+              <SmartLink
+                href={calUrl(chosen)}
+                className="ink-link mt-4 inline-flex min-h-11 items-center t-small text-sindoor md:min-h-0"
+              >
+                {page.openCalendar}
+              </SmartLink>
+            </>
+          ) : (
+            <div className="flex flex-col items-start gap-4 rounded-card border border-line-strong bg-card p-6 md:p-8">
+              <span className="font-display text-[22px] text-ink md:text-[24px]">{chosen.name}</span>
+              <span className="t-small text-muted">{chosen.question}</span>
+              <ButtonLink href={calUrl(chosen)}>
+                {page.pickTime}
+                <ArrowRightIcon size={17} className="nudge" />
+              </ButtonLink>
+            </div>
+          )}
         </div>
 
         {/* Has its own WhatsApp link, so the floating one steps aside while this line is on screen. */}

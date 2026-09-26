@@ -24,6 +24,16 @@ export const booking = {
   /**
    * Cal ID's inline embed, from the Embed dialog in Cal ID. null shows a
    * plain link to the Cal ID page instead of an embedded calendar.
+   *
+   * Left null: Cal ID serves its booking pages with `X-Frame-Options:
+   * sameorigin`, so the browser refuses to display them in an iframe from
+   * this site at all (confirmed with Playwright at /book/numerology — the
+   * iframe element mounts but its content is blocked, with the console
+   * error "Refused to display 'https://cal.id/' in a frame because it set
+   * 'X-Frame-Options' to 'sameorigin'"). This is not a localhost-only
+   * restriction: `sameorigin` rejects every embedding origin except cal.id
+   * itself, so it would also block the embed once deployed. Flip this back
+   * on if Cal ID's settings ever allow framing from this site's origin.
    */
   embed: null as { scriptUrl: string; origin: string } | null,
   ctaLabel: (fee: string) => `Book a consultation · ${fee}`,

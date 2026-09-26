@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { services, servicesSection, picker } from '@/content';
 import { Section, Container, SectionHeader } from '@/components/ui/Section';
 import { serviceIcons, ArrowRightIcon } from '@/components/ui/Icons';
+import { serviceFee } from '@/lib/booking';
 
 /**
  * Services, as a numbered index rather than three identical cards.
@@ -66,7 +67,7 @@ export function Services() {
                       <span className="font-semibold text-ink">{servicesSection.needLabel}:</span>{' '}
                       {service.youWillNeed.charAt(0).toLowerCase() + service.youWillNeed.slice(1)}.
                       <span aria-hidden="true" className="px-2">·</span>
-                      {servicesSection.priceLine}
+                      {serviceFee(service, servicesSection.priceOnRequest)}
                     </p>
                     <span aria-hidden="true" className="mt-auto inline-flex items-center gap-2 pt-1 text-[15.5px] font-semibold text-sindoor md:hidden">
                       {service.detailLinkLabel}

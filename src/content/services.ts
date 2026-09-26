@@ -102,8 +102,8 @@ export const servicesSection = {
   lead:
     'Each one suits a different kind of question. Not sure which you need? Tell her ' +
     'what is going on and she will point you to the right one.',
-  /** Shown on every row in place of a price. Pricing is never published. */
-  priceLine: 'Fees shared on WhatsApp',
+  /** Shown instead of a price for a service not booked online (Vastu). */
+  priceOnRequest: 'Fees shared on WhatsApp',
   needLabel: 'You will need',
   footnote: 'Every consultation is available in English or Hindi, in person in Palwal or by phone.',
 } as const;
@@ -151,12 +151,15 @@ export const serviceDetail = {
   glanceLabels: {
     where: 'Where',
     languages: 'Languages',
+    length: 'Length',
     youWillNeed: 'You will need',
     fees: 'Fees',
   },
   glanceWhere: 'In person in Palwal, or by phone',
+  /** Services booked online only. The calendar blocks an hour; she does not stop at one. */
+  glanceLength: 'No fixed time limit',
   glanceFees: 'Shared on WhatsApp',
   ctaLabel: 'Ask about this on WhatsApp',
-  reassurance: 'Anjali replies herself. There is no assistant and no booking desk.',
+  reassurance: 'Anjali replies herself. There is no assistant.',
   otherHeading: 'Other consultations',
 } as const;

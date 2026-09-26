@@ -7,11 +7,14 @@ import {
   site,
   whatsappMessages,
   serviceDetail,
+  booking,
 } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
 import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 import { whatsappHref } from '@/lib/whatsapp';
+import { SmartLink } from '@/components/ui/SmartLink';
+import { isBookable, serviceCta, serviceReassurance } from '@/lib/booking';
 import { presentAll, present } from '@/lib/todo';
 import { pageMetadata } from '@/lib/metadata';
 import { serviceBreadcrumb, jsonLd } from '@/lib/structured-data';
@@ -54,9 +57,17 @@ export default async function ServiceDetailPage({
   const glance = [
     { label: serviceDetail.glanceLabels.where, value: serviceDetail.glanceWhere },
     { label: serviceDetail.glanceLabels.languages, value: site.languages },
+    ...(isBookable(service)
+      ? [{ label: serviceDetail.glanceLabels.length, value: serviceDetail.glanceLength }]
+      : []),
     { label: serviceDetail.glanceLabels.youWillNeed, value: service.youWillNeed },
-    { label: serviceDetail.glanceLabels.fees, value: serviceDetail.glanceFees },
+    {
+      label: serviceDetail.glanceLabels.fees,
+      value: isBookable(service) ? service.booking.fee.display : serviceDetail.glanceFees,
+    },
   ];
+
+  const cta = serviceCta(service);
 
   return (
     <Section className="pt-28 md:pt-40">
@@ -110,15 +121,23 @@ export default async function ServiceDetailPage({
               ))}
             </dl>
 
-            <ButtonLink
-              href={whatsappHref(whatsappMessages.service(service.name))}
-              block
-            >
-              <WhatsAppIcon size={19} />
-              {serviceDetail.ctaLabel}
+            <ButtonLink href={cta.href} block>
+              {cta.kind === 'whatsapp' && <WhatsAppIcon size={19} />}
+              {cta.label}
             </ButtonLink>
 
-            <span className="t-caption text-muted">{serviceDetail.reassurance}</span>
+            {/* Booking is the main action; WhatsApp stays for anyone unsure. */}
+            {cta.kind === 'book' && (
+              <SmartLink
+                href={whatsappHref(whatsappMessages.service(service.name))}
+                className="group inline-flex min-h-11 items-center justify-center gap-2 t-small font-semibold text-sindoor no-underline md:min-h-0"
+              >
+                {booking.unsureLink}
+                <ArrowRightIcon size={15} className="nudge" />
+              </SmartLink>
+            )}
+
+            <span className="t-caption text-muted">{serviceReassurance(service)}</span>
           </aside>
 
           <div className="flex flex-col gap-12 md:gap-16 lg:col-start-1">

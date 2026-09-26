@@ -109,17 +109,30 @@ export const servicesSection = {
 } as const;
 
 /**
+ * Step 1's wording once online booking is live. Swapped in for `howItWorks[0]`
+ * by `howItWorksSteps` in `lib/booking.ts`.
+ */
+export const bookFirstStepLive = {
+  title: 'Book a time, or message her first',
+  body:
+    'A chart reading or numerology consultation can be booked and paid for ' +
+    'online. For Vastu, or if you are not sure which you need, message her on ' +
+    'WhatsApp and she will point you to the right one.',
+} as const;
+
+/**
  * How it works, shown on every service detail page and the contact page.
  * DRAFTED. Anjali reads and corrects it before it ships. It must read true for
- * Vastu too, which is arranged on WhatsApp rather than booked online.
+ * Vastu too, which is arranged on WhatsApp rather than booked online. Step 1
+ * here is the not-yet-live wording; see `bookFirstStepLive` above.
  */
 export const howItWorks = [
   {
-    title: 'Book a time, or message her first',
+    title: 'Message her on WhatsApp, or send the form',
     body:
-      'A chart reading or numerology consultation can be booked and paid for ' +
-      'online. For Vastu, or if you are not sure which you need, message her on ' +
-      'WhatsApp and she will point you to the right one.',
+      'Say briefly what is on your mind. She will tell you whether a chart ' +
+      'reading is the right fit, or whether numerology or Vastu suits it ' +
+      'better.',
   },
   {
     title: 'Send her the details she needs',

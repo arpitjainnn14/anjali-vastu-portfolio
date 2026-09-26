@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { services, consultationFee, serviceDetail, booking } from '@/content';
+import { services, consultationFee, serviceDetail, booking, howItWorks, bookFirstStepLive } from '@/content';
 import {
   bookableServices,
   bookPageHref,
@@ -9,6 +9,7 @@ import {
   detailsHref,
   detailsMessage,
   findBookable,
+  howItWorksSteps,
   serviceCta,
   serviceFee,
   serviceReassurance,
@@ -121,6 +122,18 @@ describe('serviceReassurance', () => {
   it('keeps the general line for Vastu and while not live', () => {
     expect(serviceReassurance(service('vastu'), true)).toBe(serviceDetail.reassurance);
     expect(serviceReassurance(service('vedic-astrology'), false)).toBe(serviceDetail.reassurance);
+  });
+});
+
+describe('howItWorksSteps', () => {
+  it('keeps the not-live step 1 wording while booking is not live', () => {
+    expect(howItWorksSteps(false)).toEqual(howItWorks);
+  });
+
+  it('swaps step 1 for the online-booking wording once live', () => {
+    const steps = howItWorksSteps(true);
+    expect(steps[0]).toEqual(bookFirstStepLive);
+    expect(steps.slice(1)).toEqual(howItWorks.slice(1));
   });
 });
 

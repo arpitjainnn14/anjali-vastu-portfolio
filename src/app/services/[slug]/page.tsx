@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   services,
-  howItWorks,
   site,
   whatsappMessages,
   serviceDetail,
@@ -14,7 +13,7 @@ import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icon
 import { ButtonLink } from '@/components/ui/Button';
 import { whatsappHref } from '@/lib/whatsapp';
 import { SmartLink } from '@/components/ui/SmartLink';
-import { isBookable, serviceCta, serviceReassurance } from '@/lib/booking';
+import { howItWorksSteps, isBookable, serviceCta, serviceReassurance } from '@/lib/booking';
 import { presentAll, present } from '@/lib/todo';
 import { pageMetadata } from '@/lib/metadata';
 import { serviceBreadcrumb, jsonLd } from '@/lib/structured-data';
@@ -50,7 +49,7 @@ export default async function ServiceDetailPage({
   const others = services.filter((s) => s.slug !== service.slug);
 
   /* A step whose copy is unsupplied is dropped, so no numbered gap appears. */
-  const steps = howItWorks.filter(
+  const steps = howItWorksSteps().filter(
     (step) => present(step.title) !== null && present(step.body) !== null,
   );
 

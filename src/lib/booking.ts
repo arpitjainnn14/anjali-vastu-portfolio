@@ -1,4 +1,12 @@
-import { booking, services, serviceDetail, whatsappMessages, type Service } from '@/content';
+import {
+  booking,
+  bookFirstStepLive,
+  howItWorks,
+  services,
+  serviceDetail,
+  whatsappMessages,
+  type Service,
+} from '@/content';
 import { whatsappHref } from './whatsapp';
 
 /**
@@ -56,6 +64,14 @@ export function serviceCta(service: Service, live: boolean = booking.live): Serv
     href: whatsappHref(whatsappMessages.service(service.name)),
     label: serviceDetail.ctaLabel,
   };
+}
+
+/**
+ * "How it works", with step 1 swapped for the online-booking wording once
+ * booking is live. Not-live wording lives at `howItWorks[0]` in content.
+ */
+export function howItWorksSteps(live: boolean = booking.live) {
+  return live ? [bookFirstStepLive, ...howItWorks.slice(1)] : howItWorks;
 }
 
 /** The line under a service page's main button. */

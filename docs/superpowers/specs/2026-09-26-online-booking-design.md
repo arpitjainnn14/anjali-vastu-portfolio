@@ -47,8 +47,8 @@ Already done, and checked on the public page on 2026-09-26:
 - `vedic-astrology` and `numerology` event types, 60 min, Asia/Kolkata.
 
 Still to fix (found on the public pages):
-1. ~~No price shows on either event type.~~ Fixed: both show ₹2,151.00 with the
-   Razorpay app installed (test mode).
+1. ~~No price shows on either event type.~~ Both show ₹2,151.00. Which Razorpay
+   account and mode the app is connected to is unverified: Cal ID supports live mode only.
 2. **A slot 2 hours ahead was bookable.** Minimum notice is not set. Set 12 or 24 hours.
 3. **Locations differ.** Vedic Astrology offers Google Meet, Palwal and Organizer
    Phone Number; Numerology offers two. Make them match. Drop Google Meet unless
@@ -64,8 +64,8 @@ Still to do:
 - Workflows: confirmation email (with WhatsApp link, her number and the three-month
   line) and a 24 hour reminder.
 - Connect Google Calendar.
-- Razorpay test mode: keys pasted by Arpit into Cal ID's Razorpay app. Unverified
-  whether Cal ID accepts `rzp_test_` keys; confirm at install.
+- Razorpay: Cal ID's app connects to an activated live account only (no key fields,
+  no test mode). Connect it after activation (rollout step 4).
 
 Anjali's phone number appears only in the confirmation email and Cal ID's
 "Organizer Phone Number" location, which paying customers see after booking. The
@@ -200,23 +200,30 @@ here after payment, so the details request does not depend on them opening an em
 
 ## Rollout order
 
+Cal ID's Razorpay app supports **live mode only** (Cal ID FAQ, checked 2026-09-26:
+"Razorpay Test Mode isn't supported"). No payment can be tested before Razorpay
+activation.
+
 1. Fix the Part A issues; finish workflows and the calendar connection.
-2. Test end to end in Razorpay test mode (checklist below).
-3. Build Part B with `booking.live = false`; deploy.
-4. Supply the email address; ask Razorpay support whether astrology is an
-   accepted category; apply for live mode with the site URL.
-5. On approval: switch Cal ID to live Razorpay keys, set `booking.live = true`,
-   deploy, and make one real booking to check it works.
+2. Build Part B with `booking.live = false`; deploy. Prices, `/terms`, `/refund-policy`
+   and the footer links are public from this point; only `/book` and the booking
+   button wait for the flag.
+3. Supply the contact email; ask Razorpay whether astrology is accepted; regenerate
+   the keys that were pasted in chat; apply for live activation with the site URL.
+4. On activation: connect Cal ID's Razorpay app to the live account. Create a hidden
+   event type priced ₹1–10 and pay for it for real, run the Cal ID checklist below
+   against it, then refund it.
+5. Set `booking.live = true`, deploy, and make one real booking of a real service.
 
 ## Testing
 
-**Cal ID and Razorpay (test mode):**
-- [ ] Booking with UPI `success@razorpay` confirms and appears in Cal ID and Google Calendar
-- [ ] `failure@razorpay` does not create a booking
+**Cal ID and Razorpay (live mode, hidden ₹1–10 event type):**
+- [ ] A real UPI payment confirms the booking, which appears in Cal ID and Google Calendar
+- [ ] Abandoning the Razorpay checkout does not create a booking
 - [ ] Confirmation email arrives; its WhatsApp link opens a chat with Anjali
 - [ ] Reminder arrives 24 hours before, tested with a booking a day out
 - [ ] Reschedule link works; a slot inside 24 hours is refused
-- [ ] Payment shows ₹2,151 in the Razorpay test dashboard
+- [ ] The payment shows in the Razorpay live dashboard and the refund goes through
 
 **Site:**
 - [ ] `npm run build` and `npm run lint` pass
@@ -232,7 +239,6 @@ here after payment, so the details request does not depend on them opening an em
 
 ## Open items
 
-- Whether Cal ID accepts Razorpay test keys.
 - Whether Cal ID's inline embed exists and behaves like Cal.com's.
 - Whether Cal ID's email templates can compute a date three months ahead. If not,
   the email says "for three months from your consultation".

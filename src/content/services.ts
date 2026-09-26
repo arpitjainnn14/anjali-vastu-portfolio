@@ -1,5 +1,7 @@
 /** The three consultations: the home page list and each service page. */
 
+import { consultationFee, type Fee } from './booking';
+
 export type Service = {
   slug: string;
   name: string;
@@ -15,6 +17,8 @@ export type Service = {
   covers: string[];
   /** What a student/client needs to bring or know. */
   youWillNeed: string;
+  /** Booked and paid online through Cal ID. null: arranged on WhatsApp only. */
+  booking: { calSlug: string; fee: Fee } | null;
 };
 
 export const services: Service[] = [
@@ -41,6 +45,7 @@ export const services: Service[] = [
       'TODO(vedic-covers-4)',
     ],
     youWillNeed: 'Birth date, time and place',
+    booking: { calSlug: 'vedic-astrology', fee: consultationFee },
   },
   {
     slug: 'numerology',
@@ -64,6 +69,7 @@ export const services: Service[] = [
       'TODO(numerology-covers-4)',
     ],
     youWillNeed: 'Full name and date of birth',
+    booking: { calSlug: 'numerology', fee: consultationFee },
   },
   {
     slug: 'vastu',
@@ -87,6 +93,7 @@ export const services: Service[] = [
       'TODO(vastu-covers-4)',
     ],
     youWillNeed: 'A plan or photographs of the space',
+    booking: null,
   },
 ];
 

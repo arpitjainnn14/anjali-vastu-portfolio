@@ -10,6 +10,7 @@ npm install
 npm run dev      # http://localhost:3000
 npm run build
 npm run lint
+npm test         # vitest unit tests (src/lib, src/content)
 ```
 
 Environment: copy `.env.example` to `.env.local`. `NEXT_PUBLIC_SITE_URL` sets

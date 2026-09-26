@@ -3,8 +3,11 @@ import { services, consultationFee, serviceDetail, booking } from '@/content';
 import {
   bookableServices,
   bookPageHref,
+  bookedCopy,
   calLink,
   calUrl,
+  detailsHref,
+  detailsMessage,
   findBookable,
   serviceCta,
   serviceFee,
@@ -118,5 +121,51 @@ describe('serviceReassurance', () => {
   it('keeps the general line for Vastu and while not live', () => {
     expect(serviceReassurance(service('vastu'), true)).toBe(serviceDetail.reassurance);
     expect(serviceReassurance(service('vedic-astrology'), false)).toBe(serviceDetail.reassurance);
+  });
+});
+
+describe('bookedCopy', () => {
+  it('names the consultation when the service is known', () => {
+    expect(bookedCopy(bookable('numerology')).heading).toBe('Your Numerology consultation is booked');
+  });
+
+  it('does not claim a booking when opened without one', () => {
+    const copy = bookedCopy(null);
+    expect(copy.heading).toBe(booking.booked.genericHeading);
+    expect(copy.heading + copy.body).not.toMatch(/is booked/);
+  });
+});
+
+describe('detailsMessage', () => {
+  it('asks for the numerology details only', () => {
+    expect(detailsMessage(bookable('numerology'))).toBe(
+      'Hello Anjali, I have just booked a Numerology consultation. My details:\n\n' +
+        'Full name:\nDate of birth:',
+    );
+  });
+
+  it('asks for the birth details for a chart reading', () => {
+    expect(detailsMessage(bookable('vedic-astrology'))).toBe(
+      'Hello Anjali, I have just booked a Vedic Astrology consultation. My details:\n\n' +
+        'Date of birth:\nTime of birth:\nPlace of birth:',
+    );
+  });
+
+  it('lists every field when the service is unknown', () => {
+    expect(detailsMessage(null)).toBe(
+      'Hello Anjali, I have just booked a consultation. My details:\n\n' +
+        'Full name:\nDate of birth:\nTime of birth:\nPlace of birth:',
+    );
+  });
+
+  it('has a details list for every bookable service', () => {
+    for (const s of bookableServices) expect(booking.detailsMessage.lines[s.slug]).toBeDefined();
+  });
+
+  it('is sent as an encoded WhatsApp link', () => {
+    const href = detailsHref(bookable('numerology'));
+    expect(href.startsWith('https://wa.me/')).toBe(true);
+    expect(href).toContain('%0A');
+    expect(href).not.toContain('\n');
   });
 });

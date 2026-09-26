@@ -62,3 +62,22 @@ export function serviceCta(service: Service, live: boolean = booking.live): Serv
 export function serviceReassurance(service: Service, live: boolean = booking.live): string {
   return live && isBookable(service) ? booking.offerLine : serviceDetail.reassurance;
 }
+
+export function bookedCopy(service: BookableService | null): { heading: string; body: string } {
+  const copy = booking.booked;
+  return service
+    ? { heading: copy.headingFor(service.name), body: copy.body }
+    : { heading: copy.genericHeading, body: copy.genericBody };
+}
+
+/** The WhatsApp message listing the details this consultation needs. */
+export function detailsMessage(service: BookableService | null): string {
+  const m = booking.detailsMessage;
+  const opener = service ? m.openerFor(service.name) : m.opener;
+  const lines = (service && m.lines[service.slug]) || m.combined;
+  return [opener, '', ...lines].join('\n');
+}
+
+export function detailsHref(service: BookableService | null): string {
+  return whatsappHref(detailsMessage(service));
+}

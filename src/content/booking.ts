@@ -55,4 +55,28 @@ export const booking = {
     vastuLink: 'Ask about Vastu',
     vastuMessage: whatsappMessages.service('Vastu'),
   },
+  /** The /booked page Cal ID sends people to after paying. DRAFTED. */
+  booked: {
+    metaTitle: 'Booking Received',
+    metaDescription: 'Your consultation with Anjali Jain, and the details to send her.',
+    headingFor: (name: string) => `Your ${name} consultation is booked`,
+    body:
+      'The confirmation is on its way to your email. One more step: send Anjali ' +
+      'the details she needs for your reading.',
+    genericHeading: 'Thank you',
+    genericBody:
+      'If you have just booked a consultation, the confirmation is on its way to ' +
+      'your email. Send Anjali the details she needs for your reading on WhatsApp.',
+    detailsCta: 'Send your details on WhatsApp',
+  },
+  /** The prefilled WhatsApp message from /booked. One field per line, left blank to fill in. */
+  detailsMessage: {
+    openerFor: (name: string) => `Hello Anjali, I have just booked a ${name} consultation. My details:`,
+    opener: 'Hello Anjali, I have just booked a consultation. My details:',
+    lines: {
+      'vedic-astrology': ['Date of birth:', 'Time of birth:', 'Place of birth:'],
+      numerology: ['Full name:', 'Date of birth:'],
+    } as Record<string, readonly string[]>,
+    combined: ['Full name:', 'Date of birth:', 'Time of birth:', 'Place of birth:'],
+  },
 } as const;

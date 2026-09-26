@@ -151,9 +151,10 @@ export const howItWorks = [
   {
     title: 'Three months of calls',
     body:
-      'For three months after your consultation you can call Anjali directly ' +
-      'with follow-up questions. If a remedy such as a Vastu yantra would help, ' +
-      'she tells you what it costs first. Remedies are always optional.',
+      'After a chart reading or numerology consultation, you can call Anjali ' +
+      'directly for three months with follow-up questions. If a remedy such as ' +
+      'a Vastu yantra would help, she tells you what it costs first. Remedies ' +
+      'are always optional.',
   },
 ] as const;
 

@@ -1,5 +1,7 @@
 /** Questions people ask before they message. */
 
+import { consultationFee } from './booking';
+
 /**
  * DRAFTED. Every answer restates a fact already on this site; nothing new is
  * promised. Anjali signs these off before launch. Answers people's usual
@@ -11,8 +13,10 @@ export const faq = {
     {
       q: 'How much does a consultation cost?',
       a:
-        'Fees depend on the kind of consultation, so they are not listed here. ' +
-        'Message Anjali on WhatsApp and she will tell you before anything is arranged.',
+        `A Vedic astrology or numerology consultation is ${consultationFee.display}, and ` +
+        'that includes three months of calling Anjali directly afterwards. Vastu depends ' +
+        'on the space, so message her on WhatsApp and she will tell you the fee before ' +
+        'anything is arranged.',
     },
     {
       q: 'Do I have to come to Palwal?',

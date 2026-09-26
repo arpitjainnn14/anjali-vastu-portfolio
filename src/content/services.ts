@@ -108,16 +108,21 @@ export const servicesSection = {
   footnote: 'Every consultation is available in English or Hindi, in person in Palwal or by phone.',
 } as const;
 
-/** How it works, shown on every service detail page. */
+/**
+ * How it works, shown on every service detail page and the contact page.
+ * DRAFTED. Anjali reads and corrects it before it ships. It must read true for
+ * Vastu too, which is arranged on WhatsApp rather than booked online.
+ */
 export const howItWorks = [
   {
-    title: 'Message her on WhatsApp, or send the form',
+    title: 'Book a time, or message her first',
     body:
-      'Say briefly what is on your mind. She will tell you whether a chart reading ' +
-      'is the right fit, or whether numerology or Vastu suits it better.',
+      'A chart reading or numerology consultation can be booked and paid for ' +
+      'online. For Vastu, or if you are not sure which you need, message her on ' +
+      'WhatsApp and she will point you to the right one.',
   },
   {
-    title: 'She asks for the details she needs',
+    title: 'Send her the details she needs',
     body:
       'For a chart reading, your date, time and place of birth. For numerology, ' +
       'your full name and date of birth. For Vastu, a plan or photographs of the ' +
@@ -128,11 +133,14 @@ export const howItWorks = [
     title: 'The consultation',
     body:
       'In person in Palwal or over the phone, in English or Hindi, whichever you ' +
-      'are more comfortable with.',
+      'are more comfortable with. There is no fixed time limit.',
   },
   {
-    title: 'TODO(after-consultation-title)',
-    body: 'TODO(after-consultation-body: anything in writing? follow-up questions, for how long?)',
+    title: 'Three months of calls',
+    body:
+      'For three months after your consultation you can call Anjali directly ' +
+      'with follow-up questions. If a remedy such as a Vastu yantra would help, ' +
+      'she tells you what it costs first. Remedies are always optional.',
   },
 ] as const;
 

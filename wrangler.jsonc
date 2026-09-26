@@ -1,0 +1,31 @@
+/**
+ * Cloudflare Workers config, via the OpenNext adapter (opennext.js.org/cloudflare).
+ *
+ * Workers Free: commercial use allowed, 100,000 requests a day, no card. Over
+ * a limit, requests fail until midnight UTC; nothing is ever charged.
+ *
+ * Secrets (FORMINIT_API_KEY) and NEXT_PUBLIC_SITE_URL live in the Cloudflare
+ * dashboard, not here. NEXT_PUBLIC_ values are inlined at build time, so they
+ * must be set as build variables too.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "anjali-site",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "anjali-site"
+    }
+  ],
+  /* next/image (the portrait). Free plan: 5,000 unique transformations a month, errors past that, never billed. */
+  "images": {
+    "binding": "IMAGES"
+  }
+}

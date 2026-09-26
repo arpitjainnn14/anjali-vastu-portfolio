@@ -460,16 +460,14 @@ body::before {
 
 }
 /* ---------------------------------------------------------------------------
-   The testimonial rail holds still on phones as well as under reduced motion.
-
-   A rail that drifts on its own never frames a card long enough to read on a
-   390px screen — a card is always half off one edge — and it fights the thumb
-   that tries to hold it still. Below 768px it is an ordinary snap-scrolling
-   row. The drift returns above that, where a whole card stays visible while it
-   moves. The padding matches the section gutter at each size.
+   Under reduced motion the rail holds still and becomes an ordinary
+   snap-scrolling row. It drifts at every size otherwise, phones included:
+   a card is often half off one edge while it moves, but the rail reading as
+   alive was worth more than a card being framed, and the pause button (below,
+   and visible here) makes it stoppable for anyone who disagrees mid-read.
    --------------------------------------------------------------------------- */
 
-@media (prefers-reduced-motion: reduce), (max-width: 767px) {
+@media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
     will-change: auto;

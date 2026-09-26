@@ -17,12 +17,13 @@ import { ArrowRightIcon } from '@/components/ui/Icons';
  * The motion is a CSS animation on one HTML element's transform, so it runs on
  * the compositor and costs no layout. It stops for hover, keyboard focus, an
  * open dialog, the pause button (WCAG 2.2.2: anything that moves on its own
- * for more than five seconds must be stoppable), and prefers-reduced-motion.
+ * for more than five seconds must be stoppable), and prefers-reduced-motion,
+ * where it becomes an ordinary swipeable row.
  *
- * It does not run on phones at all. Below 768px it is an ordinary snap-
- * scrolling row: a 300px card on a 390px screen is always half off one edge
- * while the rail drifts, so nothing can be read and the thumb ends up racing
- * it. See `.marquee` in globals.css.
+ * It drifts on phones too. A 300px card on a 390px screen is often half off
+ * one edge while it moves, which is a real cost, but the rail sitting dead was
+ * the worse of the two — so the pause button stays reachable at every size
+ * rather than the motion being dropped. See `.marquee` in globals.css.
  */
 
 /** Fewer than this and a loop reads as a glitch, so the row stays still. */
@@ -138,7 +139,7 @@ function QuoteCard({
 
       {testimonial.title && (
         <p
-          className={`m-0 line-clamp-2 font-semibold text-haldi-light ${
+          className={`m-0 line-clamp-1 font-semibold text-haldi-light md:line-clamp-2 ${
             hindi ? 'font-deva text-[16px] leading-[1.6]' : 'text-[15px] leading-[1.45]'
           }`}
         >
@@ -146,7 +147,7 @@ function QuoteCard({
         </p>
       )}
 
-      <blockquote className={`m-0 line-clamp-4 text-cream ${quoteType(testimonial, 'card')}`}>
+      <blockquote className={`m-0 line-clamp-3 text-cream md:line-clamp-4 ${quoteType(testimonial, 'card')}`}>
         {excerpt}
       </blockquote>
 
@@ -165,11 +166,13 @@ function QuoteCard({
 
       {/*
         "Read more" takes the free space, so it lines up across cards whether or
-        not a card has a headline — on desktop, where several cards are visible
-        at once. Phones size each card to its own content instead: stretched to
-        the tallest card (the Devanagari one), a short quote left ~180px of dead
-        air above its footer, and a snap rail shows one card at a time anyway,
-        so there is nothing for it to line up with.
+        not a card has a headline.
+
+        Every card is the height of the tallest, which is what keeps the footers
+        level — letting them size to their own content instead leaves the rail
+        visibly ragged, since the next card always peeks in. The slack that
+        creates is kept small by clamping harder on phones (below), not by
+        breaking the alignment.
       */}
       <figcaption className="flex items-center gap-3.5 border-t border-night-line/70 pt-4 md:pt-5">
         <Monogram name={testimonial.name} hindi={hindi} />
@@ -279,7 +282,7 @@ export function TestimonialsRail({
             >
               {/* Two identical halves; the track slides by exactly one. */}
               {[0, 1].map((half) => (
-                <div key={half} className="flex shrink-0 items-start gap-6 pr-6 md:items-stretch md:gap-8 md:pr-8">
+                <div key={half} className="flex shrink-0 gap-6 pr-6 md:gap-8 md:pr-8">
                   {pass.map(({ testimonial, index, duplicate }, i) => (
                     <QuoteCard
                       key={`${half}-${i}`}

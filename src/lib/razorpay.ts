@@ -78,7 +78,20 @@ export async function createOrder(keys: RazorpayKeys, amount: number, receipt: s
  * about how close a guess was.
  */
 export function signatureMatches(keySecret: string, orderId: string, paymentId: string, signature: string): boolean {
-  const expected = createHmac('sha256', keySecret).update(`${orderId}|${paymentId}`).digest('hex');
+  return hmacMatches(keySecret, `${orderId}|${paymentId}`, signature);
+}
+
+/**
+ * The same seal on a webhook, with a different key: the webhook secret set
+ * in the dashboard, over the body exactly as it arrived. Parsing and
+ * re-serialising the JSON first changes the bytes and breaks the match.
+ */
+export function webhookSignatureMatches(webhookSecret: string, rawBody: string, signature: string): boolean {
+  return hmacMatches(webhookSecret, rawBody, signature);
+}
+
+function hmacMatches(secret: string, message: string, signature: string): boolean {
+  const expected = createHmac('sha256', secret).update(message).digest('hex');
   const a = Buffer.from(expected, 'utf8');
   const b = Buffer.from(signature, 'utf8');
   return a.length === b.length && timingSafeEqual(a, b);

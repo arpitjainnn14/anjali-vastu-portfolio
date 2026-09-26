@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Section, Container } from '@/components/ui/Section';
 import { sandboxEnabled } from '@/lib/razorpay';
 import { PayTest } from './PayTest';
+import { WebhookLog } from './WebhookLog';
 
 /**
  * Razorpay learning sandbox. `npm run dev` only; a 404 in any production
@@ -25,6 +26,7 @@ export default function PayTestPage() {
             Pays ₹2,151 of test money through Standard Checkout and logs every step. Use test mode keys only.
           </p>
           <PayTest />
+          <WebhookLog />
         </div>
       </Container>
     </Section>

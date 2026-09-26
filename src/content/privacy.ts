@@ -53,13 +53,13 @@ export const privacy = {
         'You can ask to see what is held about you, to have it corrected, or to have ' +
         'it deleted. You can also withdraw your consent at any time, and that is as ' +
         'easy as giving it was. Message her on WhatsApp or write to ' +
-        'TODO(email-address). It will be dealt with within 90 days at the latest, and ' +
+        'astrologeranjali@gmail.com. It will be dealt with within 90 days at the latest, and ' +
         'in practice much sooner.',
     },
     {
       heading: 'If you are not satisfied',
       body:
-        'Raise it with TODO(grievance-contact-name) at TODO(email-address). If it is ' +
+        'Raise it with TODO(grievance-contact-name) at astrologeranjali@gmail.com. If it is ' +
         'still not resolved, you can take the complaint to the Data Protection Board ' +
         'of India.',
     },

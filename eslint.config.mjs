@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     ".open-next/**",
     ".wrangler/**",
     "cloudflare-env.d.ts",
+    // Separate Cloudflare Worker with its own tooling (workers/reconcile).
+    "workers/**",
   ]),
 ]);
 

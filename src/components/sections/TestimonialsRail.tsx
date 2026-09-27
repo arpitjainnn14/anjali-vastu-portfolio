@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { Testimonial } from '@/content';
+import type { Locale, Testimonial } from '@/content';
 import { useContent } from '@/components/locale/LocaleProvider';
 import { present } from '@/lib/todo';
 import { ArrowRightIcon } from '@/components/ui/Icons';
@@ -46,6 +46,16 @@ function attributionOf(t: Testimonial) {
   /* Only shown once someone has actually told us where they are. */
   const city = present(t.city);
   return city ? `${city} · ${t.service}` : t.service;
+}
+
+/**
+ * A quote keeps the language its client wrote it in. It is marked only when
+ * that differs from the page's, since the page's own `lang` covers the rest.
+ * The labels around it (Read more, service, close) are the page's language.
+ */
+function quoteLang(t: Testimonial, locale: Locale): Locale | undefined {
+  const written = t.lang ?? 'en';
+  return written === locale ? undefined : written;
 }
 
 /*
@@ -121,7 +131,7 @@ function QuoteCard({
    */
   duplicate?: boolean;
 }) {
-  const { c } = useContent();
+  const { c, locale } = useContent();
   const { testimonialsSection } = c;
   const hindi = testimonial.lang === 'hi';
   const excerpt = paragraphsOf(testimonial)[0];
@@ -129,7 +139,7 @@ function QuoteCard({
   return (
     <figure
       data-quote-card
-      lang={hindi ? 'hi' : undefined}
+      lang={quoteLang(testimonial, locale)}
       aria-hidden={duplicate || undefined}
       className={
         'quote-card relative isolate m-0 flex w-[300px] shrink-0 flex-col gap-3 overflow-hidden ' +
@@ -159,7 +169,7 @@ function QuoteCard({
         tabIndex={duplicate ? -1 : undefined}
         aria-haspopup="dialog"
         aria-label={`${testimonialsSection.readMore}: ${testimonial.name}`}
-        lang="en"
+        lang={locale}
         className="group mt-auto inline-flex min-h-11 cursor-pointer items-center gap-2 self-start bg-transparent p-0 text-[15px] font-semibold text-haldi-light transition-colors duration-200 hover:text-cream"
       >
         {testimonialsSection.readMore}
@@ -180,7 +190,7 @@ function QuoteCard({
         <Monogram name={testimonial.name} hindi={hindi} />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="truncate text-[16px] font-semibold text-cream">{testimonial.name}</span>
-          <span lang="en" className="truncate t-small text-cream-muted">
+          <span lang={locale} className="truncate t-small text-cream-muted">
             {attributionOf(testimonial)}
           </span>
         </span>
@@ -217,7 +227,7 @@ export function TestimonialsRail({
    */
   header: React.ReactNode;
 }) {
-  const { c } = useContent();
+  const { c, locale } = useContent();
   const { testimonialsSection } = c;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
@@ -341,14 +351,14 @@ export function TestimonialsRail({
       >
         {active && (
           <div
-            lang={active.lang === 'hi' ? 'hi' : undefined}
+            lang={quoteLang(active, locale)}
             className="relative flex max-h-[85vh] flex-col gap-5 overflow-y-auto p-7 md:p-10"
           >
             <button
               type="button"
               onClick={() => dialogRef.current?.close()}
               aria-label={testimonialsSection.close}
-              lang="en"
+              lang={locale}
               className="absolute right-3 top-3 inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-transparent text-cream-muted transition-colors duration-200 hover:text-cream md:right-4 md:top-4"
             >
               <svg
@@ -385,7 +395,7 @@ export function TestimonialsRail({
                 <span id="quote-dialog-name" className="text-[17px] font-semibold text-cream">
                   {active.name}
                 </span>
-                <span lang="en" className="t-small text-cream-muted">
+                <span lang={locale} className="t-small text-cream-muted">
                   {attributionOf(active)}
                 </span>
               </span>

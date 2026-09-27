@@ -71,7 +71,7 @@ export function PolicyDocument({ c, doc }: { c: Content; doc: PolicyDoc }) {
               </span>
             )}
             <span className="t-small text-muted">
-              {site.city}, {site.state}
+              {site.place}
             </span>
           </div>
         </div>

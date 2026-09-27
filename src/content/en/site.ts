@@ -26,6 +26,8 @@ export const site = {
   locale: 'en-IN',
   city: geo.city,
   state: geo.state,
+  /** City and state as a line of visible copy (the policy pages, the menu). */
+  place: `${geo.city}, ${geo.state}`,
   /** Street address is deliberately not published. City plus a map link only. */
   mapsUrl: 'TODO(google-maps-link)',
   languages: 'English and Hindi',

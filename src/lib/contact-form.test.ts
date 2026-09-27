@@ -23,15 +23,14 @@ describe('validate', () => {
   });
 
   /*
-   * Meaningful once Task 5 writes the real Hindi bundle; for now `hi` aliases
-   * `en`, so this asserts the same message the English case does. It proves
-   * `validate` reads its messages from whichever bundle it is given, rather
-   * than from a fixed English import.
+   * Proves `validate` reads its messages from whichever bundle it is given,
+   * rather than from a fixed English import.
    */
   it("returns the Hindi bundle's messages when c = getContent('hi')", () => {
     const c = getContent('hi');
     const errors = validate(c, empty);
     expect(errors.name).toBe(c.form.validation.nameRequired);
+    expect(errors.name).not.toBe(getContent('en').form.validation.nameRequired);
   });
 
   it('flags a phone number under 10 digits', () => {

@@ -175,6 +175,14 @@ html:lang(hi) {
     color: var(--color-haldi-light);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2.5 7.2 C 30 3.1, 66 2.5, 117.5 5.6' fill='none' stroke='%23E6B75E' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E");
   }
+  /*
+   * Tiro Devanagari has no italic, so the browser slants it, and the slanted
+   * last letter leans into the space after it ("सीधाजवाब"). A little margin
+   * gives the space back. Hindi pages only.
+   */
+  html:lang(hi) .accent {
+    margin-right: 0.14em;
+  }
 }
 
 /* ---------------------------------------------------------------------------

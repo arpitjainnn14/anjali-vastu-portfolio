@@ -8,9 +8,8 @@ import { brand } from './shared';
  * runtime and confirms neither is missing a field, an array item, or a
  * translated string the other one has.
  *
- * `hi` is currently `en` itself (see hi/index.ts), so this passes trivially
- * until Task 5 writes the real Hindi bundle — at which point it starts
- * checking something.
+ * Identifiers that must not be translated (slugs, icons, hrefs) are checked
+ * separately, in identifiers.test.ts.
  */
 
 type Walkable = string | number | boolean | null | undefined | AnyFunction | readonly Walkable[] | WalkableObject;

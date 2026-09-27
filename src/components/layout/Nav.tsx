@@ -227,7 +227,7 @@ export function Nav() {
 
             <div className="mt-auto flex flex-col gap-2.5 pt-12">
               <span className="t-small text-muted">
-                {site.city}, {site.state} · {site.languages}
+                {site.place} · {site.languages}
               </span>
             </div>
           </div>

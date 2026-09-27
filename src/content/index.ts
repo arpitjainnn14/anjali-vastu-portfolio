@@ -12,25 +12,17 @@
  * Copy marked DRAFTED is written from what Anjali said, not quoted from her.
  * She reads and corrects it before the site ships.
  *
- * These re-exports are the English bundle, kept so existing imports
- * (`import { services } from '@/content'`) keep working unchanged. Use
- * `getContent(locale)` for code that must work in either language.
+ * There is no English compatibility export any more: a server component
+ * takes `c: Content` as a prop (from a page's `getContent(locale)`), and a
+ * client component reads `useContent()` from `LocaleProvider`. The two named
+ * types below are the exception — they describe a shape that is the same in
+ * every language (a testimonial's fields, the three service slugs) and are
+ * needed wherever that shape is named, such as a `Record<ServiceSlug, …>` or
+ * a `Testimonial[]` prop; they carry no copy of their own.
  */
 
-export * from './en/site';
-export * from './en/navigation';
-export * from './en/hero';
-export * from './en/services';
-export * from './en/booking';
-export * from './en/picker';
-export * from './en/about';
-export * from './en/teaching';
-export * from './en/testimonials';
-export * from './en/faq';
-export * from './en/contact';
-export * from './en/privacy';
-export * from './en/policies';
-export * from './en/sitemap';
+export type { Testimonial } from './en/testimonials';
+export type { ServiceSlug } from './en/picker';
 
 export * from './locale';
 

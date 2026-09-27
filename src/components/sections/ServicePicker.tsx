@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { picker, services, getContent, type ServiceSlug } from '@/content';
+import type { Content, ServiceSlug } from '@/content';
+import { useContent } from '@/components/locale/LocaleProvider';
 import { whatsappHref } from '@/lib/whatsapp';
-import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
+import { serviceIcons, type ServiceIconKey, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 
 /**
@@ -36,14 +37,8 @@ function StepDiamond({ className = '' }: { className?: string }) {
   );
 }
 
-/*
- * Task 3 wires this to the page's own bundle through `useContent()`; until
- * then it reads English directly, same as the rest of the site's client
- * components.
- */
-const c = getContent('en');
-
-function scoreOf(answers: Answer[]): ServiceSlug {
+function scoreOf(c: Content, answers: Answer[]): ServiceSlug {
+  const { picker, services } = c;
   const totals: Record<ServiceSlug, number> = {
     'vedic-astrology': 0,
     numerology: 0,
@@ -67,6 +62,8 @@ function scoreOf(answers: Answer[]): ServiceSlug {
 }
 
 export function ServicePicker({ showIntro = true }: { showIntro?: boolean }) {
+  const { c } = useContent();
+  const { picker, services } = c;
   const [answers, setAnswers] = useState<Answer[]>([]);
 
   const total = picker.questions.length;
@@ -82,9 +79,9 @@ export function ServicePicker({ showIntro = true }: { showIntro?: boolean }) {
   const back = () => setAnswers((prior) => prior.slice(0, -1));
   const restart = () => setAnswers([]);
 
-  const result = done ? scoreOf(answers) : null;
+  const result = done ? scoreOf(c, answers) : null;
   const service = result ? services.find((s) => s.slug === result)! : null;
-  const Icon = service ? serviceIcons[service.icon] : null;
+  const Icon = service ? serviceIcons[service.icon as ServiceIconKey] : null;
 
   const echoes = answers.map(
     ({ questionId, optionIndex }) =>

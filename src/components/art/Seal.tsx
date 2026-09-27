@@ -1,4 +1,4 @@
-import { seal } from '@/content';
+import type { Content } from '@/content';
 
 /**
  * The practitioner's seal — the mark an astrologer stamps on a chart she has
@@ -15,13 +15,19 @@ import { seal } from '@/content';
  *
  * `id` must be unique per instance: the curved text hangs off path ids, and a
  * page with two seals sharing an id would hang both texts on one path.
+ *
+ * Takes `seal` from the caller's own bundle (`c.seal`) rather than importing
+ * it: this component sits at the ui/art layer and renders inside both server
+ * sections (which already have `c`) and the client `ContactForm`.
  */
 export function Seal({
   id,
+  seal,
   size = 108,
   className = '',
 }: {
   id: string;
+  seal: Content['seal'];
   size?: number;
   className?: string;
 }) {

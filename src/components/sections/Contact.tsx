@@ -100,7 +100,7 @@ export function Contact({
                   <h2 className="t-h3 m-0 text-ink">{contactSection.page.answeredBy.heading}</h2>
                   <p className="t-small m-0 max-w-[44ch]">{contactSection.page.answeredBy.body}</p>
                 </div>
-                <Seal id="contact" size={96} className="hidden self-start sm:block" />
+                <Seal id="contact" seal={c.seal} size={96} className="hidden self-start sm:block" />
               </div>
             )}
           </div>

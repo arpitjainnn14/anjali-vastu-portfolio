@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { nav, site, contactSection, testimonials, getContent } from '@/content';
+import { useContent } from '@/components/locale/LocaleProvider';
 import { whatsappHref } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 import { Wordmark } from '@/components/ui/Wordmark';
@@ -25,16 +25,11 @@ import { ButtonLink } from '@/components/ui/Button';
  * lets Tab escape behind it is the most common mobile a11y failure.
  */
 
-/*
- * Task 3 wires this to the page's own bundle through `useContent()`; until
- * then it reads English directly, same as the rest of the site's client
- * components.
- */
-const c = getContent('en');
-
-const LINKS = liveLinks(nav.links, testimonials);
-
 export function Nav() {
+  const { c } = useContent();
+  const { nav, site, contactSection, testimonials } = c;
+  const LINKS = liveLinks(nav.links, testimonials);
+
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(true);
   const drawerRef = useRef<HTMLDivElement>(null);

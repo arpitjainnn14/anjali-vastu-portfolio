@@ -1,7 +1,9 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { contact, contactSection, faq, footer, howItWorks, nav, privacy, refundPolicy, terms } from '@/content';
+import { getContent } from '@/content';
+
+const { contact, contactSection, faq, footer, howItWorks, nav, privacy, refundPolicy, terms } = getContent('en');
 
 /**
  * Lines that were true before online booking and are false after it. Scans

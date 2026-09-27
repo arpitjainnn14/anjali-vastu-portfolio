@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { contactSection, getContent } from '@/content';
+import { useContent } from '@/components/locale/LocaleProvider';
 import { whatsappHref } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 
@@ -20,14 +20,9 @@ import { WhatsAppIcon } from '@/components/ui/Icons';
  *
  * Starts hidden, so it never flashes over the hero before hydration.
  */
-/*
- * Task 3 wires this to the page's own bundle through `useContent()`; until
- * then it reads English directly, same as the rest of the site's client
- * components.
- */
-const c = getContent('en');
-
 export function StickyWhatsApp() {
+  const { c } = useContent();
+  const { contactSection } = c;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

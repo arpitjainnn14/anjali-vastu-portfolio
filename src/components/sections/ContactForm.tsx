@@ -2,7 +2,8 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { form, contactSection, getContent } from '@/content';
+import type { Content } from '@/content';
+import { useContent } from '@/components/locale/LocaleProvider';
 import { whatsappHref } from '@/lib/whatsapp';
 import {
   TextField,
@@ -35,7 +36,7 @@ import {
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'rateLimited';
 
-function read(data: FormData): ContactValues {
+function read(form: Content['form'], data: FormData): ContactValues {
   const get = (name: string) => String(data.get(name) ?? '');
   return {
     name: get(form.fields.name.name),
@@ -48,14 +49,9 @@ function read(data: FormData): ContactValues {
   };
 }
 
-/*
- * Task 3 wires this to the page's own bundle through `useContent()`; until
- * then it reads English directly, same as the rest of the site's client
- * components.
- */
-const c = getContent('en');
-
 export function ContactForm() {
+  const { c, locale } = useContent();
+  const { form, contactSection } = c;
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
   const formRef = useRef<HTMLFormElement>(null);
@@ -66,7 +62,7 @@ export function ContactForm() {
     event.preventDefault();
     if (busy) return;
 
-    const values = read(new FormData(event.currentTarget));
+    const values = read(form, new FormData(event.currentTarget));
 
     const clientErrors = validate(c, values);
     if (hasErrors(clientErrors)) {
@@ -85,7 +81,7 @@ export function ContactForm() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, locale }),
       });
       const result: ContactResult = await response.json();
 
@@ -112,7 +108,7 @@ export function ContactForm() {
         role="status"
         className="flex flex-col items-start gap-4 border-t-2 border-ink pt-6 md:pt-8"
       >
-        <Seal id="sent" size={92} />
+        <Seal id="sent" seal={c.seal} size={92} />
         <span className="t-h3 text-ink">{form.states.success.heading}</span>
         <span className="t-body max-w-[42ch]">{form.states.success.body}</span>
         <a

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import type { Testimonial } from '@/content';
-import { testimonialsSection } from '@/content';
+import { useContent } from '@/components/locale/LocaleProvider';
 import { present } from '@/lib/todo';
 import { ArrowRightIcon } from '@/components/ui/Icons';
 
@@ -121,6 +121,8 @@ function QuoteCard({
    */
   duplicate?: boolean;
 }) {
+  const { c } = useContent();
+  const { testimonialsSection } = c;
   const hindi = testimonial.lang === 'hi';
   const excerpt = paragraphsOf(testimonial)[0];
 
@@ -215,6 +217,8 @@ export function TestimonialsRail({
    */
   header: React.ReactNode;
 }) {
+  const { c } = useContent();
+  const { testimonialsSection } = c;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);

@@ -19,7 +19,12 @@ export function Footer({ c }: { c: Content }) {
           <p className="m-0 max-w-[20ch] font-display text-[30px] italic leading-[1.1] text-cream md:text-[60px]">
             {footer.signoff}
           </p>
-          <Seal id="footer" size={116} className="h-[84px] w-[84px] text-haldi-light md:h-[116px] md:w-[116px]" />
+          <Seal
+            id="footer"
+            seal={c.seal}
+            size={116}
+            className="h-[84px] w-[84px] text-haldi-light md:h-[116px] md:w-[116px]"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-9 md:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] md:gap-12 md:py-16">

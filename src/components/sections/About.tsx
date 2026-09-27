@@ -59,7 +59,7 @@ export function About({ c, heading = 'h2' }: { c: Content; heading?: 'h1' | 'h2'
                     {paragraph}
                   </p>
                   {i === sealAfter && (
-                    <Seal id="about-phone" size={76} className="my-1 self-end md:hidden" />
+                    <Seal id="about-phone" seal={c.seal} size={76} className="my-1 self-end md:hidden" />
                   )}
                 </Fragment>
               ))}
@@ -77,7 +77,7 @@ export function About({ c, heading = 'h2' }: { c: Content; heading?: 'h1' | 'h2'
             */}
             <div className="flex flex-wrap items-center justify-between gap-6 pt-1" data-reveal-item>
               <p className="t-small m-0 max-w-[46ch] pl-5 text-muted md:pl-0">{about.facts.join(' · ')}</p>
-              <Seal id="about" size={104} className="-mt-1 hidden md:block" />
+              <Seal id="about" seal={c.seal} size={104} className="-mt-1 hidden md:block" />
             </div>
 
             {refusals.length > 0 && (

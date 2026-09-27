@@ -45,6 +45,8 @@ const HELD_AFTER = 24 * HOUR;
 const LAST_CHANCE_AFTER = 27 * DAY;
 /** A booking's Razorpay order is created 1–3 s after the booking, in practice; allow slack either way. */
 const ORDER_LINK_WINDOW = 120 * 1000;
+/** How close, and how much closer than the next candidate, an order must be to trust proximity alone. */
+const NEAREST_WINDOW = 10 * 1000;
 
 const SEVERITY: Record<Kind, Severity> = {
   paid_no_booking: 'red',
@@ -102,46 +104,79 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     chains.set(root, [...(chains.get(root) ?? []), b]);
   }
 
-  // Link: a booking with a charge (a payment[] record with amount > 0) claims the Razorpay
-  // order created within 120 s of its own createdAt. Cal ID's payment[] carries no shared ID
-  // with Razorpay, so time is the only link; an order matched by more than one booking, or a
-  // booking matched to more than one order, can't be trusted and is reported instead of linked.
-  const chargeAmount = new Map<string, number>(); // booking uid → first charge's amount
-  for (const b of bookings) {
-    const charge = b.payments.find((p) => p.amount > 0);
-    if (charge) chargeAmount.set(b.uid, charge.amount);
-  }
-
-  const candidatesOf = new Map<string, Order[]>(); // booking uid → its filtered candidate orders
-  const claimants = new Map<string, string[]>(); // order id → booking uids that claim it
-  for (const b of bookings) {
-    const expected = chargeAmount.get(b.uid);
-    if (expected === undefined) continue;
-
-    let candidates = orders.filter((o) => Math.abs(o.createdAt.getTime() - b.createdAt.getTime()) <= ORDER_LINK_WINDOW);
-    if (candidates.length > 1) {
-      const sameAmount = candidates.filter((o) => o.amount === expected);
-      if (sameAmount.length > 0) candidates = sameAmount;
+  // Link: a whole reschedule chain (not a single booking) claims a Razorpay order by time.
+  // Cal ID's payment[] carries no ID shared with Razorpay. A chain "has a charge" when any
+  // booking in it has a payment[] record with amount > 0 (the first such record, searching
+  // the chain, sets the expected amount); its candidate orders are those within 120 s of ANY
+  // booking's createdAt in the chain — the order is stamped when it was first created, which
+  // can predate a reschedule by any amount. Selection: the nearest candidate, if it is within
+  // 10 s and at least 10 s closer than the next-nearest (Razorpay creates the real order 1–3 s
+  // after the booking, so this is decisive almost always); otherwise the one candidate whose
+  // amount matches the chain's, if there is exactly one. Anything else — including two chains
+  // settling on the same order — can't be trusted: it is reported as `cant_verify` (always
+  // orange, never on its own turned into a red finding) and not linked.
+  const chainChargeAmount = new Map<string, number>(); // chain root → first charge's amount
+  for (const [root, chain] of chains) {
+    for (const b of chain) {
+      const charge = b.payments.find((p) => p.amount > 0);
+      if (charge) {
+        chainChargeAmount.set(root, charge.amount);
+        break;
+      }
     }
-    candidatesOf.set(b.uid, candidates);
-    for (const o of candidates) claimants.set(o.id, [...(claimants.get(o.id) ?? []), b.uid]);
   }
+
+  const distanceToChain = (o: Order, chain: Booking[]) =>
+    Math.min(...chain.map((b) => Math.abs(o.createdAt.getTime() - b.createdAt.getTime())));
 
   const chainOfKey = new Map<string, string>(); // order id → chain root
-  const calAmountOfKey = new Map<string, number>(); // order id → the booking's expected amount
-  for (const b of bookings) {
-    const candidates = candidatesOf.get(b.uid);
-    if (!candidates || candidates.length === 0) continue; // no charge, or no candidate order
+  const calAmountOfKey = new Map<string, number>(); // order id → the chain's expected amount
+  const ambiguousOrderIds = new Set<string>();
+  const ambiguousRoots = new Set<string>();
+  const flagAmbiguous = (root: string, candidates: Order[]) => {
+    ambiguousRoots.add(root);
+    for (const o of candidates) ambiguousOrderIds.add(o.id);
+    add('cant_verify', byUid.get(root)!.createdAt, { detail: `Cal ID ${root}: matches more than one Razorpay order` });
+  };
 
-    const ambiguous = candidates.length > 1 || candidates.some((o) => (claimants.get(o.id)?.length ?? 0) > 1);
-    if (ambiguous) {
-      add('cant_verify', b.createdAt, { detail: `Cal ID ${b.uid}: matches more than one Razorpay order` });
-      continue;
+  const rawCandidatesOf = new Map<string, Order[]>(); // root → its raw (120 s) candidates
+  const tentative = new Map<string, Order>(); // root → selected order, before the cross-chain check
+  const claimants = new Map<string, string[]>(); // order id → roots that tentatively selected it
+  for (const [root, chain] of chains) {
+    const expected = chainChargeAmount.get(root);
+    if (expected === undefined) continue; // no charge anywhere in the chain
+
+    const raw = orders.filter((o) => distanceToChain(o, chain) <= ORDER_LINK_WINDOW);
+    if (raw.length === 0) continue; // no candidate at all: no link, no ambiguity
+
+    rawCandidatesOf.set(root, raw);
+    const byDistance = [...raw].sort((a, b) => distanceToChain(a, chain) - distanceToChain(b, chain));
+    const nearestDist = distanceToChain(byDistance[0], chain);
+    const nextDist = byDistance[1] ? distanceToChain(byDistance[1], chain) : null;
+
+    let selected: Order | undefined;
+    if (nearestDist <= NEAREST_WINDOW && (nextDist === null || nextDist - nearestDist >= NEAREST_WINDOW)) {
+      selected = byDistance[0];
+    } else {
+      const sameAmount = raw.filter((o) => o.amount === expected);
+      if (sameAmount.length === 1) selected = sameAmount[0];
     }
 
-    const [order] = candidates;
-    chainOfKey.set(order.id, rootOf(b));
-    calAmountOfKey.set(order.id, chargeAmount.get(b.uid)!);
+    if (!selected) {
+      flagAmbiguous(root, raw);
+      continue;
+    }
+    tentative.set(root, selected);
+    claimants.set(selected.id, [...(claimants.get(selected.id) ?? []), root]);
+  }
+
+  for (const [root, order] of tentative) {
+    if ((claimants.get(order.id)?.length ?? 0) > 1) {
+      flagAmbiguous(root, rawCandidatesOf.get(root)!);
+      continue;
+    }
+    chainOfKey.set(order.id, root);
+    calAmountOfKey.set(order.id, chainChargeAmount.get(root)!);
   }
 
   const keptByChain = new Map<string, Payment[]>();
@@ -159,7 +194,13 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     const kept = p.amount - p.amountRefunded > 0;
     const root = p.orderId ? chainOfKey.get(p.orderId) : undefined;
     if (!root) {
-      if (kept) add('paid_no_booking', p.createdAt, { ...ids, amount: p.amount });
+      if (kept) {
+        if (p.orderId && ambiguousOrderIds.has(p.orderId)) {
+          add('cant_verify', p.createdAt, { paymentId: p.id, orderId: p.orderId, detail: 'could belong to more than one Cal ID booking' });
+        } else {
+          add('paid_no_booking', p.createdAt, { ...ids, amount: p.amount });
+        }
+      }
       continue;
     }
     if (kept) keptByChain.set(root, [...(keptByChain.get(root) ?? []), p]);
@@ -173,9 +214,9 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     const shown = accepted ?? pending ?? latest;
     const person = { name: shown.firstName, bookingStart: shown.startTime };
     const kept = keptByChain.get(root) ?? [];
-    // eventType.price can fall back to 0 (event type later deleted), so a booking with a real
-    // charge on it still counts as priced even when its price field does not.
-    const priced = chain.some((b) => b.price > 0 || chargeAmount.has(b.uid));
+    // eventType.price can fall back to 0 (event type later deleted), so a chain with a real
+    // charge on it still counts as priced even when every booking's price field does not.
+    const priced = chain.some((b) => b.price > 0) || chainChargeAmount.has(root);
 
     for (const p of kept) {
       const expected = p.orderId ? calAmountOfKey.get(p.orderId) : undefined;
@@ -203,7 +244,13 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
       // Booking with price > 0 and no captured payment. Not raised when the chain starts with
       // a reschedule of a booking older than the window (that original was checked while in window).
       const rootBooking = byUid.get(root)!;
-      if (priced && kept.length === 0 && !fresh(accepted.createdAt) && !rootBooking.fromReschedule) {
+      if (
+        priced &&
+        kept.length === 0 &&
+        !fresh(accepted.createdAt) &&
+        !rootBooking.fromReschedule &&
+        !ambiguousRoots.has(root)
+      ) {
         const markedPaid = chain.some((b) => b.paid);
         add('booking_no_payment', accepted.createdAt, {
           ...person,

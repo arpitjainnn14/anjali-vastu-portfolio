@@ -34,17 +34,20 @@ describe('reconcile', () => {
     expect(r.findings[0]).toMatchObject({ kind: 'booking_no_payment', severity: 'red', name: 'Priya' });
   });
 
-  it('two captured payments across a reschedule chain → double_charge (red)', () => {
+  it('two captured payments on the same order, across a reschedule chain → double_charge (red)', () => {
     const t1 = yesterdayIst(9);
     const t2 = yesterdayIst(11);
     const original = booking({ uid: 'bk_orig', status: 'CANCELLED', createdAt: t1 });
     const moved = booking({ id: 2, uid: 'bk_new', fromReschedule: 'bk_orig', createdAt: t2 });
-    const orderOrig = order({ id: 'order_orig', createdAt: new Date(t1.getTime() + 2000) });
-    const orderNew = order({ id: 'order_new', createdAt: new Date(t2.getTime() + 2000) });
-    const payOrig = payment({ id: 'pay_orig', orderId: 'order_orig', createdAt: t1 });
-    const payNew = payment({ id: 'pay_new', orderId: 'order_new', createdAt: t2 });
-    const r = run([payOrig, payNew], [orderOrig, orderNew], [original, moved]);
+    // One order, close to the original booking; a chain links to at most one order, so a
+    // double charge across a reschedule can only be two payments sharing that one order.
+    const o = order({ createdAt: new Date(t1.getTime() + 2000) });
+    const r = run([payment({ id: 'pay_A' }), payment({ id: 'pay_B' })], [o], [original, moved]);
     expect(kinds(r)).toContain('double_charge');
+  });
+
+  it('two captured payments on the same order are a double charge', () => {
+    expect(kinds(run([payment(), payment({ id: 'pay_B' })], [order()], [booking()]))).toContain('double_charge');
   });
 
   it('Razorpay amount differs from Cal ID payment record → wrong_amount (red)', () => {
@@ -75,7 +78,7 @@ describe('reconcile', () => {
   });
 
   it('captured then fully refunded, booking cancelled → only refunded (info)', () => {
-    const r = run([payment({ status: 'refunded', amountRefunded: 215100 })], [], [booking({ status: 'CANCELLED' })]);
+    const r = run([payment({ status: 'refunded', amountRefunded: 215100 })], [order()], [booking({ status: 'CANCELLED' })]);
     expect(r.findings).toHaveLength(1);
     expect(r.findings[0]).toMatchObject({ kind: 'refunded', severity: 'info', amount: 215100 });
   });
@@ -206,21 +209,59 @@ describe('reconcile', () => {
       expect(run([p1, p2], [o1, o2], [b1, b2]).findings).toEqual([]);
     });
 
-    it('two same-amount bookings 30 seconds apart with two candidate orders → both cant_verify, neither linked', () => {
+    it('two same-amount bookings 30 seconds apart with two candidate orders → ambiguous, no red finding', () => {
       const t1 = yesterdayIst(9);
       const t2 = new Date(t1.getTime() + 30_000);
+      const b1 = booking({ uid: 'b1', createdAt: t1 });
+      const b2 = booking({ uid: 'b2', createdAt: t2 });
+      // Both orders sit roughly midway between the two bookings (13 s / 17 s from t1): for
+      // either booking the nearest candidate is over 10 s away, so the nearest-order shortcut
+      // never applies, and the same-amount narrowing still leaves both candidates standing.
+      const o1 = order({ id: 'o1', createdAt: new Date(t1.getTime() + 13_000) });
+      const o2 = order({ id: 'o2', createdAt: new Date(t1.getTime() + 17_000) });
+      const p1 = payment({ id: 'p1', orderId: 'o1' });
+      const p2 = payment({ id: 'p2', orderId: 'o2' });
+
+      const r = run([p1, p2], [o1, o2], [b1, b2]);
+      expect(r.findings.length).toBeGreaterThan(0);
+      expect(r.findings.every((f) => f.severity !== 'red')).toBe(true);
+      expect(r.findings.every((f) => f.kind === 'cant_verify')).toBe(true);
+    });
+
+    it('two bookings 5 seconds apart with orders 2 seconds after each: the nearest rule cannot separate them → ambiguous', () => {
+      const t1 = yesterdayIst(9);
+      const t2 = new Date(t1.getTime() + 5000);
       const b1 = booking({ uid: 'b1', createdAt: t1 });
       const b2 = booking({ uid: 'b2', createdAt: t2 });
       const o1 = order({ id: 'o1', createdAt: new Date(t1.getTime() + 2000) });
       const o2 = order({ id: 'o2', createdAt: new Date(t2.getTime() + 2000) });
 
       const r = run([], [o1, o2], [b1, b2]);
-      const cantVerify = r.findings.filter((f) => f.kind === 'cant_verify');
-      expect(cantVerify).toHaveLength(2);
-      expect(cantVerify.map((f) => f.detail).sort()).toEqual([
-        'Cal ID b1: matches more than one Razorpay order',
-        'Cal ID b2: matches more than one Razorpay order',
-      ]);
+      expect(r.findings.length).toBeGreaterThan(0);
+      expect(r.findings.every((f) => f.severity !== 'red')).toBe(true);
+      expect(r.findings.every((f) => f.kind === 'cant_verify')).toBe(true);
+    });
+
+    it('abandon and retry links cleanly: the nearest order wins even with a second candidate in range', () => {
+      const t = yesterdayIst(9);
+      const a = booking({
+        uid: 'bk_abandoned',
+        status: 'PENDING',
+        paid: false,
+        createdAt: t,
+        payments: [{ success: false, amount: 215100 }],
+      });
+      const b = booking({
+        uid: 'bk_retry',
+        status: 'ACCEPTED',
+        paid: true,
+        createdAt: new Date(t.getTime() + 40_000),
+      });
+      const oA = order({ id: 'order_a', createdAt: new Date(t.getTime() + 2000) }); // no payment: abandoned
+      const oB = order({ id: 'order_b', createdAt: new Date(t.getTime() + 42_000) });
+      const paidB = payment({ orderId: 'order_b' });
+
+      expect(run([paidB], [oA, oB], [a, b]).findings).toEqual([]);
     });
 
     it('wrong_amount still fires through the time-based link', () => {
@@ -235,6 +276,25 @@ describe('reconcile', () => {
       const b = booking({ status: 'PENDING', paid: false, createdAt: t, payments: [{ success: false, amount: 215100 }] });
       const o = order({ createdAt: new Date(t.getTime() + 2000) });
       expect(run([], [o], [b]).findings).toEqual([]);
+    });
+
+    it('reschedule with the payment record moved to the new booking: the order is still near the original', () => {
+      const t = yesterdayIst(9);
+      const original = booking({ uid: 'bk_old', status: 'CANCELLED', createdAt: t, payments: [] });
+      const moved = booking({
+        id: 2,
+        uid: 'bk_new',
+        status: 'ACCEPTED',
+        fromReschedule: 'bk_old',
+        createdAt: new Date(t.getTime() + 2 * 86_400_000),
+        paid: true,
+        payments: [{ success: true, amount: 215100 }],
+      });
+      // The order is stamped when it was first created — near the original booking, not the
+      // reschedule two days later — but the chain-level candidate search still finds it.
+      const o = order({ createdAt: new Date(t.getTime() + 2000) });
+
+      expect(run([payment()], [o], [original, moved]).findings).toEqual([]);
     });
   });
 });

@@ -35,9 +35,9 @@ export async function run(env: Env, deps: Deps): Promise<string> {
 
     const http = createHttp(deps.fetch, { sleep: deps.sleep });
     const from = new Date(deps.now.getTime() - WINDOW);
-    // Orders are fetched a day further back than payments/bookings: a booking's order can be
-    // created up to 120 s before it, and a booking right at the edge of the window still needs
-    // its order visible for the time-based link.
+    // Orders are fetched a day further back than payments/bookings. In practice an order
+    // follows its booking by a couple of seconds, so this is a cheap margin, not a real need —
+    // one extra Razorpay call, cheaper than reasoning precisely about the window's edge.
     const [payments, orders, bookings] = await Promise.all([
       listPayments(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, from, deps.now),
       listOrders(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, new Date(from.getTime() - 86_400_000), deps.now),

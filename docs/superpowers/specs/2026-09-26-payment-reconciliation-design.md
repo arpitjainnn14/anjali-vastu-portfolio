@@ -81,8 +81,10 @@ Confirmed against the live APIs in Stage 0 (2026-09-27; see "Confirmed in Stage 
   `order_id`, `status` (`created`, `authorized`, `captured`, `refunded`,
   `failed`), `amount`, `amount_refunded`, `created_at`.
 - **Razorpay orders:** fetched from one day before the payments/bookings
-  window (a booking near the edge still needs its order visible for the
-  time-based link, below). Fields used: `id`, `amount`, `created_at`.
+  window. In practice an order follows its booking by a couple of seconds, so
+  this margin is generous, not load-bearing — one extra Razorpay call is
+  cheaper than reasoning precisely about the window's edge. Fields used:
+  `id`, `amount`, `created_at`.
 - **Cal ID:** bookings created in the last 30 days, all four status buckets.
   Fields used: `id`, `uid`, `status`, `paid`, `startTime`, `createdAt`,
   `fromReschedule`, `attendees[0].name`, `eventType.price` (optional; falls
@@ -95,16 +97,33 @@ Confirmed against the live APIs in Stage 0 (2026-09-27; see "Confirmed in Stage 
 carry no field shared with Razorpay (no order ID, and the payment
 `description`'s `#…` value matches nothing in Cal ID). Stage 0 found that for
 every booking with a payment record, exactly one Razorpay order was created
-1–3 s afterwards, same amount. The link is therefore by time: a booking that
-has a charge (a `payment[]` record with `amount > 0`) claims the Razorpay
-order created within **120 seconds** of its own `createdAt`; if more than one
-candidate remains, the amount narrows it; a booking matched to more than one
-order, or an order claimed by more than one booking, is reported as
-`cant_verify` rather than linked. Once a booking is linked to an order, the
-existing exact link from a Razorpay **payment** to its **order** (`order_id`)
-carries the match the rest of the way. `booking.paid` is used only as a
-cross-check: an accepted, apparently-paid booking with no linked payment gets
-a more specific detail line rather than a new rule.
+1–3 s afterwards, same amount. The link is therefore by time, at the level of
+a whole reschedule chain rather than one booking (R18): a chain "has a
+charge" when any booking in it has a `payment[]` record with `amount > 0`
+(the first such record, searching the chain, sets the expected amount), and
+its candidate orders are those within **120 seconds** of *any* booking's
+`createdAt` in the chain — the order is stamped when it was first created,
+which can predate a reschedule by any amount (a payment record that moves to
+the rescheduled booking still finds an order timed against the original).
+
+Among a chain's candidate orders, selection (R17) tries proximity first and
+amount second: if the nearest candidate is within 10 s and at least 10 s
+closer than the next-nearest, it is trusted on timing alone (Cal ID/Razorpay's
+own 1–3 s gap makes this decisive almost always, including telling an
+abandoned checkout's order apart from a same-day retry's); otherwise, the
+amount narrows the field, and exactly one same-amount candidate is linked.
+Anything else — no candidate resolves it, or two chains settle on the same
+order — can't be trusted. It is reported as `cant_verify` and never linked,
+and, importantly, ambiguity alone is never promoted to a red finding: a
+payment whose order is one of an ambiguous chain's candidates gets its own
+`cant_verify` instead of `paid_no_booking`, and the chain itself is exempted
+from `booking_no_payment` (its `cant_verify` already says a human is needed).
+
+Once a chain is linked to an order, the existing exact link from a Razorpay
+**payment** to its **order** (`order_id`) carries the match the rest of the
+way. `booking.paid` is used only as a cross-check: an accepted,
+apparently-paid booking with no linked payment gets a more specific detail
+line rather than a new rule.
 
 ## Checks
 

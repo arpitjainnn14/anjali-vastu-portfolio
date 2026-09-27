@@ -130,7 +130,7 @@ export function ContactForm() {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="flex flex-col gap-5 border-t-2 border-ink pt-6 md:gap-7 md:pt-8"
+      className="flex flex-col gap-6 border-t-2 border-ink pt-7 md:gap-8 md:pt-9"
     >
       <div className="grid gap-5 md:grid-cols-2 md:gap-7 md:gap-x-10">
         <TextField
@@ -180,7 +180,7 @@ export function ContactForm() {
         id={form.fields.message.id}
         name={form.fields.message.name}
         label={form.fields.message.label}
-        rows={4}
+        rows={5}
         required
         disabled={busy}
         error={errors.message}
@@ -188,61 +188,57 @@ export function ContactForm() {
 
       <Honeypot id={form.fields.honeypot.id} name={form.fields.honeypot.name} label={form.honeypotLabel} />
 
-      <CheckboxField
-        id={form.fields.consent.id}
-        name={form.fields.consent.name}
-        required
-        disabled={busy}
-        error={errors.consent}
-        aside={
-          <Link
-            href={localePath(locale, '/privacy')}
-            className="ink-link inline-flex min-h-11 items-center t-small text-sindoor md:min-h-0"
-          >
-            {form.consentLinkLabel}
-          </Link>
-        }
-      >
-        {form.consentLabel}
-      </CheckboxField>
-
-      {status === 'error' && (
-        <div
-          role="alert"
-          className="flex gap-2.5 text-sindoor"
+      <div className="flex flex-col gap-5 border-t border-line pt-5 md:gap-6 md:pt-6">
+        <CheckboxField
+          id={form.fields.consent.id}
+          name={form.fields.consent.name}
+          required
+          disabled={busy}
+          error={errors.consent}
+          aside={
+            <Link
+              href={localePath(locale, '/privacy')}
+              className="ink-link inline-flex min-h-11 items-center t-small text-sindoor md:min-h-0"
+            >
+              {form.consentLinkLabel}
+            </Link>
+          }
         >
-          <AlertIcon size={18} className="mt-0.5 shrink-0" />
-          <span className="t-small text-body">
-            <span className="font-semibold text-ink">{form.states.error.heading}.</span>{' '}
-            {form.states.error.body}
-          </span>
-        </div>
-      )}
+          {form.consentLabel}
+        </CheckboxField>
 
-      {status === 'rateLimited' && (
-        <div
-          role="alert"
-          className="flex gap-2.5 text-sindoor"
-        >
-          <AlertIcon size={18} className="mt-0.5 shrink-0" />
-          <span className="t-small text-body">
-            <span className="font-semibold text-ink">{form.states.rateLimited.heading}.</span>{' '}
-            {form.states.rateLimited.body}
-          </span>
-        </div>
-      )}
-
-      <Button type="submit" block disabled={busy} aria-busy={busy}>
-        {busy && (
-          <span
-            aria-hidden="true"
-            className="h-4 w-4 animate-spin rounded-full border-2 border-card/30 border-t-card"
-          />
+        {status === 'error' && (
+          <div role="alert" className="flex gap-2.5 text-sindoor">
+            <AlertIcon size={18} className="mt-0.5 shrink-0" />
+            <span className="t-small text-body">
+              <span className="font-semibold text-ink">{form.states.error.heading}.</span>{' '}
+              {form.states.error.body}
+            </span>
+          </div>
         )}
-        {busy ? form.submittingLabel : form.submitLabel}
-      </Button>
 
-      <p className="m-0 t-caption text-muted">{contactSection.footnote}</p>
+        {status === 'rateLimited' && (
+          <div role="alert" className="flex gap-2.5 text-sindoor">
+            <AlertIcon size={18} className="mt-0.5 shrink-0" />
+            <span className="t-small text-body">
+              <span className="font-semibold text-ink">{form.states.rateLimited.heading}.</span>{' '}
+              {form.states.rateLimited.body}
+            </span>
+          </div>
+        )}
+
+        <Button type="submit" block disabled={busy} aria-busy={busy}>
+          {busy && (
+            <span
+              aria-hidden="true"
+              className="h-4 w-4 animate-spin rounded-full border-2 border-card/30 border-t-card"
+            />
+          )}
+          {busy ? form.submittingLabel : form.submitLabel}
+        </Button>
+
+        <p className="m-0 t-caption text-muted">{contactSection.footnote}</p>
+      </div>
     </form>
   );
 }

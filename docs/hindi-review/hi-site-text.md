@@ -151,8 +151,13 @@ Page address: `/hi`
 | Vedic astrology | वैदिक ज्योतिष |
 | Vedic astrology | वैदिक ज्योतिष |
 | Vedic astrology and Vastu | वैदिक ज्योतिष और वास्तु |
-| Learning with Anjali | अंजलि जी से सीखना |
+| Vastu consultation | वास्तु consultation |
 | Vedic astrology | वैदिक ज्योतिष |
+| Jammu and Kashmir | जम्मू और कश्मीर |
+| Faridabad | फ़रीदाबाद |
+| Delhi | दिल्ली |
+| Faridabad | फ़रीदाबाद |
+| Faridabad | फ़रीदाबाद |
 | Read more | पूरा पढ़ें |
 | Close | बंद करें |
 

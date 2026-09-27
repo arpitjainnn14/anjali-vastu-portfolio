@@ -31,7 +31,7 @@ export function Hero({ c, locale }: { c: Content; locale: Locale }) {
   const { hero } = c;
 
   return (
-    <section id="top" data-hides-sticky className="relative overflow-hidden pb-12 pt-20 md:pb-24 md:pt-40">
+    <section id="top" data-hides-sticky className="relative overflow-hidden pb-12 pt-20 md:pb-24 md:pt-28">
       <div className="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 px-6 md:px-20 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-16">
         <div className="flex flex-col gap-6 md:gap-8">
           <p className="t-small enter order-1 m-0 text-muted lg:order-none">{hero.standfirst}</p>

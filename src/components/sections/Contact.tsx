@@ -43,11 +43,13 @@ export function Contact({
 }) {
   const { contactSection } = c;
   const Heading = heading;
+  const FormHeading = standalone ? 'h2' : 'h3';
+  const formHeadingClass = standalone ? 't-h2' : 't-h3';
 
   return (
     <Section id="contact" tone="deep" data-hides-sticky>
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-24">
+        <div className="grid gap-10 xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] xl:gap-24">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-5" data-reveal>
               <Heading
@@ -106,7 +108,9 @@ export function Contact({
           </div>
 
           <div data-reveal>
-            <h3 className="t-h3 m-0 mb-5 text-ink">{contactSection.formTitle}</h3>
+            <FormHeading className={`${formHeadingClass} m-0 mb-7 text-balance text-ink md:mb-8`}>
+              {contactSection.formTitle}
+            </FormHeading>
             <ContactForm />
           </div>
         </div>

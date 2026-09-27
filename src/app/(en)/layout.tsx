@@ -25,6 +25,10 @@ export const metadata: Metadata = {
     template: `%s | ${c.site.brand}`,
   },
   description: c.site.description,
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  },
 };
 
 export const viewport: Viewport = {

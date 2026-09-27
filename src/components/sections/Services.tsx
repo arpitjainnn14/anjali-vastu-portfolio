@@ -22,7 +22,13 @@ export function Services({ c, locale }: { c: Content; locale: Locale }) {
   const { services, servicesSection, picker } = c;
 
   return (
-    <Section id="services" tone="deep">
+    /*
+     * Tighter than the default paper padding (80px, not 128): three rows of
+     * plain text and a header is not enough content to fill a 128px-padded
+     * slab, and the section read as mostly background. See the same call in
+     * Testimonials.
+     */
+    <Section id="services" tone="deep" className="py-14! md:py-20!">
       <Container>
         <SectionHeader
           heading={servicesSection.heading}
@@ -33,7 +39,7 @@ export function Services({ c, locale }: { c: Content; locale: Locale }) {
           className={
             'm-0 mt-8 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto p-0 ' +
             '-mx-6 px-6 pb-3 scroll-px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ' +
-            'md:mx-0 md:mt-20 md:block md:overflow-visible md:border-t md:border-line-strong md:px-0 md:pb-0'
+            'md:mx-0 md:mt-14 md:block md:overflow-visible md:border-t md:border-line-strong md:px-0 md:pb-0'
           }
           data-reveal-group
         >
@@ -51,7 +57,7 @@ export function Services({ c, locale }: { c: Content; locale: Locale }) {
                     'group relative flex w-full flex-col gap-3 rounded-card border border-line bg-card p-5 no-underline ' +
                     'transition-colors duration-300 pointer-fine:hover:bg-paper ' +
                     'md:grid md:grid-cols-[minmax(0,4fr)_minmax(0,6fr)_48px] md:gap-10 md:rounded-none md:border-0 ' +
-                    'md:bg-transparent md:px-4 md:py-11'
+                    'md:bg-transparent md:px-4 md:py-8'
                   }
                 >
                   <Icon size={22} strokeWidth={1.3} className="text-haldi md:hidden" />

@@ -27,7 +27,7 @@ export const testimonials: Testimonial[] = [
       'Overall, I would happily recommend her to anyone looking for a sincere and ' +
       'learned astrologer.',
     name: 'Ginni Sharma',
-    city: 'TODO(city-1)',
+    city: 'जम्मू और कश्मीर',
     service: 'वैदिक ज्योतिष',
   },
   {
@@ -43,7 +43,7 @@ export const testimonials: Testimonial[] = [
       'Thank you, Anjali Ji, for being not just an astrologer, but a trusted guide and a reassuring presence. 🌟',
     ].join('\n\n'),
     name: 'Vipul Parnami',
-    city: 'TODO(city-2)',
+    city: 'फ़रीदाबाद',
     service: 'वैदिक ज्योतिष',
   },
   {
@@ -66,12 +66,45 @@ export const testimonials: Testimonial[] = [
       'स्नेह एवं शुभकामनाओं सहित,',
     ].join('\n\n'),
     name: 'नितिन एवं परिवार',
-    city: 'TODO(city-3)',
+    city: 'दिल्ली',
     service: 'वैदिक ज्योतिष और वास्तु',
     lang: 'hi',
   },
-  { quote: 'TODO(testimonial-4)', name: 'TODO(name-4)', city: 'TODO(city-4)', service: 'अंजलि जी से सीखना' },
-  { quote: 'TODO(testimonial-5)', name: 'TODO(name-5)', city: 'TODO(city-5)', service: 'वैदिक ज्योतिष' },
+  {
+    /*
+     * Received from the client, verbatim. The opening line ("Highly
+     * Recommended – Dr. Anjali Jain") is kept as her title; the sign-off
+     * ("Thanks and regards") stays as the quote's last paragraph, same as
+     * the Hindi testimonial above.
+     */
+    title: 'Highly Recommended – Dr. Anjali Jain',
+    quote: [
+      'I have had the pleasure of working with Dr. Anjali Jain, Vastu Consultant & Astrologer, on several prestigious projects, and my experience has been truly wonderful.',
+      'Her in-depth knowledge of Vastu and astrology, combined with her practical approach and professional understanding, has added tremendous value to our projects. She is extremely dedicated, insightful, and meticulous in her work, and her guidance has always been thoughtful and effective.',
+      'What I particularly appreciate is her ability to understand the requirements of a project and provide solutions that are both Vastu-compliant and practical.',
+      'I highly recommend Dr. Anjali Jain to anyone looking for professional Vastu consultation and astrological guidance. It has always been a pleasure collaborating with her.',
+      'Thanks and regards',
+    ].join('\n\n'),
+    name: 'Ar Bhanupriya, Edge Homes architects and constructions',
+    city: 'फ़रीदाबाद',
+    service: 'वास्तु consultation',
+  },
+  {
+    /*
+     * Received from the client, verbatim: a written testimonial followed by a
+     * WhatsApp sign-off line in Hinglish (Latin script, not Devanagari, so
+     * lang stays 'en').
+     */
+    quote: [
+      'I feel truly grateful that I had the opportunity to meet Anjali Ma’am. After being led in so many different directions, meeting her brought a sense of clarity and reassurance.',
+      'What I deeply appreciate is the way she inspires positivity without creating fear—offering genuine, practical, and doable solutions with so much warmth and understanding. There is always a comforting sense of openness in approaching her, which makes the entire experience even more reassuring.',
+      'I am truly grateful to her for her guidance, positivity, and kindness.\nGratitude, always. 🙏💓',
+      'Aapney sachi mein bahut sambhala hai 🙏🏼❤️ Dil se Gratitude 💓🙏🏼',
+    ].join('\n\n'),
+    name: 'Sonali Narula',
+    city: 'फ़रीदाबाद',
+    service: 'वैदिक ज्योतिष',
+  },
 ];
 
 export const testimonialsSection = {

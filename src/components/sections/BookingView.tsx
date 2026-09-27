@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { booking } from '@/content';
+import type { Content } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
 import { ButtonLink } from '@/components/ui/Button';
 import { SmartLink } from '@/components/ui/SmartLink';
@@ -13,14 +13,15 @@ import { CalInline } from '@/components/ui/CalInline';
  * Kept out of search until booking is live: an indexed page offering a
  * booking that cannot yet be paid for is worse than no page.
  */
-export function bookingMetadata(chosen: BookableService, path: string): Metadata {
+export function bookingMetadata(c: Content, chosen: BookableService, path: string): Metadata {
   return {
     ...pageMetadata({
-      title: booking.page.metaTitleFor(chosen.name),
-      description: booking.page.metaDescription,
+      title: c.booking.page.metaTitleFor(chosen.name),
+      description: c.booking.page.metaDescription,
       path,
+      c,
     }),
-    ...(booking.live ? {} : { robots: { index: false, follow: false } }),
+    ...(c.booking.live ? {} : { robots: { index: false, follow: false } }),
   };
 }
 
@@ -28,8 +29,8 @@ export function bookingMetadata(chosen: BookableService, path: string): Metadata
  * Book and pay for a consultation. Cal ID does the calendar and the payment;
  * this view chooses the service and hands over.
  */
-export function BookingView({ chosen }: { chosen: BookableService }) {
-  const page = booking.page;
+export function BookingView({ c, chosen }: { c: Content; chosen: BookableService }) {
+  const page = c.booking.page;
 
   return (
     <Section className="pt-28 md:pt-40">
@@ -38,12 +39,12 @@ export function BookingView({ chosen }: { chosen: BookableService }) {
           <h1 className="t-h1 m-0 text-ink">{page.heading}</h1>
           <p className="t-lead m-0">{page.lead}</p>
           <p className="t-body m-0">
-            {booking.offerLine} {page.detailsNote}
+            {c.booking.offerLine} {page.detailsNote}
           </p>
         </div>
 
         <nav aria-label={page.chooseLabel} className="mt-10 flex flex-wrap gap-3">
-          {bookableServices.map((service) => {
+          {bookableServices(c).map((service) => {
             const current = service.slug === chosen.slug;
             return (
               /*
@@ -66,14 +67,14 @@ export function BookingView({ chosen }: { chosen: BookableService }) {
         </nav>
 
         <div className="mt-8">
-          {booking.embed ? (
+          {c.booking.embed ? (
             <>
               <CalInline
                 key={chosen.slug}
                 namespace={chosen.slug}
                 calLink={calLink(chosen)}
-                scriptUrl={booking.embed.scriptUrl}
-                origin={booking.embed.origin}
+                scriptUrl={c.booking.embed.scriptUrl}
+                origin={c.booking.embed.origin}
               />
               <SmartLink
                 href={calUrl(chosen)}
@@ -99,7 +100,7 @@ export function BookingView({ chosen }: { chosen: BookableService }) {
         {/* Has its own WhatsApp link, so the floating one steps aside while this line is on screen. */}
         <p className="t-small m-0 mt-8 text-muted" data-hides-sticky>
           {page.vastuNote}{' '}
-          <SmartLink href={whatsappHref(page.vastuMessage)} className="ink-link text-sindoor">
+          <SmartLink href={whatsappHref(c, page.vastuMessage)} className="ink-link text-sindoor">
             {page.vastuLink}
           </SmartLink>
         </p>

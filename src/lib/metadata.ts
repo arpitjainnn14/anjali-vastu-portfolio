@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { site } from '@/content';
+import type { Content } from '@/content';
 
 type PageMeta = {
   /** Page title. Run through the layout's template unless `absolute` is set. */
@@ -7,6 +7,8 @@ type PageMeta = {
   description: string;
   path: string;
   absolute?: boolean;
+  /** The page's content bundle, for the brand name and the share image's alt text. */
+  c: Content;
 };
 
 /**
@@ -22,17 +24,19 @@ type PageMeta = {
  * static JPEG, not a generated PNG, because WhatsApp drops previews over
  * roughly 300 KB and a photo as PNG comes out at twice that.
  */
-const shareImage = {
-  url: '/opengraph-image.jpg',
-  width: 1200,
-  height: 630,
-  alt: `Astrologer ${site.name}, ${site.city}, ${site.state}`,
-};
+function shareImage(c: Content) {
+  return {
+    url: '/opengraph-image.jpg',
+    width: 1200,
+    height: 630,
+    alt: `Astrologer ${c.site.name}, ${c.site.city}, ${c.site.state}`,
+  };
+}
 
-export function pageMetadata({ title, description, path, absolute = false }: PageMeta): Metadata {
+export function pageMetadata({ title, description, path, absolute = false, c }: PageMeta): Metadata {
   /* A title that already names the business does not repeat it. */
-  const standalone = absolute || title.includes(site.brand);
-  const shareTitle = standalone ? title : `${title} | ${site.brand}`;
+  const standalone = absolute || title.includes(c.site.brand);
+  const shareTitle = standalone ? title : `${title} | ${c.site.brand}`;
   return {
     title: standalone ? { absolute: title } : title,
     description,
@@ -40,17 +44,17 @@ export function pageMetadata({ title, description, path, absolute = false }: Pag
     openGraph: {
       type: 'website',
       locale: 'en_IN',
-      siteName: site.brand,
+      siteName: c.site.brand,
       title: shareTitle,
       description,
       url: path,
-      images: [shareImage],
+      images: [shareImage(c)],
     },
     twitter: {
       card: 'summary_large_image',
       title: shareTitle,
       description,
-      images: [shareImage],
+      images: [shareImage(c)],
     },
   };
 }

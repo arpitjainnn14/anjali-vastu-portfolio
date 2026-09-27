@@ -1,15 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import {
-  services,
-  site,
-  whatsappMessages,
-  serviceDetail,
-  booking,
-} from '@/content';
+import { getContent } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
-import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
+import { serviceIcons, type ServiceIconKey, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 import { whatsappHref } from '@/lib/whatsapp';
 import { SmartLink } from '@/components/ui/SmartLink';
@@ -18,9 +12,11 @@ import { presentAll, present } from '@/lib/todo';
 import { pageMetadata } from '@/lib/metadata';
 import { serviceBreadcrumb, jsonLd } from '@/lib/structured-data';
 
+const c = getContent('en');
+
 /** Three pages from one typed array, never three hand-written files. */
 export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
+  return c.services.map((service) => ({ slug: service.slug }));
 }
 
 export async function generateMetadata({
@@ -29,10 +25,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const service = c.services.find((s) => s.slug === slug);
   if (!service) return {};
 
-  return pageMetadata({ ...service.meta, path: `/services/${service.slug}` });
+  return pageMetadata({ ...service.meta, path: `/services/${service.slug}`, c });
 }
 
 export default async function ServiceDetailPage({
@@ -41,46 +37,46 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const service = c.services.find((s) => s.slug === slug);
   if (!service) notFound();
 
-  const Icon = serviceIcons[service.icon];
+  const Icon = serviceIcons[service.icon as ServiceIconKey];
   const covers = presentAll(service.covers);
-  const others = services.filter((s) => s.slug !== service.slug);
+  const others = c.services.filter((s) => s.slug !== service.slug);
 
   /* A step whose copy is unsupplied is dropped, so no numbered gap appears. */
-  const steps = howItWorksSteps().filter(
+  const steps = howItWorksSteps(c).filter(
     (step) => present(step.title) !== null && present(step.body) !== null,
   );
 
   const glance = [
-    { label: serviceDetail.glanceLabels.where, value: serviceDetail.glanceWhere },
-    { label: serviceDetail.glanceLabels.languages, value: site.languages },
+    { label: c.serviceDetail.glanceLabels.where, value: c.serviceDetail.glanceWhere },
+    { label: c.serviceDetail.glanceLabels.languages, value: c.site.languages },
     ...(isBookable(service)
-      ? [{ label: serviceDetail.glanceLabels.length, value: serviceDetail.glanceLength }]
+      ? [{ label: c.serviceDetail.glanceLabels.length, value: c.serviceDetail.glanceLength }]
       : []),
-    { label: serviceDetail.glanceLabels.youWillNeed, value: service.youWillNeed },
+    { label: c.serviceDetail.glanceLabels.youWillNeed, value: service.youWillNeed },
     {
-      label: serviceDetail.glanceLabels.fees,
-      value: isBookable(service) ? service.booking.fee.display : serviceDetail.glanceFees,
+      label: c.serviceDetail.glanceLabels.fees,
+      value: isBookable(service) ? service.booking.fee.display : c.serviceDetail.glanceFees,
     },
     ...(isBookable(service)
-      ? [{ label: serviceDetail.glanceLabels.includes, value: serviceDetail.glanceIncludes }]
+      ? [{ label: c.serviceDetail.glanceLabels.includes, value: c.serviceDetail.glanceIncludes }]
       : []),
   ];
 
-  const cta = serviceCta(service);
+  const cta = serviceCta(c, service);
 
   return (
     <Section className="pt-28 md:pt-40">
-      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(serviceBreadcrumb(service))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(serviceBreadcrumb(c, service, 'en'))} />
       <Container>
-        <nav aria-label={serviceDetail.breadcrumbLabel} className="flex items-center gap-3">
+        <nav aria-label={c.serviceDetail.breadcrumbLabel} className="flex items-center gap-3">
           <Link
             href="/#services"
             className="ink-link inline-flex min-h-11 items-center t-small text-muted md:min-h-0"
           >
-            {serviceDetail.breadcrumbRoot}
+            {c.serviceDetail.breadcrumbRoot}
           </Link>
           <span aria-hidden="true" className="t-small text-muted">
             /
@@ -106,7 +102,7 @@ export default async function ServiceDetailPage({
           {/* At a glance */}
           <aside data-hides-sticky className="flex h-fit flex-col gap-5 rounded-card border border-line-strong bg-card p-6 md:p-8 lg:sticky lg:top-28 lg:col-start-2 lg:row-span-2 lg:row-start-1">
             <span className="font-display text-[19px] text-ink">
-              {serviceDetail.glanceHeading}
+              {c.serviceDetail.glanceHeading}
             </span>
 
             <dl className="m-0 flex flex-col">
@@ -131,15 +127,15 @@ export default async function ServiceDetailPage({
             {/* Booking is the main action; WhatsApp stays for anyone unsure. */}
             {cta.kind === 'book' && (
               <SmartLink
-                href={whatsappHref(whatsappMessages.service(service.name))}
+                href={whatsappHref(c, c.whatsappMessages.service(service.name))}
                 className="group inline-flex min-h-11 items-center justify-center gap-2 t-small font-semibold text-sindoor no-underline md:min-h-0"
               >
-                {booking.unsureLink}
+                {c.booking.unsureLink}
                 <ArrowRightIcon size={15} className="nudge" />
               </SmartLink>
             )}
 
-            <span className="t-caption text-muted">{serviceReassurance(service)}</span>
+            <span className="t-caption text-muted">{serviceReassurance(c, service)}</span>
           </aside>
 
           <div className="flex flex-col gap-12 md:gap-16 lg:col-start-1">
@@ -172,7 +168,7 @@ export default async function ServiceDetailPage({
             {steps.length > 0 && (
               <div className="flex flex-col gap-6" data-reveal>
                 <h2 className="t-h3 m-0 text-ink">
-                  {serviceDetail.howItWorksHeading}
+                  {c.serviceDetail.howItWorksHeading}
                 </h2>
                 <ol className="m-0 grid list-none grid-cols-[44px_1fr] gap-x-5 p-0 md:grid-cols-[56px_1fr]">
                   {steps.map((step, i) => (
@@ -201,7 +197,7 @@ export default async function ServiceDetailPage({
         {/* The other two */}
         <div className="mt-20 flex flex-col gap-6 border-t border-line-strong pt-12 md:mt-28" data-reveal>
           <h2 className="t-h3 m-0 text-ink">
-            {serviceDetail.otherHeading}
+            {c.serviceDetail.otherHeading}
           </h2>
           <div className="grid gap-5 md:grid-cols-2 md:gap-6">
             {others.map((other) => (

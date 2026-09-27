@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getContent } from '@/content';
 import { BookingView, bookingMetadata } from '@/components/sections/BookingView';
 import { bookableServices, bookPageHref, findBookable } from '@/lib/booking';
+
+const c = getContent('en');
 
 /** One static page per service booked online; anything else is a 404. */
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return bookableServices.map((service) => ({ service: service.slug }));
+  return bookableServices(c).map((service) => ({ service: service.slug }));
 }
 
 export async function generateMetadata({
@@ -15,8 +18,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ service: string }>;
 }): Promise<Metadata> {
-  const chosen = findBookable((await params).service);
-  return chosen ? bookingMetadata(chosen, bookPageHref(chosen)) : {};
+  const chosen = findBookable(c, (await params).service);
+  return chosen ? bookingMetadata(c, chosen, bookPageHref(chosen)) : {};
 }
 
 export default async function BookServicePage({
@@ -24,7 +27,7 @@ export default async function BookServicePage({
 }: {
   params: Promise<{ service: string }>;
 }) {
-  const chosen = findBookable((await params).service);
+  const chosen = findBookable(c, (await params).service);
   if (!chosen) notFound();
-  return <BookingView chosen={chosen} />;
+  return <BookingView c={c} chosen={chosen} />;
 }

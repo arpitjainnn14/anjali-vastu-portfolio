@@ -1,4 +1,4 @@
-import { hero } from '@/content';
+import type { Content } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { Kundli } from '@/components/art/Kundli';
 import { WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
@@ -26,7 +26,9 @@ function delay(seconds: number) {
   return { '--d': `${seconds}s` } as React.CSSProperties;
 }
 
-export function Hero() {
+export function Hero({ c }: { c: Content }) {
+  const { hero } = c;
+
   return (
     <section id="top" data-hides-sticky className="relative overflow-hidden pb-12 pt-20 md:pb-24 md:pt-40">
       <div className="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 px-6 md:px-20 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-16">
@@ -58,7 +60,7 @@ export function Hero() {
           </p>
 
           <div className="enter order-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 lg:order-none" style={delay(0.6)}>
-            <ButtonLink href={whatsappHref()}>
+            <ButtonLink href={whatsappHref(c)}>
               <WhatsAppIcon size={19} />
               {hero.primaryCta.label}
             </ButtonLink>

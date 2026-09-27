@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { picker, servicesSection } from '@/content';
+import { getContent } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
 import { ArrowRightIcon } from '@/components/ui/Icons';
 import { ServicePicker } from '@/components/sections/ServicePicker';
 import { pageMetadata } from '@/lib/metadata';
+
+const c = getContent('en');
 
 /**
  * "Which reading do I need?"
@@ -15,9 +17,10 @@ import { pageMetadata } from '@/lib/metadata';
  * the services section links to it in one line.
  */
 export const metadata: Metadata = pageMetadata({
-  title: picker.pageTitle,
-  description: picker.pageDescription,
-  path: picker.href,
+  title: c.picker.pageTitle,
+  description: c.picker.pageDescription,
+  path: c.picker.href,
+  c,
 });
 
 export default function WhichReadingPage() {
@@ -30,21 +33,21 @@ export default function WhichReadingPage() {
             className="group inline-flex min-h-11 items-center gap-2 self-start t-small font-semibold text-muted no-underline transition-colors duration-200 hover:text-ink"
           >
             <ArrowRightIcon size={14} className="rotate-180" />
-            {picker.backLabel}
+            {c.picker.backLabel}
           </Link>
 
           <h1 className="t-h1 m-0 max-w-[16ch] text-balance text-ink">
-            <Accented text={picker.pageHeading} />
+            <Accented text={c.picker.pageHeading} />
           </h1>
 
-          <p className="t-lead m-0 max-w-[52ch]">{picker.pageLead}</p>
+          <p className="t-lead m-0 max-w-[52ch]">{c.picker.pageLead}</p>
         </div>
 
         <div className="mt-10 max-w-[760px] md:mt-14">
           <ServicePicker showIntro={false} />
         </div>
 
-        <p className="t-small m-0 mt-8 max-w-[52ch] text-muted">{servicesSection.footnote}</p>
+        <p className="t-small m-0 mt-8 max-w-[52ch] text-muted">{c.servicesSection.footnote}</p>
       </Container>
     </Section>
   );

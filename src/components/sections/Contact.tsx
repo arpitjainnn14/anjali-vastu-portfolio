@@ -1,4 +1,4 @@
-import { contactSection } from '@/content';
+import type { Content } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { Section, Container, Accented } from '@/components/ui/Section';
 import { Seal } from '@/components/art/Seal';
@@ -33,12 +33,15 @@ function ExternalArrow() {
  * its own page tells a stranger nothing.
  */
 export function Contact({
+  c,
   heading = 'h2',
   standalone = false,
 }: {
+  c: Content;
   heading?: 'h1' | 'h2';
   standalone?: boolean;
 }) {
+  const { contactSection } = c;
   const Heading = heading;
 
   return (
@@ -56,7 +59,7 @@ export function Contact({
             </div>
 
             <ButtonLink
-              href={whatsappHref()}
+              href={whatsappHref(c)}
               className="self-stretch sm:self-start"
             >
               <WhatsAppIcon size={19} />

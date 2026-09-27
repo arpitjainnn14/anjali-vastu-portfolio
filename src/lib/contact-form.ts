@@ -1,10 +1,12 @@
-import { form } from '@/content';
+import type { Content } from '@/content';
 
 /**
  * Validation for the contact form, shared by the browser and the Route Handler.
  *
  * The browser copy is a courtesy; the server copy is the one that counts.
- * Keeping them in one module means they cannot drift apart.
+ * Keeping them in one module means they cannot drift apart. Both read their
+ * messages from the visitor's own content bundle, so an error on a Hindi page
+ * reads in Hindi.
  */
 
 export type ContactValues = {
@@ -25,9 +27,9 @@ function digitCount(value: string) {
   return value.replace(/\D/g, '').length;
 }
 
-export function validate(values: ContactValues): FieldErrors {
+export function validate(c: Content, values: ContactValues): FieldErrors {
   const errors: FieldErrors = {};
-  const v = form.validation;
+  const v = c.form.validation;
 
   if (!values.name.trim()) {
     errors.name = v.nameRequired;

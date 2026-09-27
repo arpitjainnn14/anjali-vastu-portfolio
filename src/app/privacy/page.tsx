@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
-import { privacy } from '@/content';
+import { getContent } from '@/content';
 import { PolicyDocument } from '@/components/sections/PolicyDocument';
 import { pageMetadata } from '@/lib/metadata';
+
+const c = getContent('en');
 
 /**
  * How your details are used.
@@ -19,10 +21,10 @@ import { pageMetadata } from '@/lib/metadata';
  * delete the `robots` block below.
  */
 export const metadata: Metadata = {
-  ...pageMetadata({ title: privacy.heading, description: privacy.metaDescription, path: '/privacy' }),
+  ...pageMetadata({ title: c.privacy.heading, description: c.privacy.metaDescription, path: '/privacy', c }),
   robots: { index: false, follow: true },
 };
 
 export default function PrivacyPage() {
-  return <PolicyDocument doc={privacy} />;
+  return <PolicyDocument c={c} doc={c.privacy} />;
 }

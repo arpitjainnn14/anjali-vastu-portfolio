@@ -1,4 +1,4 @@
-import { footer } from '@/content';
+import type { Content } from '@/content';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { KundliMark } from '@/components/art/Kundli';
 import { Seal } from '@/components/art/Seal';
@@ -8,7 +8,9 @@ import { liveLinks } from '@/lib/sections';
 const FOOTER_LINK =
   'inline-flex min-h-11 items-center t-small text-cream-muted no-underline transition-colors duration-200 hover:text-cream md:min-h-0';
 
-export function Footer() {
+export function Footer({ c }: { c: Content }) {
+  const { footer } = c;
+
   return (
     <footer className="on-night bg-night text-cream-muted">
       <div className="mx-auto max-w-[1440px] px-6 md:px-20">
@@ -33,7 +35,7 @@ export function Footer() {
           {footer.columns.map((column) => (
             <nav key={column.heading} className="flex flex-col gap-3" aria-label={column.heading}>
               <span className="font-display text-[17px] text-haldi-light">{column.heading}</span>
-              {liveLinks(column.links).map((link) => (
+              {liveLinks(column.links, c.testimonials).map((link) => (
                 <SmartLink key={link.href} href={link.href} className={FOOTER_LINK}>
                   {link.label}
                 </SmartLink>

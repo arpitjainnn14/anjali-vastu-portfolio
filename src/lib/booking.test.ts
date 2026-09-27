@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { services, consultationFee, serviceDetail, booking, howItWorks, bookFirstStepLive } from '@/content';
+import { getContent } from '@/content';
+import { consultationFee } from '@/content/shared';
 import {
   bookableServices,
   bookPageHref,
@@ -15,14 +16,16 @@ import {
   serviceReassurance,
 } from './booking';
 
+const c = getContent('en');
+
 function service(slug: string) {
-  const found = services.find((s) => s.slug === slug);
+  const found = c.services.find((s) => s.slug === slug);
   if (!found) throw new Error(`No service ${slug}`);
   return found;
 }
 
 function bookable(slug: string) {
-  const found = bookableServices.find((s) => s.slug === slug);
+  const found = bookableServices(c).find((s) => s.slug === slug);
   if (!found) throw new Error(`${slug} is not bookable`);
   return found;
 }
@@ -41,11 +44,11 @@ describe('consultationFee', () => {
 
 describe('bookableServices', () => {
   it('are Vedic Astrology and Numerology, and not Vastu', () => {
-    expect(bookableServices.map((s) => s.slug)).toEqual(['vedic-astrology', 'numerology']);
+    expect(bookableServices(c).map((s) => s.slug)).toEqual(['vedic-astrology', 'numerology']);
   });
 
   it('each book the Cal ID event type with the same slug as its page', () => {
-    for (const s of bookableServices) expect(s.booking.calSlug).toBe(s.slug);
+    for (const s of bookableServices(c)) expect(s.booking.calSlug).toBe(s.slug);
   });
 });
 
@@ -65,7 +68,7 @@ describe('Cal ID links', () => {
 
 describe('findBookable', () => {
   it('finds a service booked online', () => {
-    expect(findBookable('numerology')?.slug).toBe('numerology');
+    expect(findBookable(c, 'numerology')?.slug).toBe('numerology');
   });
 
   it.each([
@@ -73,22 +76,22 @@ describe('findBookable', () => {
     ['an unknown slug', 'tarot'],
     ['an empty slug', ''],
   ])('finds nothing for %s', (_label, slug) => {
-    expect(findBookable(slug)).toBeUndefined();
+    expect(findBookable(c, slug)).toBeUndefined();
   });
 });
 
 describe('serviceCta', () => {
   it('offers WhatsApp everywhere while booking is not live', () => {
-    for (const s of services) {
-      const cta = serviceCta(s, false);
+    for (const s of c.services) {
+      const cta = serviceCta(c, s, false);
       expect(cta.kind).toBe('whatsapp');
       expect(cta.href.startsWith('https://wa.me/')).toBe(true);
-      expect(cta.label).toBe(serviceDetail.ctaLabel);
+      expect(cta.label).toBe(c.serviceDetail.ctaLabel);
     }
   });
 
   it('offers booking for a bookable service once live', () => {
-    expect(serviceCta(service('numerology'), true)).toEqual({
+    expect(serviceCta(c, service('numerology'), true)).toEqual({
       kind: 'book',
       href: '/book/numerology',
       label: 'Book a consultation · ₹2,151',
@@ -96,77 +99,77 @@ describe('serviceCta', () => {
   });
 
   it('keeps WhatsApp for Vastu even once live', () => {
-    expect(serviceCta(service('vastu'), true).kind).toBe('whatsapp');
+    expect(serviceCta(c, service('vastu'), true).kind).toBe('whatsapp');
   });
 
   it('defaults to the live flag in content', () => {
-    expect(serviceCta(service('numerology')).kind).toBe(booking.live ? 'book' : 'whatsapp');
+    expect(serviceCta(c, service('numerology')).kind).toBe(c.booking.live ? 'book' : 'whatsapp');
   });
 });
 
 describe('serviceReassurance', () => {
   it('names the three months of calls on a bookable service once live', () => {
-    expect(serviceReassurance(service('vedic-astrology'), true)).toBe(booking.offerLine);
+    expect(serviceReassurance(c, service('vedic-astrology'), true)).toBe(c.booking.offerLine);
   });
 
   it('keeps the general line for Vastu and while not live', () => {
-    expect(serviceReassurance(service('vastu'), true)).toBe(serviceDetail.reassurance);
-    expect(serviceReassurance(service('vedic-astrology'), false)).toBe(serviceDetail.reassurance);
+    expect(serviceReassurance(c, service('vastu'), true)).toBe(c.serviceDetail.reassurance);
+    expect(serviceReassurance(c, service('vedic-astrology'), false)).toBe(c.serviceDetail.reassurance);
   });
 });
 
 describe('howItWorksSteps', () => {
   it('keeps the not-live step 1 wording while booking is not live', () => {
-    expect(howItWorksSteps(false)).toEqual(howItWorks);
+    expect(howItWorksSteps(c, false)).toEqual(c.howItWorks);
   });
 
   it('swaps step 1 for the online-booking wording once live', () => {
-    const steps = howItWorksSteps(true);
-    expect(steps[0]).toEqual(bookFirstStepLive);
-    expect(steps.slice(1)).toEqual(howItWorks.slice(1));
+    const steps = howItWorksSteps(c, true);
+    expect(steps[0]).toEqual(c.bookFirstStepLive);
+    expect(steps.slice(1)).toEqual(c.howItWorks.slice(1));
   });
 });
 
 describe('bookedCopy', () => {
   it('names the consultation when the service is known', () => {
-    expect(bookedCopy(bookable('numerology')).heading).toBe('Your Numerology consultation is booked');
+    expect(bookedCopy(c, bookable('numerology')).heading).toBe('Your Numerology consultation is booked');
   });
 
   it('does not claim a booking when opened without one', () => {
-    const copy = bookedCopy(null);
-    expect(copy.heading).toBe(booking.booked.genericHeading);
+    const copy = bookedCopy(c, null);
+    expect(copy.heading).toBe(c.booking.booked.genericHeading);
     expect(copy.heading + copy.body).not.toMatch(/is booked/);
   });
 });
 
 describe('detailsMessage', () => {
   it('asks for the numerology details only', () => {
-    expect(detailsMessage(bookable('numerology'))).toBe(
+    expect(detailsMessage(c, bookable('numerology'))).toBe(
       'Hello Anjali, I have just booked a Numerology consultation. My details:\n\n' +
         'Full name:\nDate of birth:',
     );
   });
 
   it('asks for the birth details for a chart reading', () => {
-    expect(detailsMessage(bookable('vedic-astrology'))).toBe(
+    expect(detailsMessage(c, bookable('vedic-astrology'))).toBe(
       'Hello Anjali, I have just booked a Vedic Astrology consultation. My details:\n\n' +
         'Date of birth:\nTime of birth:\nPlace of birth:',
     );
   });
 
   it('lists every field when the service is unknown', () => {
-    expect(detailsMessage(null)).toBe(
+    expect(detailsMessage(c, null)).toBe(
       'Hello Anjali, I have just booked a consultation. My details:\n\n' +
         'Full name:\nDate of birth:\nTime of birth:\nPlace of birth:',
     );
   });
 
   it('has a details list for every bookable service', () => {
-    for (const s of bookableServices) expect(booking.detailsMessage.lines[s.slug]).toBeDefined();
+    for (const s of bookableServices(c)) expect(c.booking.detailsMessage.lines[s.slug]).toBeDefined();
   });
 
   it('is sent as an encoded WhatsApp link', () => {
-    const href = detailsHref(bookable('numerology'));
+    const href = detailsHref(c, bookable('numerology'));
     expect(href.startsWith('https://wa.me/')).toBe(true);
     expect(href).toContain('%0A');
     expect(href).not.toContain('\n');
@@ -175,12 +178,10 @@ describe('detailsMessage', () => {
 
 describe('serviceFeeLine', () => {
   it('names the three months of calls after the price of a service booked online', () => {
-    expect(serviceFeeLine(service('numerology'), 'On request')).toBe(
-      '₹2,151, including three months of calls',
-    );
+    expect(serviceFeeLine(c, service('numerology'))).toBe('₹2,151, including three months of calls');
   });
 
-  it('shows only the fallback for Vastu', () => {
-    expect(serviceFeeLine(service('vastu'), 'On request')).toBe('On request');
+  it('shows the fallback for Vastu', () => {
+    expect(serviceFeeLine(c, service('vastu'))).toBe(c.servicesSection.priceOnRequest);
   });
 });

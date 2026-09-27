@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { services, servicesSection, picker } from '@/content';
+import type { Content } from '@/content';
 import { Section, Container, SectionHeader } from '@/components/ui/Section';
-import { serviceIcons, ArrowRightIcon } from '@/components/ui/Icons';
+import { serviceIcons, type ServiceIconKey, ArrowRightIcon } from '@/components/ui/Icons';
 import { serviceFeeLine } from '@/lib/booking';
 
 /**
@@ -17,7 +17,9 @@ import { serviceFeeLine } from '@/lib/booking';
  * peeks in from the right so the swipe needs no instruction. From `md` up the
  * cards dissolve back into the desktop rows.
  */
-export function Services() {
+export function Services({ c }: { c: Content }) {
+  const { services, servicesSection, picker } = c;
+
   return (
     <Section id="services" tone="deep">
       <Container>
@@ -35,7 +37,7 @@ export function Services() {
           data-reveal-group
         >
           {services.map((service) => {
-            const Icon = serviceIcons[service.icon];
+            const Icon = serviceIcons[service.icon as ServiceIconKey];
             return (
               <li
                 key={service.slug}
@@ -67,7 +69,7 @@ export function Services() {
                       <span className="font-semibold text-ink">{servicesSection.needLabel}:</span>{' '}
                       {service.youWillNeed.charAt(0).toLowerCase() + service.youWillNeed.slice(1)}.
                       <span aria-hidden="true" className="px-2">·</span>
-                      {serviceFeeLine(service, servicesSection.priceOnRequest)}
+                      {serviceFeeLine(c, service)}
                     </p>
                     <span aria-hidden="true" className="mt-auto inline-flex items-center gap-2 pt-1 text-[15.5px] font-semibold text-sindoor md:hidden">
                       {service.detailLinkLabel}

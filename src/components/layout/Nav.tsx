@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { nav, site, contactSection } from '@/content';
+import { nav, site, contactSection, testimonials, getContent } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 import { Wordmark } from '@/components/ui/Wordmark';
@@ -25,7 +25,14 @@ import { ButtonLink } from '@/components/ui/Button';
  * lets Tab escape behind it is the most common mobile a11y failure.
  */
 
-const LINKS = liveLinks(nav.links);
+/*
+ * Task 3 wires this to the page's own bundle through `useContent()`; until
+ * then it reads English directly, same as the rest of the site's client
+ * components.
+ */
+const c = getContent('en');
+
+const LINKS = liveLinks(nav.links, testimonials);
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -202,7 +209,7 @@ export function Nav() {
 
             <div className="mt-12 flex flex-col gap-3">
               <ButtonLink
-                href={whatsappHref()}
+                href={whatsappHref(c)}
                 block
               >
                 <WhatsAppIcon size={18} />

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import Image from 'next/image';
-import { about } from '@/content';
+import type { Content } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
 import { Seal } from '@/components/art/Seal';
 import { presentAll } from '@/lib/todo';
@@ -14,7 +14,8 @@ import { presentAll } from '@/lib/todo';
  * the highest-trust block on the page, so an empty box in its place would be
  * worse than no box.
  */
-export function About({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
+export function About({ c, heading = 'h2' }: { c: Content; heading?: 'h1' | 'h2' }) {
+  const { about } = c;
   const Heading = heading;
   const refusals = presentAll(about.willNotDo.items);
   /* The phone seal sits before the closing paragraph; -1 when there is no room. */

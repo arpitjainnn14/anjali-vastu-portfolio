@@ -1,5 +1,6 @@
-import { site, about, services, faq, serviceDetail, type Service } from '@/content';
+import type { Content, Locale } from '@/content';
 import { absoluteUrl, siteUrl } from './site-url';
+import type { Service } from './booking';
 
 /**
  * JSON-LD for search engines and AI answer engines.
@@ -16,18 +17,27 @@ const ids = {
   person: `${siteUrl}/#anjali`,
 };
 
-const city = {
-  '@type': 'City',
-  name: site.city,
-  containedInPlace: { '@type': 'State', name: site.state },
-};
+function inLanguageOf(locale: Locale): string {
+  return locale === 'hi' ? 'hi-IN' : 'en-IN';
+}
+
+function cityOf(c: Content) {
+  return {
+    '@type': 'City',
+    name: c.site.city,
+    containedInPlace: { '@type': 'State', name: c.site.state },
+  };
+}
 
 /**
  * ProfessionalService is a LocalBusiness subtype: a one-person practice in a
  * named city is exactly what it is for. The street address is deliberately
  * unpublished, so the address stops at the city.
  */
-export function siteGraph() {
+export function siteGraph(c: Content, locale: Locale) {
+  const { site, about, services } = c;
+  const city = cityOf(c);
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -36,7 +46,7 @@ export function siteGraph() {
         '@id': ids.website,
         url: siteUrl,
         name: site.brand,
-        inLanguage: site.locale,
+        inLanguage: inLanguageOf(locale),
         publisher: { '@id': ids.business },
       },
       {
@@ -86,7 +96,7 @@ export function siteGraph() {
         },
         homeLocation: city,
       },
-      ...services.map(serviceNode),
+      ...services.map((service) => serviceNode(c, service)),
     ],
   };
 }
@@ -95,7 +105,7 @@ function serviceId(service: Service) {
   return `${absoluteUrl(`/services/${service.slug}`)}#service`;
 }
 
-function serviceNode(service: Service) {
+function serviceNode(c: Content, service: Service) {
   return {
     '@type': 'Service',
     '@id': serviceId(service),
@@ -104,29 +114,30 @@ function serviceNode(service: Service) {
     description: service.summary,
     url: absoluteUrl(`/services/${service.slug}`),
     provider: { '@id': ids.business },
-    areaServed: city,
+    areaServed: cityOf(c),
     availableLanguage: ['English', 'Hindi'],
   };
 }
 
 /** Mirrors the visible breadcrumb on a service page. */
-export function serviceBreadcrumb(service: Service) {
+export function serviceBreadcrumb(c: Content, service: Service, locale: Locale) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    inLanguage: inLanguageOf(locale),
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: serviceDetail.breadcrumbRoot, item: absoluteUrl('/#services') },
+      { '@type': 'ListItem', position: 1, name: c.serviceDetail.breadcrumbRoot, item: absoluteUrl('/#services') },
       { '@type': 'ListItem', position: 2, name: service.name, item: absoluteUrl(`/services/${service.slug}`) },
     ],
   };
 }
 
 /** The home page FAQ, word for word as it is shown. */
-export function faqPage() {
+export function faqPage(c: Content) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faq.items.map((item) => ({
+    mainEntity: c.faq.items.map((item) => ({
       '@type': 'Question',
       name: item.q,
       acceptedAnswer: { '@type': 'Answer', text: item.a },

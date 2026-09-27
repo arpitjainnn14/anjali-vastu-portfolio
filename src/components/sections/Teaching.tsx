@@ -1,7 +1,7 @@
-import { teaching, whatsappMessages } from '@/content';
+import type { Content } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { Section, Container, Accented } from '@/components/ui/Section';
-import { serviceIcons, WhatsAppIcon } from '@/components/ui/Icons';
+import { serviceIcons, type ServiceIconKey, WhatsAppIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 import { KundliMark } from '@/components/art/Kundli';
 import { present } from '@/lib/todo';
@@ -13,7 +13,8 @@ import { present } from '@/lib/todo';
  * a labelled row with nothing beside it reads as an error, not as pending.
  * Same for the track cards: a card renders only once it has real copy.
  */
-export function Teaching({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
+export function Teaching({ c, heading = 'h2' }: { c: Content; heading?: 'h1' | 'h2' }) {
+  const { teaching, whatsappMessages } = c;
   const Heading = heading;
 
   const spec = teaching.spec.filter((row) => present(row.value) !== null);
@@ -37,7 +38,7 @@ export function Teaching({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
 
             {/* Has its own WhatsApp button, so the floating one steps aside while this row is on screen. */}
             <div className="flex flex-col items-start gap-4 pt-2 sm:flex-row sm:items-center sm:gap-6" data-reveal-item data-hides-sticky>
-              <ButtonLink href={whatsappHref(whatsappMessages.teaching)}>
+              <ButtonLink href={whatsappHref(c, whatsappMessages.teaching)}>
                 <WhatsAppIcon size={19} />
                 {teaching.cta.label}
               </ButtonLink>
@@ -52,7 +53,7 @@ export function Teaching({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
             {tracks.length > 0 && (
               <div className="mt-6 grid gap-4" data-reveal-item>
                 {tracks.map((track) => {
-                  const Icon = serviceIcons[track.icon];
+                  const Icon = serviceIcons[track.icon as ServiceIconKey];
                   return (
                     <div key={track.slug} className="flex gap-5 border-t border-line-strong pt-5">
                       <Icon size={26} className="shrink-0 text-haldi" />

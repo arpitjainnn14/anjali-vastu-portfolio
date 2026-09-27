@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { form, contactSection } from '@/content';
+import { form, contactSection, getContent } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import {
   TextField,
@@ -48,6 +48,13 @@ function read(data: FormData): ContactValues {
   };
 }
 
+/*
+ * Task 3 wires this to the page's own bundle through `useContent()`; until
+ * then it reads English directly, same as the rest of the site's client
+ * components.
+ */
+const c = getContent('en');
+
 export function ContactForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -61,7 +68,7 @@ export function ContactForm() {
 
     const values = read(new FormData(event.currentTarget));
 
-    const clientErrors = validate(values);
+    const clientErrors = validate(c, values);
     if (hasErrors(clientErrors)) {
       setErrors(clientErrors);
       setStatus('idle');
@@ -109,7 +116,7 @@ export function ContactForm() {
         <span className="t-h3 text-ink">{form.states.success.heading}</span>
         <span className="t-body max-w-[42ch]">{form.states.success.body}</span>
         <a
-          href={whatsappHref()}
+          href={whatsappHref(c)}
           target="_blank"
           rel="noopener noreferrer"
           className="group inline-flex min-h-11 items-center gap-2 self-start text-[16px] font-semibold text-sindoor no-underline hover:text-sindoor-deep"

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { picker, services, type ServiceSlug } from '@/content';
+import { picker, services, getContent, type ServiceSlug } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { serviceIcons, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
@@ -35,6 +35,13 @@ function StepDiamond({ className = '' }: { className?: string }) {
     </svg>
   );
 }
+
+/*
+ * Task 3 wires this to the page's own bundle through `useContent()`; until
+ * then it reads English directly, same as the rest of the site's client
+ * components.
+ */
+const c = getContent('en');
 
 function scoreOf(answers: Answer[]): ServiceSlug {
   const totals: Record<ServiceSlug, number> = {
@@ -180,7 +187,7 @@ export function ServicePicker({ showIntro = true }: { showIntro?: boolean }) {
             </div>
 
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-              <ButtonLink href={whatsappHref(picker.message(service.name, echoes))}>
+              <ButtonLink href={whatsappHref(c, picker.message(service.name, echoes))}>
                 <WhatsAppIcon size={19} />
                 {picker.labels.cta}
               </ButtonLink>

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { contact } from '@/content';
+import { getContent, isLocale, type Locale } from '@/content';
+import { contact } from '@/content/shared';
 import { validate, hasErrors, type ContactValues, type ContactResult } from '@/lib/contact-form';
 
 /**
@@ -30,15 +31,24 @@ function asValues(body: unknown): ContactValues {
   };
 }
 
+/** The language to validate and reply in. Defaults to English. */
+function localeOf(body: unknown): Locale {
+  const b = (body ?? {}) as Record<string, unknown>;
+  return typeof b.locale === 'string' && isLocale(b.locale) ? b.locale : 'en';
+}
+
 function json(result: ContactResult, status = 200) {
   return NextResponse.json(result, { status });
 }
 
 export async function POST(request: Request) {
   let values: ContactValues;
+  let locale: Locale;
 
   try {
-    values = asValues(await request.json());
+    const body = await request.json();
+    values = asValues(body);
+    locale = localeOf(body);
   } catch {
     return json({ status: 'error' }, 400);
   }
@@ -52,7 +62,7 @@ export async function POST(request: Request) {
     return json({ status: 'ok' });
   }
 
-  const errors = validate(values);
+  const errors = validate(getContent(locale), values);
   if (hasErrors(errors)) {
     return json({ status: 'invalid', errors }, 400);
   }

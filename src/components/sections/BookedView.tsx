@@ -1,4 +1,4 @@
-import { booking } from '@/content';
+import type { Content } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
 import { ButtonLink } from '@/components/ui/Button';
 import { WhatsAppIcon } from '@/components/ui/Icons';
@@ -9,8 +9,8 @@ import { bookedCopy, detailsHref, type BookableService } from '@/lib/booking';
  * cannot do: getting the birth details to Anjali on WhatsApp. The URL only
  * chooses wording; nothing here is proof of a booking.
  */
-export function BookedView({ service }: { service: BookableService | null }) {
-  const copy = bookedCopy(service);
+export function BookedView({ c, service }: { c: Content; service: BookableService | null }) {
+  const copy = bookedCopy(c, service);
 
   return (
     <Section className="pt-28 md:pt-40">
@@ -18,11 +18,11 @@ export function BookedView({ service }: { service: BookableService | null }) {
         <div className="flex max-w-[640px] flex-col items-start gap-6">
           <h1 className="t-h1 m-0 text-ink">{copy.heading}</h1>
           <p className="t-lead m-0">{copy.body}</p>
-          <ButtonLink href={detailsHref(service)}>
+          <ButtonLink href={detailsHref(c, service)}>
             <WhatsAppIcon size={19} />
-            {booking.booked.detailsCta}
+            {c.booking.booked.detailsCta}
           </ButtonLink>
-          <p className="t-body m-0">{booking.offerLine}</p>
+          <p className="t-body m-0">{c.booking.offerLine}</p>
         </div>
       </Container>
     </Section>

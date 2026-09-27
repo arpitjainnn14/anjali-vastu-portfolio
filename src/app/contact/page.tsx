@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import { Contact } from '@/components/sections/Contact';
 import { WhatHappensNext } from '@/components/sections/WhatHappensNext';
-import { contactSection } from '@/content';
+import { getContent } from '@/content';
 import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = pageMetadata({ ...contactSection.meta, path: '/contact' });
+const c = getContent('en');
+
+export const metadata: Metadata = pageMetadata({ ...c.contactSection.meta, path: '/contact', c });
 
 /**
  * Contact. The form, then what happens after it is sent — on its own page the
@@ -14,8 +16,8 @@ export const metadata: Metadata = pageMetadata({ ...contactSection.meta, path: '
 export default function ContactPage() {
   return (
     <div className="pt-16 md:pt-20">
-      <Contact heading="h1" standalone />
-      <WhatHappensNext />
+      <Contact c={c} heading="h1" standalone />
+      <WhatHappensNext c={c} />
     </div>
   );
 }

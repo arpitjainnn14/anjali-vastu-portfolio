@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, Hanken_Grotesk, Tiro_Devanagari_Hindi } from 'next/font/google';
-import { site, nav } from '@/content';
+import { getContent } from '@/content';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
 import { Motion } from '@/components/motion/Motion';
@@ -42,13 +42,15 @@ const tiroDeva = Tiro_Devanagari_Hindi({
  * doesn't override them, including the 404, which then claims to be the home
  * page. The host comes from lib/site-url.ts; never hardcode it.
  */
+const c = getContent('en');
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: site.title,
-    template: `%s | ${site.brand}`,
+    default: c.site.title,
+    template: `%s | ${c.site.brand}`,
   },
-  description: site.description,
+  description: c.site.description,
 };
 
 export const viewport: Viewport = {
@@ -65,24 +67,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
      * as the shorter page swapped in, and left the visitor at the footer.
      */
     <html
-      lang={site.locale}
+      lang={c.site.locale}
       data-scroll-behavior="smooth"
       className={`${fraunces.variable} ${hanken.variable} ${tiroDeva.variable}`}
     >
       <body className="bg-paper font-body text-body antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={jsonLd(siteGraph())}
+          dangerouslySetInnerHTML={jsonLd(siteGraph(c, 'en'))}
         />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-100 focus:rounded-control focus:bg-sindoor focus:px-5 focus:py-3 focus:text-card focus:t-small focus:font-semibold"
         >
-          {nav.labels.skipToContent}
+          {c.nav.labels.skipToContent}
         </a>
         <Nav />
         <main id="main">{children}</main>
-        <Footer />
+        <Footer c={c} />
         <StickyWhatsApp />
         <Motion />
       </body>

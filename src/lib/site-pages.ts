@@ -1,16 +1,4 @@
-import {
-  about,
-  booking,
-  contactSection,
-  picker,
-  privacy,
-  refundPolicy,
-  services,
-  site,
-  siteMap,
-  teaching,
-  terms,
-} from '@/content';
+import type { Content } from '@/content';
 import { bookableServices, bookPageHref } from './booking';
 
 /**
@@ -27,34 +15,34 @@ import { bookableServices, bookPageHref } from './booking';
 export type SitePage = { href: string; label: string; description: string; indexed: boolean };
 export type SitePageGroup = { heading: string; pages: SitePage[] };
 
-export function sitePageGroups(live: boolean = booking.live): SitePageGroup[] {
-  const { groups, labels } = siteMap;
+export function sitePageGroups(c: Content, live: boolean = c.booking.live): SitePageGroup[] {
+  const { groups, labels } = c.siteMap;
   return [
     {
       heading: groups.practice,
       pages: [
-        { href: '/', label: labels.home, description: site.description, indexed: true },
-        { href: '/about', label: labels.about, description: about.meta.description, indexed: true },
-        { href: '/teaching', label: labels.teaching, description: teaching.meta.description, indexed: true },
-        { href: '/contact', label: labels.contact, description: contactSection.meta.description, indexed: true },
+        { href: '/', label: labels.home, description: c.site.description, indexed: true },
+        { href: '/about', label: labels.about, description: c.about.meta.description, indexed: true },
+        { href: '/teaching', label: labels.teaching, description: c.teaching.meta.description, indexed: true },
+        { href: '/contact', label: labels.contact, description: c.contactSection.meta.description, indexed: true },
       ],
     },
     {
       heading: groups.consultations,
       pages: [
-        ...services.map((s) => ({
+        ...c.services.map((s) => ({
           href: `/services/${s.slug}`,
           label: s.name,
           description: s.meta.description,
           indexed: true,
         })),
-        { href: picker.href, label: picker.pageTitle, description: picker.pageDescription, indexed: true },
+        { href: c.picker.href, label: c.picker.pageTitle, description: c.picker.pageDescription, indexed: true },
       ],
     },
     {
       heading: groups.booking,
       pages: live
-        ? bookableServices.map((s) => ({
+        ? bookableServices(c).map((s) => ({
             href: bookPageHref(s),
             label: `${labels.bookPrefix} ${s.name}`,
             description: s.meta.description,
@@ -65,12 +53,12 @@ export function sitePageGroups(live: boolean = booking.live): SitePageGroup[] {
     {
       heading: groups.policies,
       pages: [
-        { href: '/privacy', label: privacy.heading, description: privacy.metaDescription, indexed: false },
-        { href: '/terms', label: terms.heading, description: terms.metaDescription, indexed: false },
+        { href: '/privacy', label: c.privacy.heading, description: c.privacy.metaDescription, indexed: false },
+        { href: '/terms', label: c.terms.heading, description: c.terms.metaDescription, indexed: false },
         {
           href: '/refund-policy',
-          label: refundPolicy.heading,
-          description: refundPolicy.metaDescription,
+          label: c.refundPolicy.heading,
+          description: c.refundPolicy.metaDescription,
           indexed: false,
         },
       ],
@@ -79,6 +67,6 @@ export function sitePageGroups(live: boolean = booking.live): SitePageGroup[] {
 }
 
 /** Paths for sitemap.xml: indexable pages only. */
-export function indexedPaths(live: boolean = booking.live): string[] {
-  return sitePageGroups(live).flatMap((g) => g.pages.filter((p) => p.indexed).map((p) => p.href));
+export function indexedPaths(c: Content, live: boolean = c.booking.live): string[] {
+  return sitePageGroups(c, live).flatMap((g) => g.pages.filter((p) => p.indexed).map((p) => p.href));
 }

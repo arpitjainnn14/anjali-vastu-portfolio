@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { site } from '@/content';
+import { getContent } from '@/content';
 import { pageMetadata } from '@/lib/metadata';
 import { faqPage, jsonLd } from '@/lib/structured-data';
 import { Hero } from '@/components/sections/Hero';
@@ -10,11 +10,14 @@ import { Testimonials } from '@/components/sections/Testimonials';
 import { Faq } from '@/components/sections/Faq';
 import { Contact } from '@/components/sections/Contact';
 
+const c = getContent('en');
+
 export const metadata: Metadata = pageMetadata({
-  title: site.title,
-  description: site.description,
+  title: c.site.title,
+  description: c.site.description,
   path: '/',
   absolute: true,
+  c,
 });
 
 /**
@@ -25,14 +28,14 @@ export const metadata: Metadata = pageMetadata({
 export default function HomePage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(faqPage())} />
-      <Hero />
-      <Services />
-      <About />
-      <Testimonials />
-      <Teaching />
-      <Faq />
-      <Contact />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(faqPage(c))} />
+      <Hero c={c} />
+      <Services c={c} />
+      <About c={c} />
+      <Testimonials c={c} />
+      <Teaching c={c} />
+      <Faq c={c} />
+      <Contact c={c} />
     </>
   );
 }

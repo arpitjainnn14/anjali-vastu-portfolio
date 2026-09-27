@@ -1,4 +1,4 @@
-import { faq } from '@/content';
+import type { Content } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
 
 /**
@@ -8,7 +8,9 @@ import { Section, Container, Accented } from '@/components/ui/Section';
  * Native <details>, so it works without JS and every answer is in the HTML
  * for search engines. The first one starts open, so the pattern is obvious.
  */
-export function Faq() {
+export function Faq({ c }: { c: Content }) {
+  const { faq } = c;
+
   return (
     <Section id="faq">
       <Container>

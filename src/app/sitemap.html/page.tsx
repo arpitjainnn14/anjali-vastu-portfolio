@@ -1,26 +1,28 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { siteMap } from '@/content';
+import { getContent } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
 import { pageMetadata } from '@/lib/metadata';
 import { sitePageGroups } from '@/lib/site-pages';
+
+const c = getContent('en');
 
 /**
  * The site map for people, at /sitemap.html. The same page list as
  * sitemap.xml (lib/site-pages.ts), plus the noindex notices.
  */
-export const metadata: Metadata = pageMetadata({ ...siteMap.meta, path: siteMap.href });
+export const metadata: Metadata = pageMetadata({ ...c.siteMap.meta, path: c.siteMap.href, c });
 
 export default function SiteMapPage() {
   return (
     <Section className="pt-28 md:pt-40">
       <Container>
         <h1 className="t-h1 m-0 max-w-[16ch] text-balance text-ink">
-          <Accented text={siteMap.heading} />
+          <Accented text={c.siteMap.heading} />
         </h1>
 
         <div className="mt-10 grid gap-12 md:mt-16 md:grid-cols-2 md:gap-x-20 md:gap-y-16">
-          {sitePageGroups().map((group) => (
+          {sitePageGroups(c).map((group) => (
             <nav key={group.heading} aria-label={group.heading} className="flex flex-col gap-5">
               <h2 className="t-h3 m-0 text-ink">{group.heading}</h2>
               <ul className="m-0 flex list-none flex-col gap-5 p-0">

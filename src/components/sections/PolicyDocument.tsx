@@ -1,4 +1,4 @@
-import { contact, policyPages, site } from '@/content';
+import type { Content } from '@/content';
 import { SmartLink } from '@/components/ui/SmartLink';
 import { Section, Container } from '@/components/ui/Section';
 import { whatsappHref } from '@/lib/whatsapp';
@@ -19,7 +19,8 @@ export type PolicyDoc = {
  * A notice page: privacy, terms, refunds. Itemised sections, then how to reach
  * her about it. Unsupplied facts never reach the visitor (see visibleSections).
  */
-export function PolicyDocument({ doc }: { doc: PolicyDoc }) {
+export function PolicyDocument({ c, doc }: { c: Content; doc: PolicyDoc }) {
+  const { contact, policyPages, site } = c;
   const lastUpdated = present(doc.lastUpdated);
   const sections = visibleSections(doc.sections);
   const email = present(contact.email);
@@ -51,7 +52,7 @@ export function PolicyDocument({ doc }: { doc: PolicyDoc }) {
             <span className="font-display text-[19px] text-ink">{doc.reachHeading}</span>
             <span className="t-body">
               <SmartLink
-                href={whatsappHref()}
+                href={whatsappHref(c)}
                 className="ink-link inline-flex min-h-11 items-center text-sindoor md:min-h-0"
               >
                 {doc.reachLink}

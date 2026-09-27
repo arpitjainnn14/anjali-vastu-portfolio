@@ -1,13 +1,5 @@
-import {
-  booking,
-  bookFirstStepLive,
-  howItWorks,
-  services,
-  servicesSection,
-  serviceDetail,
-  whatsappMessages,
-  type Service,
-} from '@/content';
+import type { Content } from '@/content';
+import { cal } from '@/content/shared';
 import { whatsappHref } from './whatsapp';
 
 /**
@@ -17,22 +9,35 @@ import { whatsappHref } from './whatsapp';
  * The one place a Cal ID URL is built, as lib/whatsapp.ts is for WhatsApp.
  */
 
+/**
+ * A service exactly as it comes out of a content bundle: the same shape as
+ * `Service` in `content/en/services.ts`, with translated fields (name, icon,
+ * question, ...) widened to `string` — a bundle's `services` array can never
+ * be assigned the narrower, English-only type.
+ */
+export type Service = Content['services'][number];
+
 export type BookableService = Service & { booking: NonNullable<Service['booking']> };
 
 export function isBookable(service: Service): service is BookableService {
   return service.booking !== null;
 }
 
-export const bookableServices: BookableService[] = services.filter(isBookable);
+export function bookableServices(c: Content): BookableService[] {
+  return c.services.filter(isBookable);
+}
 
-/** The username/slug path the Cal embed expects. */
+/**
+ * The username/slug path the Cal embed expects. The username is a shared
+ * fact (the same Cal ID account whichever language a visitor reads in).
+ */
 export function calLink(service: BookableService): string {
-  return `${booking.calUsername}/${service.booking.calSlug}`;
+  return `${cal.username}/${service.booking.calSlug}`;
 }
 
 /** The service's public page on Cal ID. */
 export function calUrl(service: BookableService): string {
-  return `${booking.calBaseUrl}/${calLink(service)}`;
+  return `${cal.baseUrl}/${calLink(service)}`;
 }
 
 export function bookPageHref(service: BookableService): string {
@@ -40,63 +45,63 @@ export function bookPageHref(service: BookableService): string {
 }
 
 /** The bookable service with this slug; undefined for Vastu or anything unknown. */
-export function findBookable(slug: string): BookableService | undefined {
-  return bookableServices.find((s) => s.slug === slug);
+export function findBookable(c: Content, slug: string): BookableService | undefined {
+  return bookableServices(c).find((s) => s.slug === slug);
 }
 
-/** The price with what it includes, for the home list; `onRequest` when not booked online. */
-export function serviceFeeLine(service: Service, onRequest: string): string {
+/** The price with what it includes, for the home list; the fallback when not booked online. */
+export function serviceFeeLine(c: Content, service: Service): string {
   return isBookable(service)
-    ? `${service.booking.fee.display}, ${servicesSection.feeIncludes}`
-    : onRequest;
+    ? `${service.booking.fee.display}, ${c.servicesSection.feeIncludes}`
+    : c.servicesSection.priceOnRequest;
 }
 
 export type ServiceCta = { kind: 'book' | 'whatsapp'; href: string; label: string };
 
 /** A service page's main button: booking once live, WhatsApp otherwise. */
-export function serviceCta(service: Service, live: boolean = booking.live): ServiceCta {
+export function serviceCta(c: Content, service: Service, live: boolean = c.booking.live): ServiceCta {
   if (live && isBookable(service)) {
     return {
       kind: 'book',
       href: bookPageHref(service),
-      label: booking.ctaLabel(service.booking.fee.display),
+      label: c.booking.ctaLabel(service.booking.fee.display),
     };
   }
   return {
     kind: 'whatsapp',
-    href: whatsappHref(whatsappMessages.service(service.name)),
-    label: serviceDetail.ctaLabel,
+    href: whatsappHref(c, c.whatsappMessages.service(service.name)),
+    label: c.serviceDetail.ctaLabel,
   };
 }
 
 /**
  * "How it works", with step 1 swapped for the online-booking wording once
- * booking is live. Not-live wording lives at `howItWorks[0]` in content.
+ * booking is live. Not-live wording lives at `c.howItWorks[0]`.
  */
-export function howItWorksSteps(live: boolean = booking.live) {
-  return live ? [bookFirstStepLive, ...howItWorks.slice(1)] : howItWorks;
+export function howItWorksSteps(c: Content, live: boolean = c.booking.live) {
+  return live ? [c.bookFirstStepLive, ...c.howItWorks.slice(1)] : c.howItWorks;
 }
 
 /** The line under a service page's main button. */
-export function serviceReassurance(service: Service, live: boolean = booking.live): string {
-  return live && isBookable(service) ? booking.offerLine : serviceDetail.reassurance;
+export function serviceReassurance(c: Content, service: Service, live: boolean = c.booking.live): string {
+  return live && isBookable(service) ? c.booking.offerLine : c.serviceDetail.reassurance;
 }
 
-export function bookedCopy(service: BookableService | null): { heading: string; body: string } {
-  const copy = booking.booked;
+export function bookedCopy(c: Content, service: BookableService | null): { heading: string; body: string } {
+  const copy = c.booking.booked;
   return service
     ? { heading: copy.headingFor(service.name), body: copy.body }
     : { heading: copy.genericHeading, body: copy.genericBody };
 }
 
 /** The WhatsApp message listing the details this consultation needs. */
-export function detailsMessage(service: BookableService | null): string {
-  const m = booking.detailsMessage;
+export function detailsMessage(c: Content, service: BookableService | null): string {
+  const m = c.booking.detailsMessage;
   const opener = service ? m.openerFor(service.name) : m.opener;
   const lines = (service && m.lines[service.slug]) || m.combined;
   return [opener, '', ...lines].join('\n');
 }
 
-export function detailsHref(service: BookableService | null): string {
-  return whatsappHref(detailsMessage(service));
+export function detailsHref(c: Content, service: BookableService | null): string {
+  return whatsappHref(c, detailsMessage(c, service));
 }

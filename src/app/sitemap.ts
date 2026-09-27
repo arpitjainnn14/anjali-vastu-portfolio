@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { getContent } from '@/content';
 import { siteUrl } from '@/lib/site-url';
 import { indexedPaths } from '@/lib/site-pages';
 
@@ -9,5 +10,6 @@ import { indexedPaths } from '@/lib/site-pages';
  * teaches Google to ignore the field. Add real dates when content has them.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  return indexedPaths().map((path) => ({ url: `${siteUrl}${path}` }));
+  const c = getContent('en');
+  return indexedPaths(c).map((path) => ({ url: `${siteUrl}${path}` }));
 }

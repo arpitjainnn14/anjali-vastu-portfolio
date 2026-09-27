@@ -1,4 +1,4 @@
-import { contactSection } from '@/content';
+import type { Content } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
 import { present } from '@/lib/todo';
 import { howItWorksSteps } from '@/lib/booking';
@@ -13,8 +13,9 @@ import { howItWorksSteps } from '@/lib/booking';
  * Paper tone: the contact block above it is the deep band, and two deep
  * sections running together read as one flat slab.
  */
-export function WhatHappensNext() {
-  const steps = howItWorksSteps().filter(
+export function WhatHappensNext({ c }: { c: Content }) {
+  const { contactSection } = c;
+  const steps = howItWorksSteps(c).filter(
     (step) => present(step.title) !== null && present(step.body) !== null,
   );
   if (steps.length === 0) return null;

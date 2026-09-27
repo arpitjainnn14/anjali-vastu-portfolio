@@ -62,7 +62,10 @@ export function Container({
 
 /**
  * Renders a heading string, setting any word wrapped in *asterisks* as the
- * italic accent. Keeps the emphasis in content.ts without putting markup there.
+ * italic accent. Keeps the emphasis in content without putting markup there.
+ *
+ * `data-space-after` marks an accent followed by a space, so the Hindi
+ * spacing fix in globals.css applies there and not before "?" or "।".
  */
 export function Accented({ text }: { text: string }) {
   const parts = text.split(/(\*[^*]+\*)/g);
@@ -70,7 +73,7 @@ export function Accented({ text }: { text: string }) {
     <>
       {parts.map((part, i) =>
         part.startsWith('*') && part.endsWith('*') ? (
-          <em key={i} className="accent">
+          <em key={i} className="accent" data-space-after={/^\s/.test(parts[i + 1] ?? '') || undefined}>
             {part.slice(1, -1)}
           </em>
         ) : (

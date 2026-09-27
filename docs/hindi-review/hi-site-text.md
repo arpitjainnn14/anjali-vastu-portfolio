@@ -34,7 +34,7 @@ Page address: `/hi`
 |---|---|
 | Ask the question you actually came with. | जो सवाल सच में मन में है, वही पूछें। |
 | Anjali Jain, Ph.D. in Astrology & Vastu | अंजलि जैन, ज्योतिष और वास्तु में Ph.D. |
-| Vedic astrology, numerology and Vastu. Consultations in Palwal and by phone, classes online. Reading since 2017. | वैदिक ज्योतिष, अंकशास्त्र और वास्तु। पलवल में और फ़ोन पर consultation, और ऑनलाइन क्लास। 2017 से यह काम कर रही हैं। |
+| Vedic astrology, numerology and Vastu. Consultations in Palwal and by phone, classes online. Reading since 2017. | वैदिक ज्योतिष, अंकशास्त्र और वास्तु। पलवल में और फ़ोन पर consultation, और ऑनलाइन क्लास। 2017 से प्रोफ़ेशनल प्रैक्टिस। |
 | Services | सेवाएँ |
 | Vedic Astrology | वैदिक ज्योतिष |
 | Numerology | अंकशास्त्र |
@@ -110,7 +110,7 @@ Page address: `/hi`
 | English | हिंदी |
 |---|---|
 | Vedic astrology, numerology and Vastu in Palwal, Haryana | पलवल, हरियाणा में वैदिक ज्योतिष, अंकशास्त्र और वास्तु |
-| Astrology that gives you a **straight** answer. | ज्योतिष, जो दे एक **सीधा** जवाब। |
+| Astrology that gives you a **straight** answer. | ज्योतिष, जो दे **सीधा** जवाब। |
 | Anjali Jain reads your birth chart, your numbers and your home, then tells you plainly what she sees about work, marriage, family and timing. In English or Hindi, in Palwal or over the phone. | अंजलि जी आपकी कुंडली, आपके अंक और आपका घर देखती हैं, फिर काम, शादी, परिवार और सही समय के बारे में जो दिखता है, वह साफ़-साफ़ बताती हैं। हिंदी या अंग्रेज़ी में, पलवल में मिलकर या फ़ोन पर। |
 | Message Anjali on WhatsApp | अंजलि जी को WhatsApp करें |
 | See what she offers | सेवाएँ देखें |
@@ -217,7 +217,7 @@ Page address: `/hi/services/vedic-astrology`
 | English | हिंदी |
 |---|---|
 | Numerologist in Palwal: Name and Date Readings | पलवल में अंकशास्त्री: नाम और जन्म तारीख का विश्लेषण |
-| Your name and date of birth, worked through number by number, and a straight answer on whether a name correction is worth it. In Palwal or by phone. | आपके नाम और जन्म की तारीख का एक-एक अंक देखकर, साफ़ जवाब कि नाम में सुधार करवाना ठीक रहेगा या नहीं। पलवल में मिलकर या फ़ोन पर। |
+| Your name and date of birth, worked through number by number, and a straight answer on whether a name correction is worth it. In Palwal or by phone. | आपके नाम और जन्म की तारीख का एक-एक अंक देखकर, सीधा जवाब कि नाम में सुधार करवाना ठीक रहेगा या नहीं। पलवल में मिलकर या फ़ोन पर। |
 | What a reading covers | इसमें क्या-क्या देखा जाता है |
 
 ### Vastu: search result and page
@@ -238,7 +238,7 @@ Page address: `/hi/services/vedic-astrology`
 | Length | समय |
 | You will need | आपको चाहिए |
 | Fees | फ़ीस |
-| Includes | साथ में |
+| Includes | फ़ीस में शामिल |
 | In person in Palwal, or by phone | पलवल में मिलकर, या फ़ोन पर |
 | English and Hindi | हिंदी और अंग्रेज़ी |
 | No fixed time limit | समय की कोई तय सीमा नहीं |
@@ -503,9 +503,9 @@ Page address: `/hi/book/numerology`
 | Booking Received | बुकिंग मिल गई |
 | Your consultation with Anjali Jain, and the details to send her. | अंजलि जैन के साथ आपका consultation, और उन्हें भेजने वाली जानकारी। |
 | Your Numerology consultation is booked | आपका अंकशास्त्र consultation बुक हो गया है |
-| The confirmation is on its way to your email. One more step: send Anjali the details she needs for your reading. | कन्फ़र्मेशन आपके ईमेल पर आ रहा है। बस एक काम और: आपकी रीडिंग के लिए जो जानकारी चाहिए, वह अंजलि जी को भेजें। |
+| The confirmation is on its way to your email. One more step: send Anjali the details she needs for your reading. | कन्फ़र्मेशन आपके ईमेल पर आ रहा है। बस एक काम और: आपके consultation के लिए जो जानकारी चाहिए, वह अंजलि जी को भेजें। |
 | Thank you | धन्यवाद |
-| If you have just booked a consultation, the confirmation is on its way to your email. Send Anjali the details she needs for your reading on WhatsApp. | अगर आपने अभी consultation बुक किया है, तो कन्फ़र्मेशन आपके ईमेल पर आ रहा है। आपकी रीडिंग के लिए जो जानकारी चाहिए, वह अंजलि जी को WhatsApp पर भेजें। |
+| If you have just booked a consultation, the confirmation is on its way to your email. Send Anjali the details she needs for your reading on WhatsApp. | अगर आपने अभी consultation बुक किया है, तो कन्फ़र्मेशन आपके ईमेल पर आ रहा है। आपके consultation के लिए जो जानकारी चाहिए, वह अंजलि जी को WhatsApp पर भेजें। |
 | Send your details on WhatsApp | अपनी जानकारी WhatsApp पर भेजें |
 
 ### The WhatsApp message for sending birth details
@@ -530,7 +530,7 @@ Page address: `/hi/terms`
 | English | हिंदी |
 |---|---|
 | Terms of consultation | Consultation की शर्तें |
-| What your consultation fee covers, how booking and rescheduling work, and what a reading is and is not. | आपकी consultation फ़ीस में क्या शामिल है, बुकिंग और समय बदलना कैसे होता है, और रीडिंग क्या है और क्या नहीं। |
+| What your consultation fee covers, how booking and rescheduling work, and what a reading is and is not. | आपकी consultation फ़ीस में क्या शामिल है, बुकिंग और समय बदलना कैसे होता है, और consultation क्या है और क्या नहीं। |
 | These terms apply when you book and pay for a consultation on this site. Refunds and cancellations have a page of their own. | ये शर्तें तब लागू होती हैं जब आप इस साइट पर consultation बुक करके पेमेंट करते हैं। रिफ़ंड और कैंसिलेशन के लिए अलग पेज है। |
 | Last updated | आख़िरी अपडेट |
 | Who you are dealing with | आपका लेन-देन किससे है |
@@ -593,7 +593,7 @@ Page address: `/hi/privacy`
 | This notice covers the contact form and online booking on this site. It is short and itemised on purpose, and separate from everything else. | यह सूचना इस साइट के कॉन्टैक्ट फ़ॉर्म और ऑनलाइन बुकिंग के बारे में है। इसे जान-बूझकर छोटा और बिंदुवार रखा गया है, और यह बाकी सब बातों से अलग है। |
 | Last updated | आख़िरी अपडेट |
 | What is collected | कौन-सी जानकारी ली जाती है |
-| When you use the contact form, Anjali Jain receives your name, your phone number, your email address if you choose to give one, which service you are asking about, and whatever you write in the message box. When you book a consultation online, she receives your name, email address and phone number, the time you chose, and confirmation that you have paid. She never sees your card, bank or UPI details. Neither the form nor the booking asks for your date, time or place of birth. If a reading needs those, you send them to Anjali directly. | जब आप कॉन्टैक्ट फ़ॉर्म भरते हैं, तो अंजलि जैन को आपका नाम, आपका फ़ोन नंबर, आपका ईमेल पता (अगर आप देना चाहें), आप किस सेवा के बारे में पूछ रहे हैं, और मैसेज बॉक्स में आपने जो भी लिखा हो, वह मिलता है। जब आप ऑनलाइन consultation बुक करते हैं, तो उन्हें आपका नाम, ईमेल पता और फ़ोन नंबर, आपका चुना हुआ समय, और यह पुष्टि मिलती है कि आपने पेमेंट कर दिया है। आपके कार्ड, बैंक या UPI की जानकारी वे कभी नहीं देखतीं। न फ़ॉर्म और न बुकिंग आपसे जन्म की तारीख, समय या स्थान पूछती है। अगर रीडिंग के लिए इनकी ज़रूरत हो, तो आप इन्हें सीधे अंजलि जी को भेजते हैं। |
+| When you use the contact form, Anjali Jain receives your name, your phone number, your email address if you choose to give one, which service you are asking about, and whatever you write in the message box. When you book a consultation online, she receives your name, email address and phone number, the time you chose, and confirmation that you have paid. She never sees your card, bank or UPI details. Neither the form nor the booking asks for your date, time or place of birth. If a reading needs those, you send them to Anjali directly. | जब आप कॉन्टैक्ट फ़ॉर्म भरते हैं, तो अंजलि जैन को आपका नाम, आपका फ़ोन नंबर, आपका ईमेल पता (अगर आप देना चाहें), आप किस सेवा के बारे में पूछ रहे हैं, और मैसेज बॉक्स में आपने जो भी लिखा हो, वह मिलता है। जब आप ऑनलाइन consultation बुक करते हैं, तो उन्हें आपका नाम, ईमेल पता और फ़ोन नंबर, आपका चुना हुआ समय, और यह पुष्टि मिलती है कि आपने पेमेंट कर दिया है। आपके कार्ड, बैंक या UPI की जानकारी वे कभी नहीं देखतीं। न फ़ॉर्म और न बुकिंग आपसे जन्म की तारीख, समय या स्थान पूछती है। अगर कुंडली के लिए इनकी ज़रूरत हो, तो आप इन्हें सीधे अंजलि जी को भेजते हैं। |
 | Why | क्यों |
 | So that she can reply to you and arrange a consultation. Nothing else. Your details are not used for marketing, not added to any mailing list, and not sold, rented or given to anyone. | ताकि वे आपको जवाब दे सकें और consultation तय कर सकें। इसके अलावा और कुछ नहीं। आपकी जानकारी मार्केटिंग के लिए इस्तेमाल नहीं होती, किसी मेलिंग लिस्ट में नहीं जोड़ी जाती, और न बेची जाती है, न किराए पर दी जाती है, न किसी को दी जाती है। |
 | Who can see it | इसे कौन देख सकता है |

@@ -22,6 +22,12 @@ function isPlainObject(value: unknown): value is WalkableObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/**
+ * Strings a translation may leave empty on purpose. The Hindi hero's second
+ * line opens on the accent word, where the English has "a " before it.
+ */
+const mayBeEmpty = new Set(['content.hero.headingLine2Before']);
+
 /** A plausible argument for the Nth parameter of a sample function call. */
 function sampleArg(index: number): unknown {
   return index === 0 ? 'X' : ['X'];
@@ -41,8 +47,10 @@ function walk(a: unknown, b: unknown, path: string): void {
   }
 
   if (typeA === 'string') {
-    expect((a as string).length, `${path}: en has an empty string`).toBeGreaterThan(0);
-    expect((b as string).length, `${path}: hi has an empty string`).toBeGreaterThan(0);
+    if (!mayBeEmpty.has(path)) {
+      expect((a as string).length, `${path}: en has an empty string`).toBeGreaterThan(0);
+      expect((b as string).length, `${path}: hi has an empty string`).toBeGreaterThan(0);
+    }
     // A fact still missing in one language is missing in the other: a
     // translation never fills in a TODO, and never drops one.
     expect(isTodo(b as string), `${path}: TODO in one language only`).toBe(isTodo(a as string));

@@ -10,7 +10,7 @@ import { site } from './site';
 export const terms = {
   heading: 'Consultation की शर्तें',
   metaDescription:
-    'आपकी consultation फ़ीस में क्या शामिल है, बुकिंग और समय बदलना कैसे होता है, और रीडिंग क्या है और क्या नहीं।',
+    'आपकी consultation फ़ीस में क्या शामिल है, बुकिंग और समय बदलना कैसे होता है, और consultation क्या है और क्या नहीं।',
   intro:
     'ये शर्तें तब लागू होती हैं जब आप इस साइट पर consultation बुक करके पेमेंट करते हैं। ' +
     'रिफ़ंड और कैंसिलेशन के लिए अलग पेज है।',

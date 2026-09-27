@@ -35,12 +35,12 @@ export const booking = {
     metaDescription: 'अंजलि जैन के साथ आपका consultation, और उन्हें भेजने वाली जानकारी।',
     headingFor: (name: string) => `आपका ${name} consultation बुक हो गया है`,
     body:
-      'कन्फ़र्मेशन आपके ईमेल पर आ रहा है। बस एक काम और: आपकी रीडिंग के लिए जो जानकारी ' +
+      'कन्फ़र्मेशन आपके ईमेल पर आ रहा है। बस एक काम और: आपके consultation के लिए जो जानकारी ' +
       'चाहिए, वह अंजलि जी को भेजें।',
     genericHeading: 'धन्यवाद',
     genericBody:
       'अगर आपने अभी consultation बुक किया है, तो कन्फ़र्मेशन आपके ईमेल पर आ रहा है। ' +
-      'आपकी रीडिंग के लिए जो जानकारी चाहिए, वह अंजलि जी को WhatsApp पर भेजें।',
+      'आपके consultation के लिए जो जानकारी चाहिए, वह अंजलि जी को WhatsApp पर भेजें।',
     detailsCta: 'अपनी जानकारी WhatsApp पर भेजें',
   },
   /** The prefilled WhatsApp message from /booked. One field per line, left blank to fill in. */

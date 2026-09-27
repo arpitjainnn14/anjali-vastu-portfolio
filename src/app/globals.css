@@ -178,9 +178,10 @@ html:lang(hi) {
   /*
    * Tiro Devanagari has no italic, so the browser slants it, and the slanted
    * last letter leans into the space after it ("सीधाजवाब"). A little margin
-   * gives the space back. Hindi pages only.
+   * gives the space back. Hindi pages only, and only where a space follows
+   * (see `Accented`): before "?" or "।" the margin would open a gap.
    */
-  html:lang(hi) .accent {
+  html:lang(hi) .accent[data-space-after] {
     margin-right: 0.14em;
   }
 }

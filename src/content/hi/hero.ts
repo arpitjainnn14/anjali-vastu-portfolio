@@ -5,11 +5,13 @@ import { contact } from './site';
 export const hero = {
   standfirst: 'पलवल, हरियाणा में वैदिक ज्योतिष, अंकशास्त्र और वास्तु',
   /**
-   * Two lines: "ज्योतिष, जो दे / एक *सीधा* जवाब।" Line 2 must fit ~596px at the
+   * Two lines: "ज्योतिष, जो दे / *सीधा* जवाब।" Line 2 must fit ~596px at the
    * desktop display size; "आपको सीधा जवाब।" wrapped, so "you" is left implied.
+   * Line 2 opens on the accent word, so nothing comes before it (the English
+   * has "a "); parity.test.ts allows this one empty string.
    */
   headingLine1: 'ज्योतिष, जो दे',
-  headingLine2Before: 'एक ',
+  headingLine2Before: '',
   headingAccent: 'सीधा',
   headingAfter: ' जवाब।',
   lead:

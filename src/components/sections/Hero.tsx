@@ -45,7 +45,9 @@ export function Hero({ c, locale }: { c: Content; locale: Locale }) {
             <span className="line-mask">
               <span style={delay(0.22)}>
                 {hero.headingLine2Before}
-                <em className="accent">{hero.headingAccent}</em>
+                <em className="accent" data-space-after={/^\s/.test(hero.headingAfter) || undefined}>
+                  {hero.headingAccent}
+                </em>
                 {hero.headingAfter}
               </span>
             </span>

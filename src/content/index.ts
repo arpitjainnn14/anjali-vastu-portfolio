@@ -25,3 +25,4 @@ export * from './faq';
 export * from './contact';
 export * from './privacy';
 export * from './policies';
+export * from './sitemap';

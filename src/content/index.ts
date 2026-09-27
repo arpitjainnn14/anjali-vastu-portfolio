@@ -1,5 +1,5 @@
 /**
- * Anjali Jain Astrology — all site copy.
+ * Anjali Vastu & Astro Divine Solutions — all site copy.
  *
  * Every string the visitor reads lives in this folder, one module per area of
  * the site. No copy in components. Import from '@/content', never from a
@@ -16,6 +16,7 @@ export * from './site';
 export * from './navigation';
 export * from './hero';
 export * from './services';
+export * from './booking';
 export * from './picker';
 export * from './about';
 export * from './teaching';
@@ -23,3 +24,4 @@ export * from './testimonials';
 export * from './faq';
 export * from './contact';
 export * from './privacy';
+export * from './policies';

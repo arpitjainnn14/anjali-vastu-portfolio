@@ -6,7 +6,7 @@ import { absoluteUrl, siteUrl } from './site-url';
  *
  * One graph with stable @ids, so the business, Anjali and each service refer
  * to one another instead of being three unconnected claims. Only facts already
- * on the site go in here: no price data (there is none to publish), and no
+ * on the site go in here: prices only for the consultations booked online, and no
  * telephone, because the site deliberately never displays her number.
  */
 
@@ -35,14 +35,15 @@ export function siteGraph() {
         '@type': 'WebSite',
         '@id': ids.website,
         url: siteUrl,
-        name: site.name,
+        name: site.brand,
         inLanguage: site.locale,
         publisher: { '@id': ids.business },
       },
       {
         '@type': 'ProfessionalService',
         '@id': ids.business,
-        name: `Astrologer ${site.name}`,
+        name: site.brand,
+        alternateName: `Astrologer ${site.name}`,
         description: site.description,
         url: siteUrl,
         image: absoluteUrl(about.portrait.src),
@@ -62,6 +63,9 @@ export function siteGraph() {
           itemListElement: services.map((service) => ({
             '@type': 'Offer',
             itemOffered: { '@id': serviceId(service) },
+            ...(service.booking
+              ? { price: String(service.booking.fee.amount), priceCurrency: 'INR' }
+              : {}),
           })),
         },
       },

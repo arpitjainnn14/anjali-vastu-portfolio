@@ -1,6 +1,6 @@
 /** The contact section and its form: fields, states and messages. */
 
-import { site } from './site';
+import { contact, site } from './site';
 
 export const contactSection = {
   meta: {
@@ -18,6 +18,7 @@ export const contactSection = {
     { label: 'Where', value: 'Palwal, Haryana', link: { label: 'Open the location in Maps', href: site.mapsUrl } },
     { label: 'Consultations', value: 'In person in Palwal, or by phone', link: null },
     { label: 'Languages', value: 'English and Hindi', link: null },
+    { label: 'Email', value: contact.email, link: { label: 'Write to her', href: `mailto:${contact.email}` } },
     { label: 'Usual reply time', value: 'Within 24 hours', link: null },
   ],
   footnote: 'Your message goes straight to Anjali. Nobody else reads it.',

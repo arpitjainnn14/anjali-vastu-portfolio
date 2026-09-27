@@ -51,3 +51,20 @@ export function presentItems<T extends object>(
 export function presentHref(href: string | null | undefined): string | null {
   return present(href);
 }
+
+/**
+ * The sections of a notice a visitor should see. A section whose whole body is
+ * still a TODO is dropped. A TODO inside a real paragraph is stripped and the
+ * paragraph kept, because the sentence around it still says something true.
+ */
+export function visibleSections<T extends { heading: string; body: string }>(
+  sections: readonly T[],
+): T[] {
+  return sections
+    .filter((section) => !isTodo(section.body))
+    .map((section) => ({
+      ...section,
+      body: section.body.replace(/TODO\([^)]*\)\.?\s*/g, '').trim(),
+    }))
+    .filter((section) => section.body.length > 0);
+}

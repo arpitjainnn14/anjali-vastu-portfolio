@@ -1,4 +1,5 @@
-import { footer, site } from '@/content';
+import { footer } from '@/content';
+import { Wordmark } from '@/components/ui/Wordmark';
 import { KundliMark } from '@/components/art/Kundli';
 import { Seal } from '@/components/art/Seal';
 import { SmartLink } from '@/components/ui/SmartLink';
@@ -22,9 +23,10 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-9 md:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] md:gap-12 md:py-16">
           <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
             <div className="flex items-center gap-3">
-              <KundliMark size={22} className="text-haldi-light" />
-              <span className="font-display text-[22px] leading-none text-cream">{site.name}</span>
+              <KundliMark size={22} className="shrink-0 text-haldi-light" />
+              <Wordmark className="text-[21px] text-cream" />
             </div>
+            <p className="m-0 t-small text-cream">{footer.practitioner}</p>
             <p className="m-0 max-w-[36ch] t-small">{footer.blurb}</p>
           </div>
 
@@ -48,7 +50,6 @@ export function Footer() {
 
         <div className="flex flex-col gap-2 border-t border-night-line py-5 pb-20 t-caption lg:pb-10 sm:flex-row sm:items-center sm:justify-between">
           <span>{footer.copyright}</span>
-          <span>{site.credential}</span>
         </div>
       </div>
     </footer>

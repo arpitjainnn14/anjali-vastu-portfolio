@@ -1,5 +1,7 @@
 /** The three consultations: the home page list and each service page. */
 
+import { consultationFee, type Fee } from './booking';
+
 export type Service = {
   slug: string;
   name: string;
@@ -15,6 +17,8 @@ export type Service = {
   covers: string[];
   /** What a student/client needs to bring or know. */
   youWillNeed: string;
+  /** Booked and paid online through Cal ID. null: arranged on WhatsApp only. */
+  booking: { calSlug: string; fee: Fee } | null;
 };
 
 export const services: Service[] = [
@@ -41,6 +45,7 @@ export const services: Service[] = [
       'TODO(vedic-covers-4)',
     ],
     youWillNeed: 'Birth date, time and place',
+    booking: { calSlug: 'vedic-astrology', fee: consultationFee },
   },
   {
     slug: 'numerology',
@@ -64,6 +69,7 @@ export const services: Service[] = [
       'TODO(numerology-covers-4)',
     ],
     youWillNeed: 'Full name and date of birth',
+    booking: { calSlug: 'numerology', fee: consultationFee },
   },
   {
     slug: 'vastu',
@@ -72,7 +78,8 @@ export const services: Service[] = [
     question: 'For a home or shop that does not feel right',
     summary:
       'Direction, layout and placement for a home or a shop, assessed around the ' +
-      'people who actually live and work in it.',
+      'people who actually live and work in it. ' +
+      'It is a package: one fee, with site visits until the building is complete. Message her on WhatsApp for the details.',
     meta: {
       title: 'Vastu Consultant in Palwal for Homes and Shops',
       description:
@@ -87,6 +94,7 @@ export const services: Service[] = [
       'TODO(vastu-covers-4)',
     ],
     youWillNeed: 'A plan or photographs of the space',
+    booking: null,
   },
 ];
 
@@ -95,22 +103,42 @@ export const servicesSection = {
   lead:
     'Each one suits a different kind of question. Not sure which you need? Tell her ' +
     'what is going on and she will point you to the right one.',
-  /** Shown on every row in place of a price. Pricing is never published. */
-  priceLine: 'Fees shared on WhatsApp',
+  /** Shown instead of a price for a service not booked online (Vastu). */
+  priceOnRequest: 'Fees shared on WhatsApp',
+  /** After the price of a service booked online. */
+  feeIncludes: 'including three months of calls',
   needLabel: 'You will need',
   footnote: 'Every consultation is available in English or Hindi, in person in Palwal or by phone.',
 } as const;
 
-/** How it works, shown on every service detail page. */
+/**
+ * Step 1's wording once online booking is live. Swapped in for `howItWorks[0]`
+ * by `howItWorksSteps` in `lib/booking.ts`.
+ */
+export const bookFirstStepLive = {
+  title: 'Book a time, or message her first',
+  body:
+    'A chart reading or numerology consultation can be booked and paid for ' +
+    'online. For Vastu, or if you are not sure which you need, message her on ' +
+    'WhatsApp and she will point you to the right one.',
+} as const;
+
+/**
+ * How it works, shown on every service detail page and the contact page.
+ * DRAFTED. Anjali reads and corrects it before it ships. It must read true for
+ * Vastu too, which is arranged on WhatsApp rather than booked online. Step 1
+ * here is the not-yet-live wording; see `bookFirstStepLive` above.
+ */
 export const howItWorks = [
   {
     title: 'Message her on WhatsApp, or send the form',
     body:
-      'Say briefly what is on your mind. She will tell you whether a chart reading ' +
-      'is the right fit, or whether numerology or Vastu suits it better.',
+      'Say briefly what is on your mind. She will tell you whether a chart ' +
+      'reading is the right fit, or whether numerology or Vastu suits it ' +
+      'better.',
   },
   {
-    title: 'She asks for the details she needs',
+    title: 'Send her the details she needs',
     body:
       'For a chart reading, your date, time and place of birth. For numerology, ' +
       'your full name and date of birth. For Vastu, a plan or photographs of the ' +
@@ -121,11 +149,15 @@ export const howItWorks = [
     title: 'The consultation',
     body:
       'In person in Palwal or over the phone, in English or Hindi, whichever you ' +
-      'are more comfortable with.',
+      'are more comfortable with. There is no fixed time limit.',
   },
   {
-    title: 'TODO(after-consultation-title)',
-    body: 'TODO(after-consultation-body: anything in writing? follow-up questions, for how long?)',
+    title: 'Three months of calls',
+    body:
+      'After a chart reading or numerology consultation, you can call Anjali ' +
+      'directly for three months with follow-up questions. If a remedy such as ' +
+      'a Vastu yantra would help, she tells you what it costs first. Remedies ' +
+      'are always optional.',
   },
 ] as const;
 
@@ -144,12 +176,18 @@ export const serviceDetail = {
   glanceLabels: {
     where: 'Where',
     languages: 'Languages',
+    length: 'Length',
     youWillNeed: 'You will need',
     fees: 'Fees',
+    includes: 'Includes',
   },
   glanceWhere: 'In person in Palwal, or by phone',
-  glanceFees: 'Shared on WhatsApp',
+  /** Services booked online only. The calendar blocks an hour; she does not stop at one. */
+  glanceLength: 'No fixed time limit',
+  glanceFees: 'A package; details on WhatsApp',
+  /** Services booked online only: what the fee buys beyond the session. */
+  glanceIncludes: 'Three months of calling Anjali directly',
   ctaLabel: 'Ask about this on WhatsApp',
-  reassurance: 'Anjali replies herself. There is no assistant and no booking desk.',
+  reassurance: 'Anjali replies herself. There is no assistant.',
   otherHeading: 'Other consultations',
 } as const;

@@ -1,5 +1,7 @@
 /** The privacy notice. */
 
+import { contact } from './site';
+
 /**
  * DRAFT. Written by a designer, not a lawyer. Must be reviewed before publishing.
  *
@@ -10,8 +12,8 @@ export const privacy = {
   heading: 'How your details are used',
   metaDescription: 'What Anjali Jain collects through this site, why, and what you can ask for.',
   intro:
-    'This notice covers the contact form on this site. It is short and itemised on ' +
-    'purpose, and separate from everything else.',
+    'This notice covers the contact form and online booking on this site. It is ' +
+    'short and itemised on purpose, and separate from everything else.',
   lastUpdatedLabel: 'Last updated',
   reachHeading: 'Reaching her about this',
   reachLink: 'Message her on WhatsApp',
@@ -23,9 +25,12 @@ export const privacy = {
       body:
         'When you use the contact form, Anjali Jain receives your name, your phone ' +
         'number, your email address if you choose to give one, which service you are ' +
-        'asking about, and whatever you write in the message box. That is everything. ' +
-        'The form does not ask for your date, time or place of birth. If a reading ' +
-        'needs those, Anjali asks you directly once you are already talking.',
+        'asking about, and whatever you write in the message box. When you book a ' +
+        'consultation online, she receives your name, email address and phone number, ' +
+        'the time you chose, and confirmation that you have paid. She never sees your ' +
+        'card, bank or UPI details. Neither the form nor the booking asks for your ' +
+        'date, time or place of birth. If a reading needs those, you send them to ' +
+        'Anjali directly.',
     },
     {
       heading: 'Why',
@@ -38,8 +43,9 @@ export const privacy = {
       heading: 'Who can see it',
       body:
         'Anjali. The form is delivered by Forminit, a form service that stores your ' +
-        'submission so she can read it, and which is therefore also handling your ' +
-        'details. TODO(forminit-privacy-terms-link)',
+        'submission so she can read it. Bookings are handled by Cal ID, a scheduling ' +
+        'service, and payments by Razorpay, a payment gateway. Each of them handles ' +
+        'your details only to do that job. TODO(forminit-cal-id-razorpay-privacy-links)',
     },
     {
       heading: 'How long it is kept',
@@ -53,13 +59,13 @@ export const privacy = {
         'You can ask to see what is held about you, to have it corrected, or to have ' +
         'it deleted. You can also withdraw your consent at any time, and that is as ' +
         'easy as giving it was. Message her on WhatsApp or write to ' +
-        'astrologeranjali13@gmail.com. It will be dealt with within 90 days at the latest, and ' +
+        `${contact.email}. It will be dealt with within 90 days at the latest, and ` +
         'in practice much sooner.',
     },
     {
       heading: 'If you are not satisfied',
       body:
-        'Raise it with Anjali Jain at astrologeranjali13@gmail.com. If it is ' +
+        `Raise it with Anjali Jain at ${contact.email}. If it is ` +
         'still not resolved, you can take the complaint to the Data Protection Board ' +
         'of India.',
     },

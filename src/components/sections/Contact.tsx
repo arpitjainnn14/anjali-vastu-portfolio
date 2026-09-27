@@ -1,6 +1,7 @@
 import { contactSection } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { Section, Container, Accented } from '@/components/ui/Section';
+import { Seal } from '@/components/art/Seal';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
 import { ContactForm } from '@/components/sections/ContactForm';
@@ -25,7 +26,19 @@ function ExternalArrow() {
   );
 }
 
-export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
+/**
+ * The contact block. `standalone` is the contact page, where this is the whole
+ * page rather than the last section of a longer argument: there it fills the
+ * column under the details with who reads the message, because a bare form on
+ * its own page tells a stranger nothing.
+ */
+export function Contact({
+  heading = 'h2',
+  standalone = false,
+}: {
+  heading?: 'h1' | 'h2';
+  standalone?: boolean;
+}) {
   const Heading = heading;
 
   return (
@@ -34,7 +47,9 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-24">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-5" data-reveal>
-              <Heading className="t-h2 m-0 max-w-[16ch] text-balance text-ink">
+              <Heading
+                className={`m-0 max-w-[16ch] text-balance text-ink ${standalone ? 't-h1' : 't-h2'}`}
+              >
                 <Accented text={contactSection.heading} />
               </Heading>
               <p className="t-body m-0 max-w-[46ch]">{contactSection.lead}</p>
@@ -75,6 +90,16 @@ export function Contact({ heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
                 );
               })}
             </dl>
+
+            {standalone && (
+              <div className="mt-2 flex gap-6 border-t border-line-strong pt-7" data-reveal>
+                <div className="flex flex-col gap-2">
+                  <h2 className="t-h3 m-0 text-ink">{contactSection.page.answeredBy.heading}</h2>
+                  <p className="t-small m-0 max-w-[44ch]">{contactSection.page.answeredBy.body}</p>
+                </div>
+                <Seal id="contact" size={96} className="hidden self-start sm:block" />
+              </div>
+            )}
           </div>
 
           <div data-reveal>

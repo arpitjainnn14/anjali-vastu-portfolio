@@ -22,6 +22,24 @@ export const contactSection = {
     { label: 'Usual reply time', value: 'Within 24 hours', link: null },
   ],
   footnote: 'Your message goes straight to Anjali. Nobody else reads it.',
+  /*
+   * The contact page only. On its own the form is a page of empty fields with
+   * nothing to reassure a stranger who arrived from a search — these blocks
+   * answer "who reads this" and "what happens if I write".
+   */
+  page: {
+    answeredBy: {
+      heading: 'She answers herself',
+      body:
+        'Every message is read and answered by Anjali. There is no assistant and no ' +
+        'call centre, which is also why a reply can take a few hours rather than a ' +
+        'few minutes.',
+    },
+    stepsHeading: 'What happens after you write',
+    stepsLead:
+      'Writing to her costs nothing and commits you to nothing. You pay only once a ' +
+      'consultation is booked.',
+  },
   /** The WhatsApp CTA beside the form, and in the mobile drawer. */
   whatsappCta: 'Message on WhatsApp',
   /** The small pinned button on phones. Short, so it covers little of the page. */

@@ -5,18 +5,24 @@ import { contact, contactSection, faq, footer, howItWorks, nav, privacy, refundP
 
 /**
  * Lines that were true before online booking and are false after it. Scans
- * every content file rather than named fields, so copy added later (such as
- * the contact-page blocks still being written) is caught too.
+ * every content file in every language rather than named fields, so copy
+ * added later (such as the contact-page blocks still being written) is
+ * caught too.
  */
 const retired = [/booking desk/i, /no payment is asked/i, /not listed here/i, /pricing is never published/i];
 
-const dir = fileURLToPath(new URL('.', import.meta.url));
-const contentFiles = readdirSync(dir).filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'));
+const contentRoot = fileURLToPath(new URL('..', import.meta.url));
+const languageDirs = ['en', 'hi'].map((lang) => `${contentRoot}${lang}/`);
+const contentFiles = languageDirs.flatMap((dir) =>
+  readdirSync(dir)
+    .filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
+    .map((f) => `${dir}${f}`),
+);
 
 describe('copy that contradicts online booking', () => {
   it.each(retired.map((r) => [r]))('no content file says %s', (pattern) => {
     for (const file of contentFiles) {
-      expect(readFileSync(`${dir}${file}`, 'utf8'), file).not.toMatch(pattern);
+      expect(readFileSync(file, 'utf8'), file).not.toMatch(pattern);
     }
   });
 

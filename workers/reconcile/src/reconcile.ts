@@ -1,3 +1,4 @@
+import { rupees } from './money';
 import type { Booking, Payment, Unreadable } from './types';
 
 /**
@@ -149,7 +150,7 @@ export function reconcile(payments: Payment[], bookings: Booking[], unreadable: 
           amount: p.amount,
           paymentId: p.id,
           orderId: p.orderId,
-          detail: `Cal ID expected ${expected} paise`,
+          detail: `Cal ID expected ${rupees(expected)}`,
         });
       }
     }

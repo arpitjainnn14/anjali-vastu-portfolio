@@ -105,4 +105,35 @@ describe('listBookings', () => {
     expect(error).toBeInstanceOf(ServiceError);
     expect(error.message).toBe('sent an unexpected response (no data list).');
   });
+
+  it('keeps paging while pages are full when totalPages is missing', async () => {
+    const full = Array.from({ length: 100 }, (_, i) => raw({ uid: `bk_${i}`, id: i }));
+    const getJson = vi
+      .fn()
+      .mockResolvedValueOnce({ success: true, data: full })
+      .mockResolvedValueOnce({ success: true, data: [raw({ uid: 'bk_last', id: 999 })] })
+      .mockResolvedValue({ success: true, data: [] });
+    const result = await listBookings({ getJson } as Http, 'k', after);
+
+    expect(result.items).toHaveLength(101);
+    expect((getJson.mock.calls[1] as unknown as [string, string])[1]).toContain('page=2');
+  });
+
+  it('throws when a bucket exceeds the page cap', async () => {
+    const full = Array.from({ length: 100 }, (_, i) => raw({ uid: `bk_${i}`, id: i }));
+    const getJson = vi.fn(async () => page(full, 99));
+    const error = await listBookings({ getJson }, 'k', after).catch((e) => e);
+
+    expect(error).toBeInstanceOf(ServiceError);
+    expect(error.message).toBe('returned more than 1,000 bookings in one bucket; the checker needs paging changes.');
+  });
+
+  it('drops bookings created before the window even if Cal ID returns them', async () => {
+    const stale = raw({ uid: 'bk_stale', createdAt: '2026-08-01T00:00:00.000Z' });
+    const getJson = vi.fn().mockResolvedValueOnce(page([stale])).mockResolvedValue(page([]));
+    const result = await listBookings({ getJson } as Http, 'k', after);
+
+    expect(result.items).toEqual([]);
+    expect(result.unreadable).toEqual([]);
+  });
 });

@@ -153,6 +153,10 @@ Problem day:
 ✅ Also: 2 bookings matched, ₹4,302 captured.
 ```
 
+A day whose only findings are 🟡 has the header `🟡 Payments check · <date> · N to decide`; an
+orange-only day uses 🟠. "Nothing needs you today." appears only when there is nothing red,
+orange or yellow.
+
 Checker failure (sent as a separate message):
 
 ```

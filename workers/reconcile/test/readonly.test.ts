@@ -10,12 +10,7 @@ const READ_ONLY_FILES = ['src/http.ts', 'src/razorpay.ts', 'src/calid.ts', 'src/
 describe('read-only toward Razorpay and Cal ID', () => {
   for (const file of READ_ONLY_FILES) {
     it(`${file} uses no write method`, () => {
-      let source: string;
-      try {
-        source = readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
-      } catch {
-        return; // file not written yet in this task
-      }
+      const source = readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
       expect(source).not.toMatch(/['"](POST|PUT|PATCH|DELETE)['"]/);
     });
   }

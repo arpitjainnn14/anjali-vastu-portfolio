@@ -1,5 +1,8 @@
 import { ServiceError } from './http';
+import { rupees } from './money';
 import { istYesterday, type Finding, type Kind, type Report } from './reconcile';
+
+export { rupees } from './money';
 
 /**
  * Plain-text Telegram messages. Problems first, each with a "→" action.
@@ -25,20 +28,6 @@ export function istTime(d: Date): string {
   const x = ist(d);
   const h = x.getUTCHours();
   return `${h % 12 || 12}:${String(x.getUTCMinutes()).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`;
-}
-
-function indianGroup(n: number): string {
-  const s = String(n);
-  if (s.length <= 3) return s;
-  const last3 = s.slice(-3);
-  const rest = s.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ',');
-  return `${rest},${last3}`;
-}
-
-export function rupees(paise: number): string {
-  const whole = Math.floor(paise / 100);
-  const fraction = paise % 100;
-  return `₹${indianGroup(whole)}${fraction ? `.${String(fraction).padStart(2, '0')}` : ''}`;
 }
 
 const TEXT: Record<Kind, { title: string; action: string | null }> = {
@@ -90,7 +79,7 @@ function block(f: Finding, yesterdayStart: Date, now: Date): string {
   if (f.since < yesterdayStart && f.kind !== 'refunded') lines.push(`   Still open since ${istDate(f.since)}`);
   if (f.lastChance) {
     const daysLeft = Math.max(0, WINDOW_DAYS - Math.floor((now.getTime() - f.since.getTime()) / DAY));
-    lines.push(`   ⚠ Leaves this check in ${daysLeft} days. Resolve it or note it by hand.`);
+    lines.push(`   ⚠ Leaves this check in ${daysLeft} ${daysLeft === 1 ? 'day' : 'days'}. Resolve it or note it by hand.`);
   }
   if (TEXT[f.kind].action) lines.push(`   ${TEXT[f.kind].action}`);
   return lines.join('\n');
@@ -100,10 +89,17 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 export function formatReport(report: Report, now: Date): string {
   const stamp = `${istDate(now)}, ${istTime(now)}`;
-  const urgent = report.findings.filter((f) => f.severity === 'red' || f.severity === 'orange').length;
-  const header = urgent
+  const reds = report.findings.filter((f) => f.severity === 'red').length;
+  const oranges = report.findings.filter((f) => f.severity === 'orange').length;
+  const yellows = report.findings.filter((f) => f.severity === 'yellow').length;
+  const urgent = reds + oranges;
+  const header = reds
     ? `🔴 Payments check · ${stamp} · ${urgent} ${urgent === 1 ? 'needs' : 'need'} action`
-    : `✅ Payments check · ${stamp}`;
+    : oranges
+      ? `🟠 Payments check · ${stamp} · ${urgent} ${urgent === 1 ? 'needs' : 'need'} action`
+      : yellows
+        ? `🟡 Payments check · ${stamp} · ${yellows} to decide`
+        : `✅ Payments check · ${stamp}`;
 
   const y = report.yesterday;
   const summary = [
@@ -112,7 +108,7 @@ export function formatReport(report: Report, now: Date): string {
       : `Yesterday: ${plural(y.payments, 'payment')}, ${y.matched === y.payments ? 'all' : y.matched} matched to bookings.`,
     `Captured ${rupees(y.capturedPaise)} · Refunded ${rupees(y.refundedPaise)}`,
   ];
-  if (!urgent) summary.push('Nothing needs you today.');
+  if (!urgent && !yellows) summary.push('Nothing needs you today.');
 
   if (report.findings.length === 0) return [header, ...summary].join('\n');
 

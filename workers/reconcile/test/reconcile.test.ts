@@ -49,6 +49,11 @@ describe('reconcile', () => {
     expect(kinds(run([payment({ amount: 100 })], [booking()]))).toContain('wrong_amount');
   });
 
+  it('wrong_amount detail names the amount Cal ID expected, in rupees', () => {
+    const r = run([payment({ amount: 100 })], [booking()]);
+    expect(r.findings.find((f) => f.kind === 'wrong_amount')?.detail).toBe('Cal ID expected ₹2,151');
+  });
+
   it('a later event price change does not flag old bookings', () => {
     expect(run([payment()], [booking({ price: 250000 })]).findings).toEqual([]);
   });

@@ -70,6 +70,12 @@ This task writes no product code. It checks seven assumptions the later tasks ar
 | A5 | Booking `status` is one of `ACCEPTED`, `PENDING`, `CANCELLED`, `REJECTED`, `AWAITING_HOST` | Task 5 |
 | A6 | Anjali's live Razorpay key lists payments created through Cal ID's app | Task 4 |
 | A7 | Razorpay `created_at` is Unix seconds; `amount` and `amount_refunded` are paise | Task 4 |
+| A8 | Cal ID list responses carry `meta.pagination.totalPages`; if absent, paging continues while pages are full | Task 5 |
+| A9 | Cal ID honours `afterCreatedDate` (the checker also filters locally) | Task 5 |
+| A10 | An abandoned or unpaid checkout on a paid event is `PENDING` (not `ACCEPTED`); check whether list items carry `paid` | Task 6 |
+| A11 | A rescheduled original comes back in the `cancelled` bucket with its `payment` records | Task 6 |
+| A12 | List items include `eventType.price` | Task 5 |
+| A13 | A paid booking on an event without "requires confirmation" is `ACCEPTED`, not `PENDING` | Task 6 |
 
 **Files:**
 - Create (not committed): `workers/reconcile/.dev.vars`, `workers/reconcile/scripts/spike.mjs`
@@ -140,6 +146,7 @@ For each assumption write "confirmed" or the actual shape. In particular: find `
 
 - If A1 or A6 fails: **stop**. Tell Arpit; the design needs to change (see the spec's Open items).
 - If A2–A5 or A7 differ: update the spec's Data section, and update the named lines in Tasks 2, 4, 5 and 6 of this plan before starting them. Every such line is in `parsePayment`, `parseBooking`, or the `chainOfKey` loop in `reconcile`.
+- If A10, A11 or A12 fail: stop — every booking or reschedule would be misreported; the design needs to change.
 
 - [ ] **Step 6: Record answers and commit**
 

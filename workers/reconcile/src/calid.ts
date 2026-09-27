@@ -85,11 +85,12 @@ export async function listBookings(http: Http, apiKey: string, afterCreated: Dat
       for (const raw of body.data) {
         const parsed = parseBooking(raw);
         if (typeof parsed === 'string') unreadable.push({ source: 'Cal ID', id: uidOf(raw), reason: parsed });
-        else byUid.set(parsed.uid, parsed);
+        else if (parsed.createdAt >= afterCreated) byUid.set(parsed.uid, parsed);
       }
 
-      const totalPages = typeof body.meta?.pagination?.totalPages === 'number' ? body.meta.pagination.totalPages : 1;
-      if (page >= totalPages) break;
+      const totalPages = body.meta?.pagination?.totalPages;
+      const donePaging = typeof totalPages === 'number' ? page >= totalPages : body.data.length < LIMIT;
+      if (donePaging) break;
       if (page === MAX_PAGES) {
         throw new ServiceError('Cal ID', null, 'returned more than 1,000 bookings in one bucket; the checker needs paging changes.');
       }

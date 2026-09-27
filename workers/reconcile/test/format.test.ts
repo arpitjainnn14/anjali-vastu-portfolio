@@ -63,6 +63,11 @@ describe('formatReport', () => {
     expect(text).toContain('   ⚠ Leaves this check in 2 days. Resolve it or note it by hand.');
   });
 
+  it('uses "1 day" (not "1 days") when only one day is left', () => {
+    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(29) })], [], [], NOW), NOW);
+    expect(text).toContain('   ⚠ Leaves this check in 1 day. Resolve it or note it by hand.');
+  });
+
   it('shows the booking name and time for booking problems', () => {
     const text = formatReport(reconcile([], [booking()], [], NOW), NOW);
     expect(text).toContain('🔴 Booking without payment');
@@ -77,10 +82,28 @@ describe('formatReport', () => {
     expect(text.split('\n')[0]).toBe('🔴 Payments check · Sat 26 Sep, 8:00 am · 2 need action');
   });
 
-  it('yellow and info only: green header, no action count', () => {
+  it('yellow only: yellow header and no "nothing needs you"', () => {
     const text = formatReport(reconcile([payment()], [booking({ status: 'CANCELLED' })], [], NOW), NOW);
-    expect(text.split('\n')[0]).toBe('✅ Payments check · Sat 26 Sep, 8:00 am');
+    expect(text.split('\n')[0]).toBe('🟡 Payments check · Sat 26 Sep, 8:00 am · 1 to decide');
     expect(text).toContain('🟡 Cancelled, not refunded');
+    expect(text).not.toContain('Nothing needs you today.');
+  });
+
+  it('orange only: orange header', () => {
+    const text = formatReport(
+      reconcile([payment({ status: 'authorized', createdAt: daysAgo(2) })], [booking({ status: 'PENDING' })], [], NOW),
+      NOW,
+    );
+    expect(text.split('\n')[0]).toBe('🟠 Payments check · Sat 26 Sep, 8:00 am · 1 needs action');
+  });
+
+  it('info only keeps the green header and says nothing needs you', () => {
+    const text = formatReport(
+      reconcile([payment({ status: 'refunded', amountRefunded: 215100 })], [booking({ status: 'CANCELLED' })], [], NOW),
+      NOW,
+    );
+    expect(text.split('\n')[0]).toMatch(/^✅ Payments check/);
+    expect(text).toContain('Nothing needs you today.');
   });
 
   it('never exceeds 4,000 characters and says how many were left out', () => {

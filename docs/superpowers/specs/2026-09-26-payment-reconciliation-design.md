@@ -64,9 +64,9 @@ Each unit has one job and can be tested alone.
 |---|---|---|
 | `index.ts` | `scheduled` handler: fetch, reconcile, format, send. Catches every error and sends the failure message. `fetch` handler returns 404 (no public endpoint). | all below |
 | `http.ts` | `getJson(url, headers)`: GET only (throws on any other method), 10 s timeout, 3 retries with backoff on 429 and 5xx. | — |
-| `razorpay.ts` | `listPayments(from, to)`: pages through `GET /v1/payments` (`count=100`, `skip`). Basic auth with key ID and secret. | `http.ts` |
+| `razorpay.ts` | `listPayments(from, to)` and `listOrders(from, to)`: page through `GET /v1/payments` and `GET /v1/orders` (`count=100`, `skip`) sharing one paging helper. Basic auth with key ID and secret. | `http.ts` |
 | `calid.ts` | `listBookings(afterCreated)`: pages through `GET https://api.cal.id/booking/` for each of `upcoming`, `past`, `cancelled`, `unconfirmed` (the endpoint defaults to `upcoming` and has no "all"). Bookings seen in two buckets are counted once. Bearer auth. | `http.ts` |
-| `reconcile.ts` | Pure function `reconcile(payments, bookings, now) → Report`. No I/O. | — |
+| `reconcile.ts` | Pure function `reconcile(payments, orders, bookings, unreadable, now) → Report`. No I/O. | — |
 | `format.ts` | Pure function `format(report, now) → string` (Telegram message). | — |
 | `telegram.ts` | `send(text)`: `POST sendMessage` to the group. The only non-GET call, and only to Telegram. Retries 3 times. | — |
 
@@ -75,20 +75,36 @@ A test fails if any Razorpay or Cal ID call uses another method.
 
 ## Data
 
-- **Razorpay:** payments created in the last 30 days. Fields used: `id`,
+Confirmed against the live APIs in Stage 0 (2026-09-27; see "Confirmed in Stage 0" below).
+
+- **Razorpay payments:** created in the last 30 days. Fields used: `id`,
   `order_id`, `status` (`created`, `authorized`, `captured`, `refunded`,
-  `failed`), `amount`, `amount_refunded`, `refund_status`, `created_at`,
-  `description`, and whatever marks the payment as Cal ID's (see Stage 0).
+  `failed`), `amount`, `amount_refunded`, `created_at`.
+- **Razorpay orders:** fetched from one day before the payments/bookings
+  window (a booking near the edge still needs its order visible for the
+  time-based link, below). Fields used: `id`, `amount`, `created_at`.
 - **Cal ID:** bookings created in the last 30 days, all four status buckets.
   Fields used: `id`, `uid`, `status`, `paid`, `startTime`, `createdAt`,
-  `fromReschedule`, `attendees[0].name`, `eventType.price`,
-  `eventType.currency`, and `payment[]`.
+  `fromReschedule`, `attendees[0].name`, `eventType.price` (optional; falls
+  back to 0 when the event type was later deleted — `payment[].amount` is
+  always Cal ID's own charge and is trusted instead), and `payment[]`
+  (`paymentOption`, `amount`, `currency`, `success` — no `externalId`, no
+  `refunded`).
 
-**The link between a booking and its payment is not yet confirmed.** Candidates:
-the Razorpay `order_id`, or the `#…` value in the payment `description`
-(the ₹1 test payment had `description: #Tgcuxtuy4btbn9`), matched against a
-field in the booking's `payment[]` records. Stage 0 settles this before any
-code is written. The spec is updated with the answer.
+**The link between a booking and its payment.** Cal ID's `payment[]` records
+carry no field shared with Razorpay (no order ID, and the payment
+`description`'s `#…` value matches nothing in Cal ID). Stage 0 found that for
+every booking with a payment record, exactly one Razorpay order was created
+1–3 s afterwards, same amount. The link is therefore by time: a booking that
+has a charge (a `payment[]` record with `amount > 0`) claims the Razorpay
+order created within **120 seconds** of its own `createdAt`; if more than one
+candidate remains, the amount narrows it; a booking matched to more than one
+order, or an order claimed by more than one booking, is reported as
+`cant_verify` rather than linked. Once a booking is linked to an order, the
+existing exact link from a Razorpay **payment** to its **order** (`order_id`)
+carries the match the rest of the way. `booking.paid` is used only as a
+cross-check: an accepted, apparently-paid booking with no linked payment gets
+a more specific detail line rather than a new rule.
 
 ## Checks
 
@@ -192,8 +208,10 @@ any doubt.
 - Unexpected response shape: 🟠 "can't verify", never a silent pass.
 - Telegram failing after retries: log to Workers logs (observability on). It
   cannot reach anyone; the missing 8:00 message is the alarm.
-- Free-plan limits: 50 subrequests per run (expected use: under 15 at
-  ~100 bookings a month); 10 ms CPU per run (network waits do not count).
+- Free-plan limits: 50 subrequests per run (7 in normal use: 1 Razorpay
+  payments call, 1 Razorpay orders call, 4 Cal ID status buckets, 1
+  Telegram; more only if a bucket or a Razorpay list needs extra pages);
+  10 ms CPU per run (network waits do not count).
 
 ## Testing
 
@@ -239,11 +257,20 @@ refunds only for a genuine cause". Set it to **Never** on both event types, and
 consider turning off booker cancellation. Refunds for genuine causes are then
 issued by hand in Razorpay.
 
-## Open items
+## Confirmed in Stage 0 (2026-09-27)
 
-- The booking–payment link field (Stage 0).
-- Whether Anjali's key lists Cal ID-created payments (Stage 0).
-- Exact shape of Cal ID `payment[]` records (Stage 0).
-- Whether Cal ID's list endpoint returns `payment[]` for each booking (the
-  single-booking endpoint does). If it does not, one call per booking would
-  exceed the free plan's 50 subrequests; stop and redesign.
+- The booking–payment link field: there isn't one. Cal ID's `payment[]`
+  records have no `externalId` and no `refunded`, only `paymentOption`,
+  `amount`, `currency`, `success`. Linked by time instead (see Data, above).
+- Anjali's live Razorpay key does list payments created through Cal ID's app.
+- Cal ID's list endpoint returns `payment[]` per booking, so one call per
+  status bucket is enough; no per-booking calls needed.
+- `booking.paid` is a reliable boolean on every booking, used as a
+  cross-check on top of the time-based link.
+- `eventType.price` is 0 (and `currency` "usd") when the event type was later
+  deleted; `payment[].amount` stays correct and is what the checker trusts.
+- Statuses observed live: `PENDING` (abandoned checkout: `paid:false`,
+  `payment[0].success:false`) and `CANCELLED`. `ACCEPTED`, `REJECTED`,
+  `AWAITING_HOST` remain valid but unobserved so far.
+- Timing: for every booking with a payment record, exactly one Razorpay order
+  was created 1–3 seconds after `booking.createdAt`, same amount.

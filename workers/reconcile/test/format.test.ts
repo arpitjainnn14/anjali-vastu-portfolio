@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ServiceError } from '../src/http';
 import { formatFailure, formatReport, istDate, istTime, rupees } from '../src/format';
 import { reconcile, type Report } from '../src/reconcile';
-import { NOW, booking, daysAgo, payment, yesterdayIst } from './fixtures';
+import { NOW, booking, daysAgo, order, payment, yesterdayIst } from './fixtures';
 
 describe('helpers', () => {
   it('rupees uses Indian grouping and hides zero paise', () => {
@@ -22,7 +22,7 @@ describe('helpers', () => {
 
 describe('formatReport', () => {
   it('quiet day', () => {
-    expect(formatReport(reconcile([payment()], [booking()], [], NOW), NOW)).toBe(
+    expect(formatReport(reconcile([payment()], [order()], [booking()], [], NOW), NOW)).toBe(
       [
         '✅ Payments check · Sat 26 Sep, 8:00 am',
         'Yesterday: 1 payment, all matched to bookings.',
@@ -33,11 +33,11 @@ describe('formatReport', () => {
   });
 
   it('no payments at all', () => {
-    expect(formatReport(reconcile([], [], [], NOW), NOW)).toContain('Yesterday: no payments.');
+    expect(formatReport(reconcile([], [], [], [], NOW), NOW)).toContain('Yesterday: no payments.');
   });
 
   it('problem day: header counts reds and oranges, problem first, with an action line', () => {
-    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: yesterdayIst(21, 42) })], [], [], NOW), NOW);
+    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: yesterdayIst(21, 42) })], [], [], [], NOW), NOW);
     expect(text).toBe(
       [
         '🔴 Payments check · Sat 26 Sep, 8:00 am · 1 needs action',
@@ -54,36 +54,36 @@ describe('formatReport', () => {
   });
 
   it('marks problems older than yesterday as still open', () => {
-    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(3) })], [], [], NOW), NOW);
+    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(3) })], [], [], [], NOW), NOW);
     expect(text).toContain('   Still open since Wed 23 Sep');
   });
 
   it('warns on last-chance problems', () => {
-    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(28) })], [], [], NOW), NOW);
+    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(28) })], [], [], [], NOW), NOW);
     expect(text).toContain('   ⚠ Leaves this check in 2 days. Resolve it or note it by hand.');
   });
 
   it('uses "1 day" (not "1 days") when only one day is left', () => {
-    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(29) })], [], [], NOW), NOW);
+    const text = formatReport(reconcile([payment({ orderId: 'order_ghost', createdAt: daysAgo(29) })], [], [], [], NOW), NOW);
     expect(text).toContain('   ⚠ Leaves this check in 1 day. Resolve it or note it by hand.');
   });
 
   it('shows the booking name and time for booking problems', () => {
-    const text = formatReport(reconcile([], [booking()], [], NOW), NOW);
+    const text = formatReport(reconcile([], [], [booking()], [], NOW), NOW);
     expect(text).toContain('🔴 Booking without payment');
     expect(text).toContain('   Priya · booked for Mon 28 Sep, 11:00 am');
   });
 
   it('uses "need" for more than one', () => {
     const text = formatReport(
-      reconcile([payment({ orderId: 'x1' }), payment({ id: 'pay_B', orderId: 'x2' })], [], [], NOW),
+      reconcile([payment({ orderId: 'x1' }), payment({ id: 'pay_B', orderId: 'x2' })], [], [], [], NOW),
       NOW,
     );
     expect(text.split('\n')[0]).toBe('🔴 Payments check · Sat 26 Sep, 8:00 am · 2 need action');
   });
 
   it('yellow only: yellow header and no "nothing needs you"', () => {
-    const text = formatReport(reconcile([payment()], [booking({ status: 'CANCELLED' })], [], NOW), NOW);
+    const text = formatReport(reconcile([payment()], [order()], [booking({ status: 'CANCELLED' })], [], NOW), NOW);
     expect(text.split('\n')[0]).toBe('🟡 Payments check · Sat 26 Sep, 8:00 am · 1 to decide');
     expect(text).toContain('🟡 Cancelled, not refunded');
     expect(text).not.toContain('Nothing needs you today.');
@@ -91,7 +91,7 @@ describe('formatReport', () => {
 
   it('orange only: orange header', () => {
     const text = formatReport(
-      reconcile([payment({ status: 'authorized', createdAt: daysAgo(2) })], [booking({ status: 'PENDING' })], [], NOW),
+      reconcile([payment({ status: 'authorized', createdAt: daysAgo(2) })], [], [booking({ status: 'PENDING' })], [], NOW),
       NOW,
     );
     expect(text.split('\n')[0]).toBe('🟠 Payments check · Sat 26 Sep, 8:00 am · 1 needs action');
@@ -99,7 +99,7 @@ describe('formatReport', () => {
 
   it('info only keeps the green header and says nothing needs you', () => {
     const text = formatReport(
-      reconcile([payment({ status: 'refunded', amountRefunded: 215100 })], [booking({ status: 'CANCELLED' })], [], NOW),
+      reconcile([payment({ status: 'refunded', amountRefunded: 215100 })], [], [booking({ status: 'CANCELLED' })], [], NOW),
       NOW,
     );
     expect(text.split('\n')[0]).toMatch(/^✅ Payments check/);
@@ -108,14 +108,14 @@ describe('formatReport', () => {
 
   it('never exceeds 4,000 characters and says how many were left out', () => {
     const many = Array.from({ length: 200 }, (_, i) => payment({ id: `pay_${i}`, orderId: `ghost_${i}` }));
-    const text = formatReport(reconcile(many, [], [], NOW), NOW);
+    const text = formatReport(reconcile(many, [], [], [], NOW), NOW);
     expect(text.length).toBeLessThanOrEqual(4000);
     expect(text).toMatch(/…and \d+ more\. Open Razorpay and Cal ID to see all\./);
     expect(text.split('\n')[0]).toContain('200 need action');
   });
 
   it('carries no email addresses', () => {
-    const report: Report = reconcile([], [booking({ firstName: 'Priya' })], [], NOW);
+    const report: Report = reconcile([], [], [booking({ firstName: 'Priya' })], [], NOW);
     expect(formatReport(report, NOW)).not.toMatch(/@/);
   });
 });

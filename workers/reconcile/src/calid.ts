@@ -14,15 +14,10 @@ function parsePayments(raw: unknown): BookingPayment[] | string {
   const out: BookingPayment[] = [];
   for (const p of raw) {
     const r = (p ?? {}) as Record<string, unknown>;
-    if (typeof r.success !== 'boolean' || typeof r.refunded !== 'boolean' || typeof r.amount !== 'number') {
+    if (typeof r.success !== 'boolean' || typeof r.amount !== 'number') {
       return 'malformed payment record';
     }
-    out.push({
-      externalId: typeof r.externalId === 'string' ? r.externalId : null,
-      success: r.success,
-      refunded: r.refunded,
-      amount: r.amount,
-    });
+    out.push({ success: r.success, amount: r.amount });
   }
   return out;
 }
@@ -33,9 +28,12 @@ export function parseBooking(raw: unknown): Booking | string {
   if (typeof r.id !== 'number' || typeof r.uid !== 'string') return 'missing id';
   if (!STATUSES.includes(r.status as BookingStatus)) return `unknown status ${String(r.status)}`;
   if (!isDate(r.startTime) || !isDate(r.createdAt)) return 'missing times';
+  if (typeof r.paid !== 'boolean') return 'missing paid flag';
 
+  // eventType.price is 0 (or absent) when the event type was later deleted; it is
+  // only a fallback, so a missing/non-number value defaults to 0 rather than failing.
   const eventType = (r.eventType ?? {}) as Record<string, unknown>;
-  if (typeof eventType.price !== 'number') return 'missing event price';
+  const price = typeof eventType.price === 'number' ? eventType.price : 0;
 
   const payments = parsePayments(r.payment);
   if (typeof payments === 'string') return payments;
@@ -51,7 +49,8 @@ export function parseBooking(raw: unknown): Booking | string {
     createdAt: new Date(r.createdAt),
     fromReschedule: typeof r.fromReschedule === 'string' ? r.fromReschedule : null,
     firstName: fullName.split(/\s+/)[0] || 'Someone',
-    price: eventType.price,
+    price,
+    paid: r.paid,
     payments,
   };
 }

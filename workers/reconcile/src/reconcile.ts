@@ -1,5 +1,5 @@
 import { rupees } from './money';
-import type { Booking, Payment, Unreadable } from './types';
+import type { Booking, Order, Payment, Unreadable } from './types';
 
 /**
  * Pure comparison of Razorpay (the money) with Cal ID (the bookings). No I/O.
@@ -43,6 +43,8 @@ const IST_OFFSET = 330 * MINUTE;
 const GRACE = 30 * MINUTE;
 const HELD_AFTER = 24 * HOUR;
 const LAST_CHANCE_AFTER = 27 * DAY;
+/** A booking's Razorpay order is created 1–3 s after the booking, in practice; allow slack either way. */
+const ORDER_LINK_WINDOW = 120 * 1000;
 
 const SEVERITY: Record<Kind, Severity> = {
   paid_no_booking: 'red',
@@ -64,7 +66,7 @@ export function istYesterday(now: Date): { start: Date; end: Date } {
   return { start: new Date(todayStart - DAY), end: new Date(todayStart) };
 }
 
-export function reconcile(payments: Payment[], bookings: Booking[], unreadable: Unreadable[], now: Date): Report {
+export function reconcile(payments: Payment[], orders: Order[], bookings: Booking[], unreadable: Unreadable[], now: Date): Report {
   const t = now.getTime();
   const findings: Finding[] = [];
   const add = (kind: Kind, since: Date, extra: Partial<Finding> = {}) =>
@@ -100,15 +102,46 @@ export function reconcile(payments: Payment[], bookings: Booking[], unreadable: 
     chains.set(root, [...(chains.get(root) ?? []), b]);
   }
 
-  // Link: Cal ID payment record externalId (= Razorpay order_id) → chain, and Cal ID's own amount.
-  const chainOfKey = new Map<string, string>();
-  const calAmountOfKey = new Map<string, number>();
+  // Link: a booking with a charge (a payment[] record with amount > 0) claims the Razorpay
+  // order created within 120 s of its own createdAt. Cal ID's payment[] carries no shared ID
+  // with Razorpay, so time is the only link; an order matched by more than one booking, or a
+  // booking matched to more than one order, can't be trusted and is reported instead of linked.
+  const chargeAmount = new Map<string, number>(); // booking uid → first charge's amount
   for (const b of bookings) {
-    for (const p of b.payments) {
-      if (!p.externalId) continue;
-      chainOfKey.set(p.externalId, rootOf(b));
-      calAmountOfKey.set(p.externalId, p.amount);
+    const charge = b.payments.find((p) => p.amount > 0);
+    if (charge) chargeAmount.set(b.uid, charge.amount);
+  }
+
+  const candidatesOf = new Map<string, Order[]>(); // booking uid → its filtered candidate orders
+  const claimants = new Map<string, string[]>(); // order id → booking uids that claim it
+  for (const b of bookings) {
+    const expected = chargeAmount.get(b.uid);
+    if (expected === undefined) continue;
+
+    let candidates = orders.filter((o) => Math.abs(o.createdAt.getTime() - b.createdAt.getTime()) <= ORDER_LINK_WINDOW);
+    if (candidates.length > 1) {
+      const sameAmount = candidates.filter((o) => o.amount === expected);
+      if (sameAmount.length > 0) candidates = sameAmount;
     }
+    candidatesOf.set(b.uid, candidates);
+    for (const o of candidates) claimants.set(o.id, [...(claimants.get(o.id) ?? []), b.uid]);
+  }
+
+  const chainOfKey = new Map<string, string>(); // order id → chain root
+  const calAmountOfKey = new Map<string, number>(); // order id → the booking's expected amount
+  for (const b of bookings) {
+    const candidates = candidatesOf.get(b.uid);
+    if (!candidates || candidates.length === 0) continue; // no charge, or no candidate order
+
+    const ambiguous = candidates.length > 1 || candidates.some((o) => (claimants.get(o.id)?.length ?? 0) > 1);
+    if (ambiguous) {
+      add('cant_verify', b.createdAt, { detail: `Cal ID ${b.uid}: matches more than one Razorpay order` });
+      continue;
+    }
+
+    const [order] = candidates;
+    chainOfKey.set(order.id, rootOf(b));
+    calAmountOfKey.set(order.id, chargeAmount.get(b.uid)!);
   }
 
   const keptByChain = new Map<string, Payment[]>();
@@ -140,7 +173,9 @@ export function reconcile(payments: Payment[], bookings: Booking[], unreadable: 
     const shown = accepted ?? pending ?? latest;
     const person = { name: shown.firstName, bookingStart: shown.startTime };
     const kept = keptByChain.get(root) ?? [];
-    const priced = chain.some((b) => b.price > 0);
+    // eventType.price can fall back to 0 (event type later deleted), so a booking with a real
+    // charge on it still counts as priced even when its price field does not.
+    const priced = chain.some((b) => b.price > 0 || chargeAmount.has(b.uid));
 
     for (const p of kept) {
       const expected = p.orderId ? calAmountOfKey.get(p.orderId) : undefined;
@@ -169,7 +204,11 @@ export function reconcile(payments: Payment[], bookings: Booking[], unreadable: 
       // a reschedule of a booking older than the window (that original was checked while in window).
       const rootBooking = byUid.get(root)!;
       if (priced && kept.length === 0 && !fresh(accepted.createdAt) && !rootBooking.fromReschedule) {
-        add('booking_no_payment', accepted.createdAt, person);
+        const markedPaid = chain.some((b) => b.paid);
+        add('booking_no_payment', accepted.createdAt, {
+          ...person,
+          ...(markedPaid ? { detail: 'Cal ID marks it paid; no matching Razorpay payment found' } : {}),
+        });
       }
       if (kept.length === 1 && calAmountOfKey.get(first.orderId ?? '') === first.amount) matchedIds.add(first.id);
     } else if (pending) {

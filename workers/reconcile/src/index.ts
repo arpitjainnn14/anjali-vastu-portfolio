@@ -1,7 +1,7 @@
 import { listBookings } from './calid';
 import { formatFailure, formatReport } from './format';
 import { createHttp, type FetchLike } from './http';
-import { listPayments } from './razorpay';
+import { listOrders, listPayments } from './razorpay';
 import { reconcile } from './reconcile';
 import { sendTelegram } from './telegram';
 
@@ -35,11 +35,21 @@ export async function run(env: Env, deps: Deps): Promise<string> {
 
     const http = createHttp(deps.fetch, { sleep: deps.sleep });
     const from = new Date(deps.now.getTime() - WINDOW);
-    const [payments, bookings] = await Promise.all([
+    // Orders are fetched a day further back than payments/bookings: a booking's order can be
+    // created up to 120 s before it, and a booking right at the edge of the window still needs
+    // its order visible for the time-based link.
+    const [payments, orders, bookings] = await Promise.all([
       listPayments(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, from, deps.now),
+      listOrders(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, new Date(from.getTime() - 86_400_000), deps.now),
       listBookings(http, env.CALID_API_KEY!, from),
     ]);
-    const report = reconcile(payments.items, bookings.items, [...payments.unreadable, ...bookings.unreadable], deps.now);
+    const report = reconcile(
+      payments.items,
+      orders.items,
+      bookings.items,
+      [...payments.unreadable, ...orders.unreadable, ...bookings.unreadable],
+      deps.now,
+    );
     text = formatReport(report, deps.now);
   } catch (error) {
     text = formatFailure(error, deps.now);

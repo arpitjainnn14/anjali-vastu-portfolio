@@ -1,4 +1,4 @@
-import type { Booking, Payment } from '../src/types';
+import type { Booking, Order, Payment } from '../src/types';
 
 /** Saturday 26 Sep 2026, 08:00 IST: the moment the cron fires. */
 export const NOW = new Date('2026-09-26T02:30:00Z');
@@ -31,7 +31,17 @@ export function booking(overrides: Partial<Booking> = {}): Booking {
     fromReschedule: null,
     firstName: 'Priya',
     price: 215100,
-    payments: [{ externalId: 'order_A', success: true, refunded: false, amount: 215100 }],
+    paid: true,
+    payments: [{ success: true, amount: 215100 }],
+    ...overrides,
+  };
+}
+
+export function order(overrides: Partial<Order> = {}): Order {
+  return {
+    id: 'order_A',
+    amount: 215100,
+    createdAt: new Date(yesterdayIst(10).getTime() + 2000),
     ...overrides,
   };
 }

@@ -6,12 +6,13 @@ const raw = (overrides: Record<string, unknown> = {}) => ({
   id: 7,
   uid: 'bk_7',
   status: 'ACCEPTED',
+  paid: true,
   startTime: '2026-09-28T03:45:00.000Z',
   createdAt: '2026-09-26T10:07:00.000Z',
   fromReschedule: null,
   attendees: [{ name: 'Priya Sharma', email: 'p@example.com' }],
   eventType: { price: 215100, currency: 'inr' },
-  payment: [{ externalId: 'order_7', success: true, refunded: false, amount: 215100 }],
+  payment: [{ paymentOption: 'ON_BOOKING', success: true, amount: 215100 }],
   ...overrides,
 });
 
@@ -23,12 +24,13 @@ describe('parseBooking', () => {
       id: 7,
       uid: 'bk_7',
       status: 'ACCEPTED',
+      paid: true,
       startTime: new Date('2026-09-28T03:45:00.000Z'),
       createdAt: new Date('2026-09-26T10:07:00.000Z'),
       fromReschedule: null,
       firstName: 'Priya',
       price: 215100,
-      payments: [{ externalId: 'order_7', success: true, refunded: false, amount: 215100 }],
+      payments: [{ success: true, amount: 215100 }],
     });
   });
 
@@ -45,7 +47,23 @@ describe('parseBooking', () => {
   });
 
   it('returns a reason for a malformed payment record', () => {
-    expect(parseBooking(raw({ payment: [{ externalId: 'o', success: 'yes' }] }))).toBe('malformed payment record');
+    expect(parseBooking(raw({ payment: [{ success: 'yes' }] }))).toBe('malformed payment record');
+  });
+
+  it('parses payment records with no externalId or refunded field', () => {
+    expect((parseBooking(raw()) as { payments: unknown }).payments).toEqual([{ success: true, amount: 215100 }]);
+  });
+
+  it('returns a reason when the paid flag is missing', () => {
+    expect(parseBooking(raw({ paid: undefined }))).toBe('missing paid flag');
+  });
+
+  it('defaults price to 0 when eventType price is missing', () => {
+    expect((parseBooking(raw({ eventType: { currency: 'usd' } })) as { price: number }).price).toBe(0);
+  });
+
+  it('defaults price to 0 when eventType price is not a number', () => {
+    expect((parseBooking(raw({ eventType: { price: 'free', currency: 'usd' } })) as { price: number }).price).toBe(0);
   });
 });
 

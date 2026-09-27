@@ -10,11 +10,12 @@ export type Payment = {
   createdAt: Date;
 };
 
-/** Cal ID's own record of a payment on a booking. `externalId` is the Razorpay order ID. */
+/** A Razorpay order. Linked to a booking by creation time, not by any shared ID. */
+export type Order = { id: string; amount: number; createdAt: Date };
+
+/** Cal ID's own record of a payment attempt on a booking. */
 export type BookingPayment = {
-  externalId: string | null;
   success: boolean;
-  refunded: boolean;
   amount: number;
 };
 
@@ -29,8 +30,10 @@ export type Booking = {
   /** uid of the booking this one replaced, when rescheduled. */
   fromReschedule: string | null;
   firstName: string;
-  /** Event price in paise. 0 means a free event. */
+  /** Event price in paise. 0 means a free event, or that the event type was later deleted. */
   price: number;
+  /** Cal ID's own "this booking is paid for" flag. */
+  paid: boolean;
   payments: BookingPayment[];
 };
 

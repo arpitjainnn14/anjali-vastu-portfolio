@@ -77,6 +77,8 @@ This task writes no product code. It checks seven assumptions the later tasks ar
 | A12 | List items include `eventType.price` | Task 5 |
 | A13 | A paid booking on an event without "requires confirmation" is `ACCEPTED`, not `PENDING` | Task 6 |
 
+Stage 0 ran 2026-09-27: A2/A3 false; link redesigned to booking.createdAt ↔ order.created_at (±120 s), see spec Data section.
+
 **Files:**
 - Create (not committed): `workers/reconcile/.dev.vars`, `workers/reconcile/scripts/spike.mjs`
 - Modify: `docs/superpowers/specs/2026-09-26-payment-reconciliation-design.md` (Open items → answers)

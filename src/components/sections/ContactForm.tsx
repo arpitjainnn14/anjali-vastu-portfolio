@@ -211,7 +211,7 @@ export function ContactForm() {
           <div role="alert" className="flex gap-2.5 text-sindoor">
             <AlertIcon size={18} className="mt-0.5 shrink-0" />
             <span className="t-small text-body">
-              <span className="font-semibold text-ink">{form.states.error.heading}.</span>{' '}
+              <span className="font-semibold text-ink">{form.states.error.heading}{c.site.fullStop}</span>{' '}
               {form.states.error.body}
             </span>
           </div>
@@ -221,7 +221,7 @@ export function ContactForm() {
           <div role="alert" className="flex gap-2.5 text-sindoor">
             <AlertIcon size={18} className="mt-0.5 shrink-0" />
             <span className="t-small text-body">
-              <span className="font-semibold text-ink">{form.states.rateLimited.heading}.</span>{' '}
+              <span className="font-semibold text-ink">{form.states.rateLimited.heading}{c.site.fullStop}</span>{' '}
               {form.states.rateLimited.body}
             </span>
           </div>

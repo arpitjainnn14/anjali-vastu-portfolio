@@ -108,6 +108,8 @@ export const servicesSection = {
   /** After the price of a service booked online. */
   feeIncludes: 'including three months of calls',
   needLabel: 'You will need',
+  /** What a service needs, as it reads after "You will need:" — lower-cased, with a full stop. */
+  needLine: (value: string) => `${value.charAt(0).toLowerCase()}${value.slice(1)}.`,
   footnote: 'Every consultation is available in English or Hindi, in person in Palwal or by phone.',
 } as const;
 

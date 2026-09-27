@@ -5,6 +5,9 @@ import { ServicePage, findService, serviceMetadata, serviceSlugs } from '@/compo
 
 const c = getContent('hi');
 
+/** One static page per service; any other slug is a 404. */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return serviceSlugs(c);
 }

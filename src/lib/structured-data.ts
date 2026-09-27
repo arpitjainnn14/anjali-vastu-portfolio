@@ -1,4 +1,4 @@
-import type { Content, Locale } from '@/content';
+import { getContent, type Content, type Locale } from '@/content';
 import { absoluteUrl, siteUrl } from './site-url';
 import type { Service } from './booking';
 import { localePath } from './locale-routing';
@@ -10,6 +10,14 @@ import { localePath } from './locale-routing';
  * to one another instead of being three unconnected claims. Only facts already
  * on the site go in here: prices only for the consultations booked online, and no
  * telephone, because the site deliberately never displays her number.
+ *
+ * Two kinds of node:
+ * - The site graph (business, Anjali, the services) is one set of facts about
+ *   one set of entities, so it is the same English graph on every page, Hindi
+ *   ones included. Built from the Hindi bundle it would give the same @ids a
+ *   second, conflicting name and description.
+ * - Page-level nodes (the breadcrumb, the FAQ) describe the page being read:
+ *   its words, its `/hi` URLs and `inLanguage: 'hi-IN'` on Hindi pages.
  */
 
 const ids = {
@@ -34,8 +42,11 @@ function cityOf(c: Content) {
  * ProfessionalService is a LocalBusiness subtype: a one-person practice in a
  * named city is exactly what it is for. The street address is deliberately
  * unpublished, so the address stops at the city.
+ *
+ * Takes no language: every page, English or Hindi, carries this same graph.
  */
-export function siteGraph(c: Content, locale: Locale) {
+export function siteGraph() {
+  const c = getContent('en');
   const { site, about, services } = c;
   const city = cityOf(c);
 
@@ -47,7 +58,7 @@ export function siteGraph(c: Content, locale: Locale) {
         '@id': ids.website,
         url: siteUrl,
         name: site.brand,
-        inLanguage: inLanguageOf(locale),
+        inLanguage: inLanguageOf('en'),
         publisher: { '@id': ids.business },
       },
       {
@@ -143,11 +154,13 @@ export function serviceBreadcrumb(c: Content, service: Service, locale: Locale) 
   };
 }
 
-/** The home page FAQ, word for word as it is shown. */
-export function faqPage(c: Content) {
+/** The home page FAQ, word for word as it is shown, in the page's language. */
+export function faqPage(c: Content, locale: Locale) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    inLanguage: inLanguageOf(locale),
+    url: absoluteUrl(localePath(locale, '/')),
     mainEntity: c.faq.items.map((item) => ({
       '@type': 'Question',
       name: item.q,

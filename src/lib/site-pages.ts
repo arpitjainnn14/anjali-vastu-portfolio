@@ -1,6 +1,6 @@
 import type { Content, Locale } from '@/content';
 import { bookableServices, bookPageHref } from './booking';
-import { localePath } from './locale-routing';
+import { alternatePath, localeOfPath, localePath } from './locale-routing';
 
 /**
  * Every public page, grouped, for both site maps: sitemap.xml (search engines)
@@ -80,4 +80,22 @@ export function sitePageGroups(c: Content, locale: Locale, live: boolean = c.boo
 /** Paths for sitemap.xml: indexable pages only. */
 export function indexedPaths(c: Content, locale: Locale, live: boolean = c.booking.live): string[] {
   return sitePageGroups(c, locale, live).flatMap((g) => g.pages.filter((p) => p.indexed).map((p) => p.href));
+}
+
+/** Pages with no parameter, in English paths. Each also exists under /hi. */
+const FIXED_PATHS = [
+  '/', '/about', '/teaching', '/contact', '/which-reading',
+  '/book', '/booked', '/terms', '/refund-policy', '/privacy', '/sitemap.html',
+];
+
+/**
+ * Whether a pathname (English or Hindi) is a page this site builds. Anything
+ * else is the 404, whose language toggle has no twin to point at and sends
+ * the visitor to the other language's home page instead.
+ */
+export function isKnownPath(c: Content, path: string): boolean {
+  const english = localeOfPath(path) === 'hi' ? alternatePath(path) : path;
+  if (FIXED_PATHS.includes(english)) return true;
+  if (c.services.some((s) => english === `/services/${s.slug}`)) return true;
+  return bookableServices(c).some((s) => english === `/book/${s.slug}` || english === `/booked/${s.slug}`);
 }

@@ -29,7 +29,7 @@ export function homeMetadata(c: Content, locale: Locale): Metadata {
 export function HomePage({ c, locale }: { c: Content; locale: Locale }) {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(faqPage(c))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(faqPage(c, locale))} />
       <Hero c={c} locale={locale} />
       <Services c={c} locale={locale} />
       <About c={c} />

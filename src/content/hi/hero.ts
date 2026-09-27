@@ -20,6 +20,8 @@ export const hero = {
   secondaryCta: { label: 'सेवाएँ देखें', href: '/#services' },
   /** Ginni Sharma's own words, in English as she wrote them. Only the label is translated. */
   proof: {
+    /** The client wrote in English; the quote stays in English on every page. */
+    lang: 'en',
     quote: 'She is patient, gives you ample time to explain your concerns, and listens without rushing…',
     name: 'Ginni Sharma',
     role: 'क्लाइंट',

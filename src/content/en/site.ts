@@ -34,6 +34,8 @@ export const site = {
   practisingSince,
   credential: 'Ph.D. in Astrology & Vastu',
   replyWithin: 'within 24 hours',
+  /** Ends a sentence the page builds from parts (a form message's heading). */
+  fullStop: '.',
 } as const;
 
 /**

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getContent } from '@/content';
-import { indexedPaths, sitePageGroups } from './site-pages';
+import { indexedPaths, isKnownPath, sitePageGroups } from './site-pages';
+import { localePath } from './locale-routing';
 
 const c = getContent('en');
 const hi = getContent('hi');
@@ -36,4 +37,24 @@ describe('site pages', () => {
     expect(hindi).toEqual(english.map((path) => (path === '/' ? '/hi' : `/hi${path}`)));
     expect(indexedPaths(hi, 'hi', false)).toContain('/hi/services/vastu');
   });
+});
+
+describe('isKnownPath', () => {
+  it.each([
+    '/', '/about', '/teaching', '/contact', '/which-reading',
+    '/services/vedic-astrology', '/services/numerology', '/services/vastu',
+    '/book', '/book/vedic-astrology', '/book/numerology',
+    '/booked', '/booked/vedic-astrology', '/booked/numerology',
+    '/terms', '/refund-policy', '/privacy', '/sitemap.html',
+  ])('%s is a page, in English and in Hindi', (path) => {
+    expect(isKnownPath(c, path)).toBe(true);
+    expect(isKnownPath(c, localePath('hi', path))).toBe(true);
+  });
+
+  it.each(['/nope', '/hi/nope', '/services/nope', '/hi/services/nope', '/book/vastu', '/hi/booked/vastu', '/about/more'])(
+    '%s is not a page',
+    (path) => {
+      expect(isKnownPath(c, path)).toBe(false);
+    },
+  );
 });

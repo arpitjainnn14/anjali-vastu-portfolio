@@ -16,10 +16,10 @@ import { TestimonialsRail } from '@/components/sections/TestimonialsRail';
 export function Testimonials({ c }: { c: Content }) {
   const { testimonialsSection } = c;
   /*
-   * TestimonialsRail (a client component, still on its own `@/content`
-   * import until Task 3) types its `quotes` prop as the literal `Testimonial`
-   * union for `lang`; a bundle's testimonials are the same shape with `lang`
-   * widened to `string`, so this narrows back for the prop.
+   * TestimonialsRail types its `quotes` prop with `Testimonial`, whose `lang`
+   * is the literal 'en' | 'hi'; a bundle's testimonials are the same shape
+   * with `lang` widened to `string` (see `Content`), so this narrows back for
+   * the prop.
    */
   const quotes = usableTestimonials(c.testimonials) as Testimonial[];
   if (quotes.length === 0) return null;

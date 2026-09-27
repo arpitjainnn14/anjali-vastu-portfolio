@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { getContent } from './index';
+import { isTodo } from '@/lib/todo';
 import { brand } from './shared';
 
 /**
  * Structural parity between the `en` and `hi` bundles: on top of the
  * type-level check (`Content` in locale.ts), this walks both bundles at
  * runtime and confirms neither is missing a field, an array item, or a
- * translated string the other one has.
+ * translated string the other one has, and that a TODO marker in one sits in
+ * the same place in the other.
  *
  * Identifiers that must not be translated (slugs, icons, hrefs) are checked
  * separately, in identifiers.test.ts.
@@ -41,6 +43,9 @@ function walk(a: unknown, b: unknown, path: string): void {
   if (typeA === 'string') {
     expect((a as string).length, `${path}: en has an empty string`).toBeGreaterThan(0);
     expect((b as string).length, `${path}: hi has an empty string`).toBeGreaterThan(0);
+    // A fact still missing in one language is missing in the other: a
+    // translation never fills in a TODO, and never drops one.
+    expect(isTodo(b as string), `${path}: TODO in one language only`).toBe(isTodo(a as string));
     return;
   }
 

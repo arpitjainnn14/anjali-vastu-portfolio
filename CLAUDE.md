@@ -6,7 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Marketing site for Anjali Jain's astrology, numerology and Vastu practice. Its job is to get a visitor to message her on WhatsApp (and, per the booking work in progress, to book and pay). Next.js 16 App Router, React 19, TypeScript, Tailwind v4, GSAP.
 
-**Read `README.md` before changing UI or copy.** It holds the source-of-truth conventions: the directory layout and one-way dependency rule (`app → sections/layout → ui/art → lib → content`), copy living in `src/content/` (imported via `@/content`), `TODO(...)` markers for unknown facts, design tokens, `data-reveal` motion hooks, `SmartLink`/`whatsappHref()`, `data-hides-sticky`, and the list of design patterns banned after the Sept 2026 "reads as AI-generated" audit.
+The site is bilingual: English at its usual URLs and Hindi under `/hi`, with copy in `src/content/en` and `src/content/hi` (every copy edit goes in both; see "Two languages" in `README.md`).
+
+**Read `README.md` before changing UI or copy.** It holds the source-of-truth conventions: the directory layout and one-way dependency rule (`app → pages/sections/layout → ui/art/locale → lib → content`), copy living in `src/content/` (imported via `@/content`), `TODO(...)` markers for unknown facts, design tokens, `data-reveal` motion hooks, `SmartLink`/`whatsappHref()`, `data-hides-sticky`, and the list of design patterns banned after the Sept 2026 "reads as AI-generated" audit.
 
 ## Commands
 
@@ -20,7 +22,7 @@ npm run preview      # OpenNext build + run the real Worker locally in workerd
 npm run deploy       # OpenNext build + deploy to Cloudflare
 ```
 
-`npm test` runs Vitest unit tests for the plain-TypeScript modules in `src/lib` and `src/content`; there are no component or browser tests. `src/content/content.test.ts` scans every content file for promises that online booking made false ("booking desk", "no payment is asked", fees "not listed here"), so reword any copy it flags rather than deleting the test. Verify UI changes with lint, a type check, `npm test`, `npm run build`, and — for anything touching routing, API routes or env — `npm run preview`, since the Worker runtime can diverge from `next dev`.
+`npm test` runs Vitest unit tests for the plain-TypeScript modules in `src/lib` and `src/content`; there are no component or browser tests. `src/content/en/content.test.ts` scans every content file for promises that online booking made false ("booking desk", "no payment is asked", fees "not listed here"), so reword any copy it flags rather than deleting the test. Verify UI changes with lint, a type check, `npm test`, `npm run build`, and — for anything touching routing, API routes or env — `npm run preview`, since the Worker runtime can diverge from `next dev`.
 
 ## Hosting: Cloudflare Workers Free
 

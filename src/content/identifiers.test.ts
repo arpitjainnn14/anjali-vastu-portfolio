@@ -63,6 +63,17 @@ function identifiersOf(c: Content) {
   };
 }
 
+/**
+ * The clients' own words: quoted exactly as they wrote them, in the language
+ * they wrote them in, on every page whatever its language.
+ */
+function clientWordsOf(c: Content) {
+  return {
+    testimonials: c.testimonials.map((t) => ({ quote: t.quote, title: t.title, name: t.name })),
+    heroProof: { quote: c.hero.proof.quote, name: c.hero.proof.name, lang: c.hero.proof.lang },
+  };
+}
+
 describe('identifiers in the content bundles', () => {
   it.each(locales.map((l) => [l]))('every service and teaching-track icon in %s is a serviceIcons key', (locale) => {
     for (const icon of iconsOf(getContent(locale))) {
@@ -74,6 +85,13 @@ describe('identifiers in the content bundles', () => {
     const en = identifiersOf(getContent('en'));
     for (const locale of locales) {
       expect(identifiersOf(getContent(locale)), locale).toEqual(en);
+    }
+  });
+
+  it("keep the clients' own words untranslated", () => {
+    const en = clientWordsOf(getContent('en'));
+    for (const locale of locales) {
+      expect(clientWordsOf(getContent(locale)), locale).toEqual(en);
     }
   });
 });

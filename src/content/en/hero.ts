@@ -21,6 +21,8 @@ export const hero = {
    * substring of her words; the ellipsis marks the cut.
    */
   proof: {
+    /** The client wrote in English; the quote stays in English on every page. */
+    lang: 'en',
     quote: 'She is patient, gives you ample time to explain your concerns, and listens without rushing…',
     name: 'Ginni Sharma',
     role: 'client',

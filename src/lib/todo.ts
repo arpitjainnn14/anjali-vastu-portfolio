@@ -1,5 +1,6 @@
 /**
- * TODO markers in `content.ts` are facts nobody has supplied yet.
+ * TODO markers in `src/content/` (both language bundles, `en/` and `hi/`, in
+ * the same places) are facts nobody has supplied yet.
  *
  * DESIGN.md is explicit: do not invent a value, and leave the marker in place so
  * a grep for the marker finds them all before launch. So the markers stay in

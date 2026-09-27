@@ -77,7 +77,11 @@ export function Hero({ c, locale }: { c: Content; locale: Locale }) {
             which is the stock "pull quote" component every site ships.
           */}
           <figure className="enter order-6 m-0 max-w-[48ch] lg:order-none" style={delay(0.75)}>
-            <blockquote className="m-0 -indent-[0.42em] font-display text-[17px] italic leading-[1.55] text-ink md:text-[18px]">
+            {/* Her words, in the language she wrote them in; marked when that isn't the page's. */}
+            <blockquote
+              lang={hero.proof.lang === locale ? undefined : hero.proof.lang}
+              className="m-0 -indent-[0.42em] font-display text-[17px] italic leading-[1.55] text-ink md:text-[18px]"
+            >
               “{hero.proof.quote}”
             </blockquote>
             <figcaption className="mt-1.5 t-caption text-muted">

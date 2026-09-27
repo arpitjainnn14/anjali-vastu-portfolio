@@ -89,6 +89,8 @@ export const servicesSection = {
   /** After the price: "₹2,151, तीन महीने तक कॉल की सुविधा के साथ". */
   feeIncludes: 'तीन महीने तक कॉल की सुविधा के साथ',
   needLabel: 'आपको चाहिए',
+  /** What a service needs, as it reads after "आपको चाहिए:", with a पूर्ण विराम. */
+  needLine: (value: string) => `${value}।`,
   footnote: 'हर consultation हिंदी या अंग्रेज़ी में, पलवल में मिलकर या फ़ोन पर हो सकता है।',
 } as const;
 

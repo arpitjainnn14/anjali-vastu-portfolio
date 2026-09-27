@@ -15,7 +15,7 @@ import { siteGraph, jsonLd } from '@/lib/structured-data';
 export function SiteBody({ c, locale, children }: { c: Content; locale: Locale; children: React.ReactNode }) {
   return (
     <LocaleProvider locale={locale}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(siteGraph(c, locale))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(siteGraph())} />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-100 focus:rounded-control focus:bg-sindoor focus:px-5 focus:py-3 focus:text-card focus:t-small focus:font-semibold"

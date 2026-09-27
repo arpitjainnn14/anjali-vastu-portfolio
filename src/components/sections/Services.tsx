@@ -74,7 +74,7 @@ export function Services({ c, locale }: { c: Content; locale: Locale }) {
                     <p className="t-body m-0 line-clamp-3 max-w-[52ch] text-body md:line-clamp-none">{service.summary}</p>
                     <p className="t-small m-0 text-muted">
                       <span className="font-semibold text-ink">{servicesSection.needLabel}:</span>{' '}
-                      {service.youWillNeed.charAt(0).toLowerCase() + service.youWillNeed.slice(1)}.
+                      {servicesSection.needLine(service.youWillNeed)}
                       <span aria-hidden="true" className="px-2">·</span>
                       {serviceFeeLine(c, service)}
                     </p>

@@ -25,6 +25,8 @@ export const site = {
   practisingSince,
   credential: 'ज्योतिष और वास्तु में Ph.D.',
   replyWithin: '24 घंटे के अंदर',
+  /** Ends a sentence the page builds from parts (a form message's heading). */
+  fullStop: '।',
 } as const;
 
 /** The seal is the same stamp in both languages; only the screen-reader text is translated. */

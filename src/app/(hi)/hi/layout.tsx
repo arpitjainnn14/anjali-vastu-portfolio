@@ -17,11 +17,16 @@ import '../../globals.css';
  */
 const c = getContent('hi');
 
-/* Only Hindi pages load it. */
+/*
+ * Only Hindi pages use it. Not preloaded: both root layouts share one CSS
+ * chunk, so a preload here was also sent on every English page (six files,
+ * ~233 KB). Without it the browser fetches Mukta only when a Hindi page asks.
+ */
 const mukta = Mukta({
   weight: ['400', '500', '600'],
   subsets: ['devanagari', 'latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-mukta',
 });
 

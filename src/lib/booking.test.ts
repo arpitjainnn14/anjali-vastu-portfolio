@@ -62,7 +62,11 @@ describe('Cal ID links', () => {
   });
 
   it('links to /book with the service preselected', () => {
-    expect(bookPageHref(bookable('numerology'))).toBe('/book/numerology');
+    expect(bookPageHref(bookable('numerology'), 'en')).toBe('/book/numerology');
+  });
+
+  it('keeps a Hindi visitor on the Hindi booking page', () => {
+    expect(bookPageHref(bookable('numerology'), 'hi')).toBe('/hi/book/numerology');
   });
 });
 
@@ -83,7 +87,7 @@ describe('findBookable', () => {
 describe('serviceCta', () => {
   it('offers WhatsApp everywhere while booking is not live', () => {
     for (const s of c.services) {
-      const cta = serviceCta(c, s, false);
+      const cta = serviceCta(c, s, 'en', false);
       expect(cta.kind).toBe('whatsapp');
       expect(cta.href.startsWith('https://wa.me/')).toBe(true);
       expect(cta.label).toBe(c.serviceDetail.ctaLabel);
@@ -91,19 +95,23 @@ describe('serviceCta', () => {
   });
 
   it('offers booking for a bookable service once live', () => {
-    expect(serviceCta(c, service('numerology'), true)).toEqual({
+    expect(serviceCta(c, service('numerology'), 'en', true)).toEqual({
       kind: 'book',
       href: '/book/numerology',
       label: 'Book a consultation · ₹2,151',
     });
   });
 
+  it('sends a Hindi visitor to the Hindi booking page', () => {
+    expect(serviceCta(getContent('hi'), service('numerology'), 'hi', true).href).toBe('/hi/book/numerology');
+  });
+
   it('keeps WhatsApp for Vastu even once live', () => {
-    expect(serviceCta(c, service('vastu'), true).kind).toBe('whatsapp');
+    expect(serviceCta(c, service('vastu'), 'en', true).kind).toBe('whatsapp');
   });
 
   it('defaults to the live flag in content', () => {
-    expect(serviceCta(c, service('numerology')).kind).toBe(c.booking.live ? 'book' : 'whatsapp');
+    expect(serviceCta(c, service('numerology'), 'en').kind).toBe(c.booking.live ? 'book' : 'whatsapp');
   });
 });
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getContent } from '@/content';
-import { siteGraph } from './structured-data';
+import { serviceBreadcrumb, siteGraph } from './structured-data';
+import { siteUrl } from './site-url';
 
 const c = getContent('en');
 
@@ -40,5 +41,14 @@ describe('inLanguage', () => {
     const graphEn = siteGraph(c, 'en')['@graph'] as unknown as Array<Record<string, unknown>>;
     const websiteEn = graphEn.find((n) => n['@type'] === 'WebSite');
     expect(websiteEn?.inLanguage).toBe('en-IN');
+  });
+});
+
+describe('serviceBreadcrumb', () => {
+  it('points at the pages in the language being read, as the visible breadcrumb does', () => {
+    const service = c.services[0];
+    const items = (locale: 'en' | 'hi') => serviceBreadcrumb(c, service, locale).itemListElement.map((i) => i.item);
+    expect(items('en')).toEqual([`${siteUrl}/#services`, `${siteUrl}/services/${service.slug}`]);
+    expect(items('hi')).toEqual([`${siteUrl}/hi#services`, `${siteUrl}/hi/services/${service.slug}`]);
   });
 });

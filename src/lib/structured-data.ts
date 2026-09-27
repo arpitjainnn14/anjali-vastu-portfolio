@@ -1,6 +1,7 @@
 import type { Content, Locale } from '@/content';
 import { absoluteUrl, siteUrl } from './site-url';
 import type { Service } from './booking';
+import { localePath } from './locale-routing';
 
 /**
  * JSON-LD for search engines and AI answer engines.
@@ -126,8 +127,18 @@ export function serviceBreadcrumb(c: Content, service: Service, locale: Locale) 
     '@type': 'BreadcrumbList',
     inLanguage: inLanguageOf(locale),
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: c.serviceDetail.breadcrumbRoot, item: absoluteUrl('/#services') },
-      { '@type': 'ListItem', position: 2, name: service.name, item: absoluteUrl(`/services/${service.slug}`) },
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: c.serviceDetail.breadcrumbRoot,
+        item: absoluteUrl(localePath(locale, '/#services')),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: service.name,
+        item: absoluteUrl(localePath(locale, `/services/${service.slug}`)),
+      },
     ],
   };
 }

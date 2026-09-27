@@ -1,5 +1,6 @@
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
 import { bookableServices, bookPageHref } from './booking';
+import { localePath } from './locale-routing';
 
 /**
  * Every public page, grouped, for both site maps: sitemap.xml (search engines)
@@ -11,13 +12,17 @@ import { bookableServices, bookPageHref } from './booking';
  *
  * Left out of both: /booked (a thank-you page), /api, and the dev-only
  * Razorpay sandbox. /book pages appear only once `booking.live` is true.
+ *
+ * `locale` picks the language: Hindi pages list their `/hi/...` twins, so a
+ * visitor reading the Hindi map stays in Hindi. Whether the Hindi pages are in
+ * sitemap.xml at all is decided in app/sitemap.ts (`hindiLive`).
  */
 export type SitePage = { href: string; label: string; description: string; indexed: boolean };
 export type SitePageGroup = { heading: string; pages: SitePage[] };
 
-export function sitePageGroups(c: Content, live: boolean = c.booking.live): SitePageGroup[] {
+export function sitePageGroups(c: Content, locale: Locale, live: boolean = c.booking.live): SitePageGroup[] {
   const { groups, labels } = c.siteMap;
-  return [
+  const groupsInEnglishPaths: SitePageGroup[] = [
     {
       heading: groups.practice,
       pages: [
@@ -43,7 +48,7 @@ export function sitePageGroups(c: Content, live: boolean = c.booking.live): Site
       heading: groups.booking,
       pages: live
         ? bookableServices(c).map((s) => ({
-            href: bookPageHref(s),
+            href: bookPageHref(s, 'en'),
             label: `${labels.bookPrefix} ${s.name}`,
             description: s.meta.description,
             indexed: true,
@@ -63,10 +68,16 @@ export function sitePageGroups(c: Content, live: boolean = c.booking.live): Site
         },
       ],
     },
-  ].filter((group) => group.pages.length > 0);
+  ];
+  return groupsInEnglishPaths
+    .filter((group) => group.pages.length > 0)
+    .map((group) => ({
+      ...group,
+      pages: group.pages.map((page) => ({ ...page, href: localePath(locale, page.href) })),
+    }));
 }
 
 /** Paths for sitemap.xml: indexable pages only. */
-export function indexedPaths(c: Content, live: boolean = c.booking.live): string[] {
-  return sitePageGroups(c, live).flatMap((g) => g.pages.filter((p) => p.indexed).map((p) => p.href));
+export function indexedPaths(c: Content, locale: Locale, live: boolean = c.booking.live): string[] {
+  return sitePageGroups(c, locale, live).flatMap((g) => g.pages.filter((p) => p.indexed).map((p) => p.href));
 }

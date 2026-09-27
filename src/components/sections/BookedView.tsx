@@ -1,8 +1,24 @@
-import type { Content } from '@/content';
+import type { Metadata } from 'next';
+import type { Content, Locale } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
 import { ButtonLink } from '@/components/ui/Button';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 import { bookedCopy, detailsHref, type BookableService } from '@/lib/booking';
+import { pageMetadata } from '@/lib/metadata';
+
+/** Never indexed: a thank-you page, reached only from Cal ID. */
+export function bookedMetadata(c: Content, locale: Locale, path: string): Metadata {
+  return {
+    ...pageMetadata({
+      title: c.booking.booked.metaTitle,
+      description: c.booking.booked.metaDescription,
+      path,
+      locale,
+      c,
+    }),
+    robots: { index: false, follow: false },
+  };
+}
 
 /**
  * Where Cal ID sends a customer after paying. Its job is the one step Cal ID

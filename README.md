@@ -20,8 +20,11 @@ canonical URLs and the sitemap; `FORMINIT_API_KEY` is used by the contact form.
 
 ```
 src/
-  app/                  Routes only. Each page composes sections; no styling
-    api/contact/        logic or copy lives here.
+  app/                  Routes only. Each page renders a view; no styling
+    (en)/               logic or copy lives here. English pages, own root layout.
+    (hi)/hi/            The same pages at /hi, with a Hindi root layout.
+    global-not-found.tsx  The 404 for unmatched URLs (two root layouts need it).
+    api/contact/
     sitemap.ts, robots.ts  sitemap.xml and robots.txt; page list in lib/site-pages.ts
     sitemap.html/       The same list for people, linked from the footer.
 
@@ -35,7 +38,12 @@ src/
   components/
     ui/                 Primitives with no copy of their own: Button, SmartLink,
                         form fields, icons, Section / Container / SectionHeader.
-    layout/             Site chrome on every page: Nav, Footer, StickyWhatsApp.
+    layout/             Site chrome on every page: SiteBody, Nav, Footer,
+                        StickyWhatsApp.
+    pages/              One view per route, shared by the English and Hindi
+                        page files: HomePage, AboutPage, ServicePage, ...
+    locale/             LocaleProvider, the language toggle, the remembered-
+                        language redirect.
     sections/           Page sections: Hero, Services, About, Testimonials,
                         Teaching, Faq, Contact. Composed by the routes.
     art/                The kundli chart and its small mark.
@@ -47,9 +55,12 @@ src/
     contact-form.ts     Form validation, shared by browser and API route.
     todo.ts             Hides unsupplied TODO(...) facts at render.
     sections.ts         Which optional sections have content to show.
+    locale-routing.ts   localePath / alternatePath / localeMetadata: every
+                        internal link goes through localePath so Hindi pages
+                        link to Hindi pages.
 ```
 
-Dependencies point one way: `app → sections/layout → ui/art → lib → content`.
+Dependencies point one way: `app → sections/layout/pages → ui/art → lib → content`.
 A primitive in `ui/` never imports a section, and nothing imports from `app/`.
 
 ## Conventions

@@ -64,6 +64,13 @@ export const bookingEmbed: { scriptUrl: string; origin: string } | null = {
  */
 export const hindiLive = false;
 
+/**
+ * Each language's name in its own script, for the language toggle: an English
+ * page offers "हिंदी" and a Hindi page offers "English", whichever language
+ * the page around it is in.
+ */
+export const languageNames = { en: 'English', hi: 'हिंदी' } as const;
+
 export const practisingSince = 2017;
 
 /** City and state, the same in structured data and in visible copy either language. */

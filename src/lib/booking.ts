@@ -1,6 +1,7 @@
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
 import { cal } from '@/content/shared';
 import { whatsappHref } from './whatsapp';
+import { localePath } from './locale-routing';
 
 /**
  * Which services are booked online, where their calendars live, and what a
@@ -40,8 +41,9 @@ export function calUrl(service: BookableService): string {
   return `${cal.baseUrl}/${calLink(service)}`;
 }
 
-export function bookPageHref(service: BookableService): string {
-  return `/book/${service.slug}`;
+/** The site's own booking page for this service, in the visitor's language. */
+export function bookPageHref(service: BookableService, locale: Locale): string {
+  return localePath(locale, `/book/${service.slug}`);
 }
 
 /** The bookable service with this slug; undefined for Vastu or anything unknown. */
@@ -59,11 +61,16 @@ export function serviceFeeLine(c: Content, service: Service): string {
 export type ServiceCta = { kind: 'book' | 'whatsapp'; href: string; label: string };
 
 /** A service page's main button: booking once live, WhatsApp otherwise. */
-export function serviceCta(c: Content, service: Service, live: boolean = c.booking.live): ServiceCta {
+export function serviceCta(
+  c: Content,
+  service: Service,
+  locale: Locale,
+  live: boolean = c.booking.live,
+): ServiceCta {
   if (live && isBookable(service)) {
     return {
       kind: 'book',
-      href: bookPageHref(service),
+      href: bookPageHref(service, locale),
       label: c.booking.ctaLabel(service.booking.fee.display),
     };
   }

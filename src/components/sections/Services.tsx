@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
 import { Section, Container, SectionHeader } from '@/components/ui/Section';
 import { serviceIcons, type ServiceIconKey, ArrowRightIcon } from '@/components/ui/Icons';
 import { serviceFeeLine } from '@/lib/booking';
+import { localePath } from '@/lib/locale-routing';
 
 /**
  * Services, as a numbered index rather than three identical cards.
@@ -17,7 +18,7 @@ import { serviceFeeLine } from '@/lib/booking';
  * peeks in from the right so the swipe needs no instruction. From `md` up the
  * cards dissolve back into the desktop rows.
  */
-export function Services({ c }: { c: Content }) {
+export function Services({ c, locale }: { c: Content; locale: Locale }) {
   const { services, servicesSection, picker } = c;
 
   return (
@@ -45,7 +46,7 @@ export function Services({ c }: { c: Content }) {
                 data-reveal-item
               >
                 <Link
-                  href={`/services/${service.slug}`}
+                  href={localePath(locale, `/services/${service.slug}`)}
                   className={
                     'group relative flex w-full flex-col gap-3 rounded-card border border-line bg-card p-5 no-underline ' +
                     'transition-colors duration-300 pointer-fine:hover:bg-paper ' +
@@ -100,7 +101,7 @@ export function Services({ c }: { c: Content }) {
           WhatsApp. Here it is one line.
         */}
         <Link
-          href={picker.href}
+          href={localePath(locale, picker.href)}
           className="group mt-6 inline-flex min-h-11 items-center gap-2 text-[15.5px] font-semibold text-sindoor no-underline md:mt-8"
           data-reveal
         >

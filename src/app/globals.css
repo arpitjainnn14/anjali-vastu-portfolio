@@ -47,6 +47,16 @@
   --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+/*
+ * Hindi pages (app/(hi)/hi/layout.tsx). The Latin faces stay first, for the
+ * English words and the business name; Devanagari, which they do not have,
+ * falls through to Tiro Devanagari Hindi in headings and Mukta in body text.
+ */
+html:lang(hi) {
+  --font-display: var(--font-fraunces), var(--font-tiro-deva), "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-hanken), var(--font-mukta), "Helvetica Neue", Helvetica, sans-serif;
+}
+
 /* ---------------------------------------------------------------------------
    Type scale. Mobile floor, desktop ceiling at 768px.
    Fraunces carries the headings at its "soft" setting, which rounds the

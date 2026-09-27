@@ -7,6 +7,7 @@ import { useContent } from '@/components/locale/LocaleProvider';
 import { whatsappHref } from '@/lib/whatsapp';
 import { serviceIcons, type ServiceIconKey, WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
+import { localePath } from '@/lib/locale-routing';
 
 /**
  * "Which reading do I need?" — three questions, then one recommendation with
@@ -62,7 +63,7 @@ function scoreOf(c: Content, answers: Answer[]): ServiceSlug {
 }
 
 export function ServicePicker({ showIntro = true }: { showIntro?: boolean }) {
-  const { c } = useContent();
+  const { c, locale } = useContent();
   const { picker, services } = c;
   const [answers, setAnswers] = useState<Answer[]>([]);
 
@@ -190,7 +191,7 @@ export function ServicePicker({ showIntro = true }: { showIntro?: boolean }) {
               </ButtonLink>
 
               <Link
-                href={`/services/${service.slug}`}
+                href={localePath(locale, `/services/${service.slug}`)}
                 className="group inline-flex min-h-11 items-center gap-2 text-[15.5px] font-semibold text-sindoor no-underline"
               >
                 {picker.labels.readMore}

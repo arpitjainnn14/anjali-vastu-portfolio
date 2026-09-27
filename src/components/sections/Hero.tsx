@@ -1,5 +1,6 @@
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
+import { localePath } from '@/lib/locale-routing';
 import { Kundli } from '@/components/art/Kundli';
 import { WhatsAppIcon, ArrowRightIcon } from '@/components/ui/Icons';
 import { ButtonLink } from '@/components/ui/Button';
@@ -26,7 +27,7 @@ function delay(seconds: number) {
   return { '--d': `${seconds}s` } as React.CSSProperties;
 }
 
-export function Hero({ c }: { c: Content }) {
+export function Hero({ c, locale }: { c: Content; locale: Locale }) {
   const { hero } = c;
 
   return (
@@ -64,7 +65,7 @@ export function Hero({ c }: { c: Content }) {
               <WhatsAppIcon size={19} />
               {hero.primaryCta.label}
             </ButtonLink>
-            <ButtonLink href={hero.secondaryCta.href} variant="secondary">
+            <ButtonLink href={localePath(locale, hero.secondaryCta.href)} variant="secondary">
               {hero.secondaryCta.label}
               <ArrowRightIcon size={16} className="nudge" />
             </ButtonLink>

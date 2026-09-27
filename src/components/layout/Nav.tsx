@@ -10,6 +10,8 @@ import { Wordmark } from '@/components/ui/Wordmark';
 import { KundliMark } from '@/components/art/Kundli';
 import { liveLinks } from '@/lib/sections';
 import { ButtonLink } from '@/components/ui/Button';
+import { LanguageToggle } from '@/components/locale/LanguageToggle';
+import { localePath } from '@/lib/locale-routing';
 
 /**
  * The nav bar and the mobile drawer.
@@ -26,9 +28,14 @@ import { ButtonLink } from '@/components/ui/Button';
  */
 
 export function Nav() {
-  const { c } = useContent();
+  const { c, locale } = useContent();
   const { nav, site, contactSection, testimonials } = c;
-  const LINKS = liveLinks(nav.links, testimonials);
+  /* Content holds English paths; a Hindi page links to Hindi pages. */
+  const LINKS = liveLinks(nav.links, testimonials).map((link) => ({
+    ...link,
+    href: localePath(locale, link.href),
+  }));
+  const home = localePath(locale, '/');
 
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(true);
@@ -111,7 +118,7 @@ export function Nav() {
           }`}
         />
         <div className="relative mx-auto flex h-16 max-w-[1440px] items-center justify-between px-6 md:h-20 md:px-20">
-          <Link href="/" className="group flex min-h-11 items-center gap-3 no-underline md:min-h-0">
+          <Link href={home} className="group flex min-h-11 items-center gap-3 no-underline md:min-h-0">
             <KundliMark size={22} className="text-sindoor transition-transform duration-500 group-hover:rotate-90" />
             <Wordmark className="text-[17px] tracking-[-0.01em] text-ink md:text-[19px]" />
           </Link>
@@ -129,6 +136,7 @@ export function Nav() {
                 {link.label}
               </Link>
             ))}
+            <LanguageToggle className="nav-link text-[15.5px] font-medium text-body no-underline transition-colors duration-200 hover:text-ink" />
           </nav>
 
           {/* Mobile */}
@@ -164,7 +172,7 @@ export function Nav() {
           <div className="flex min-h-full flex-col px-6 pb-10">
             <div className="flex h-16 items-center justify-between">
               <Link
-                href="/"
+                href={home}
                 onClick={() => setOpen(false)}
                 className="flex min-h-11 items-center gap-3 no-underline"
               >
@@ -186,6 +194,11 @@ export function Nav() {
                 </svg>
               </button>
             </div>
+
+            <LanguageToggle
+              onNavigate={() => setOpen(false)}
+              className="mt-6 inline-flex min-h-11 items-center self-start t-small font-semibold text-sindoor no-underline"
+            />
 
             <nav className="mt-10 flex flex-col border-t border-line-strong" aria-label={nav.labels.main}>
               {LINKS.map((link, i) => (

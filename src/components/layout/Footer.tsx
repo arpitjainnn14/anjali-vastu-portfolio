@@ -1,14 +1,15 @@
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { KundliMark } from '@/components/art/Kundli';
 import { Seal } from '@/components/art/Seal';
 import { SmartLink } from '@/components/ui/SmartLink';
 import { liveLinks } from '@/lib/sections';
+import { localePath } from '@/lib/locale-routing';
 
 const FOOTER_LINK =
   'inline-flex min-h-11 items-center t-small text-cream-muted no-underline transition-colors duration-200 hover:text-cream md:min-h-0';
 
-export function Footer({ c }: { c: Content }) {
+export function Footer({ c, locale }: { c: Content; locale: Locale }) {
   const { footer } = c;
 
   return (
@@ -41,7 +42,7 @@ export function Footer({ c }: { c: Content }) {
             <nav key={column.heading} className="flex flex-col gap-3" aria-label={column.heading}>
               <span className="font-display text-[17px] text-haldi-light">{column.heading}</span>
               {liveLinks(column.links, c.testimonials).map((link) => (
-                <SmartLink key={link.href} href={link.href} className={FOOTER_LINK}>
+                <SmartLink key={link.href} href={localePath(locale, link.href)} className={FOOTER_LINK}>
                   {link.label}
                 </SmartLink>
               ))}

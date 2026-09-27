@@ -22,6 +22,7 @@ import {
   type FieldErrors,
   type ContactResult,
 } from '@/lib/contact-form';
+import { localePath } from '@/lib/locale-routing';
 
 /**
  * The contact form. All six states from section 6.
@@ -195,7 +196,7 @@ export function ContactForm() {
         error={errors.consent}
         aside={
           <Link
-            href="/privacy"
+            href={localePath(locale, '/privacy')}
             className="ink-link inline-flex min-h-11 items-center t-small text-sindoor md:min-h-0"
           >
             {form.consentLinkLabel}

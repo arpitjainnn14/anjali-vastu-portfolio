@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
+import { localeMetadata, localePath } from './locale-routing';
 
 type PageMeta = {
   /** Page title. Run through the layout's template unless `absolute` is set. */
   title: string;
   description: string;
+  /** The page's language-neutral (English) path; `locale` puts it under /hi. */
   path: string;
+  locale: Locale;
   absolute?: boolean;
   /** The page's content bundle, for the brand name and the share image's alt text. */
   c: Content;
@@ -33,21 +36,21 @@ function shareImage(c: Content) {
   };
 }
 
-export function pageMetadata({ title, description, path, absolute = false, c }: PageMeta): Metadata {
+export function pageMetadata({ title, description, path, locale, absolute = false, c }: PageMeta): Metadata {
   /* A title that already names the business does not repeat it. */
   const standalone = absolute || title.includes(c.site.brand);
   const shareTitle = standalone ? title : `${title} | ${c.site.brand}`;
   return {
     title: standalone ? { absolute: title } : title,
     description,
-    alternates: { canonical: path },
+    ...localeMetadata(locale, path),
     openGraph: {
       type: 'website',
-      locale: 'en_IN',
+      locale: locale === 'hi' ? 'hi_IN' : 'en_IN',
       siteName: c.site.brand,
       title: shareTitle,
       description,
-      url: path,
+      url: localePath(locale, path),
       images: [shareImage(c)],
     },
     twitter: {

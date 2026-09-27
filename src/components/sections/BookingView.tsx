@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { Content } from '@/content';
+import type { Content, Locale } from '@/content';
 import { Section, Container } from '@/components/ui/Section';
 import { ButtonLink } from '@/components/ui/Button';
 import { SmartLink } from '@/components/ui/SmartLink';
@@ -13,12 +13,18 @@ import { CalInline } from '@/components/ui/CalInline';
  * Kept out of search until booking is live: an indexed page offering a
  * booking that cannot yet be paid for is worse than no page.
  */
-export function bookingMetadata(c: Content, chosen: BookableService, path: string): Metadata {
+export function bookingMetadata(c: Content, locale: Locale, chosen: BookableService): Metadata {
   return {
     ...pageMetadata({
       title: c.booking.page.metaTitleFor(chosen.name),
       description: c.booking.page.metaDescription,
-      path,
+      /*
+       * The canonical points at /book/<service>, not /book: the two pages have
+       * the same content, and /book/<service> is the one form of the URL a
+       * visitor can also reach by picking a service.
+       */
+      path: bookPageHref(chosen, 'en'),
+      locale,
       c,
     }),
     ...(c.booking.live ? {} : { robots: { index: false, follow: false } }),
@@ -29,7 +35,7 @@ export function bookingMetadata(c: Content, chosen: BookableService, path: strin
  * Book and pay for a consultation. Cal ID does the calendar and the payment;
  * this view chooses the service and hands over.
  */
-export function BookingView({ c, chosen }: { c: Content; chosen: BookableService }) {
+export function BookingView({ c, locale, chosen }: { c: Content; locale: Locale; chosen: BookableService }) {
   const page = c.booking.page;
 
   return (
@@ -53,7 +59,7 @@ export function BookingView({ c, chosen }: { c: Content; chosen: BookableService
               */
               <a
                 key={service.slug}
-                href={bookPageHref(service)}
+                href={bookPageHref(service, locale)}
                 aria-current={current ? 'page' : undefined}
                 className={
                   'inline-flex min-h-11 items-center rounded-control border px-5 t-small font-semibold no-underline transition-colors duration-200 ' +

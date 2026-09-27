@@ -133,14 +133,13 @@ export function reconcile(payments: Payment[], bookings: Booking[], unreadable: 
 
   const matchedIds = new Set<string>();
   for (const [root, chain] of chains) {
-    if (!chain.some((b) => b.price > 0)) continue;
-
     const accepted = chain.find((b) => b.status === 'ACCEPTED');
     const pending = chain.find((b) => b.status === 'PENDING' || b.status === 'AWAITING_HOST');
     const latest = [...chain].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
     const shown = accepted ?? pending ?? latest;
     const person = { name: shown.firstName, bookingStart: shown.startTime };
     const kept = keptByChain.get(root) ?? [];
+    const priced = chain.some((b) => b.price > 0);
 
     for (const p of kept) {
       const expected = p.orderId ? calAmountOfKey.get(p.orderId) : undefined;
@@ -165,7 +164,12 @@ export function reconcile(payments: Payment[], bookings: Booking[], unreadable: 
     const first = kept[0];
     const payIds = first ? { amount: first.amount, paymentId: first.id, orderId: first.orderId } : {};
     if (accepted) {
-      if (kept.length === 0 && !fresh(accepted.createdAt)) add('booking_no_payment', accepted.createdAt, person);
+      // Booking with price > 0 and no captured payment. Not raised when the chain starts with
+      // a reschedule of a booking older than the window (that original was checked while in window).
+      const rootBooking = byUid.get(root)!;
+      if (priced && kept.length === 0 && !fresh(accepted.createdAt) && !rootBooking.fromReschedule) {
+        add('booking_no_payment', accepted.createdAt, person);
+      }
       if (kept.length === 1 && calAmountOfKey.get(first.orderId ?? '') === first.amount) matchedIds.add(first.id);
     } else if (pending) {
       if (first) add('paid_booking_unconfirmed', first.createdAt, { ...person, ...payIds });

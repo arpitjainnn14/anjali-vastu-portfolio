@@ -88,6 +88,14 @@ describe('reconcile', () => {
     expect(run([], [booking({ price: 0, payments: [] })]).findings).toEqual([]);
   });
 
+  it('a kept payment is still checked when the event is now free', () => {
+    expect(kinds(run([payment()], [booking({ status: 'CANCELLED', price: 0 })]))).toEqual(['cancelled_not_refunded']);
+  });
+
+  it('a reschedule of a booking older than the window is not flagged as unpaid', () => {
+    expect(run([], [booking({ uid: 'bk_new', fromReschedule: 'bk_outside', payments: [] })]).findings).toEqual([]);
+  });
+
   it('failed payments are only counted', () => {
     const r = run([payment({ status: 'failed' })], []);
     expect(r.findings).toEqual([]);

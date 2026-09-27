@@ -101,7 +101,7 @@ cover the **previous IST calendar day**. Payments created in the last
 | Matched | Captured payment linked to an accepted booking, amount = Cal ID's payment record | ✅ counted |
 | Paid, no booking | Captured payment (not fully refunded) linked to no booking. Anjali takes no other Razorpay payments, so every unlinked payment is treated as this. | 🔴 |
 | Paid, booking not confirmed | Captured payment linked to a booking that is still pending | 🔴 |
-| Booking, no payment | Booking with price > 0 and no captured payment on it or on its reschedule chain | 🔴 |
+| Booking, no payment | Accepted booking with price > 0 and no captured payment on it or on its reschedule chain. Not raised when the chain starts with a reschedule of a booking older than the 30-day window (that original was checked while it was in the window). Pending bookings without payment are abandoned checkouts; cancelled or rejected ones without money need nothing. | 🔴 |
 | Double charge | More than one captured payment linked to one booking | 🔴 |
 | Wrong amount | Razorpay's captured amount ≠ the amount in Cal ID's payment record for the same payment. (Not the current event price: a later price change must not flag old bookings.) | 🔴 |
 | Held, not taken | Payment `authorized` for more than 24 hours | 🟠 |
@@ -110,7 +110,7 @@ cover the **previous IST calendar day**. Payments created in the last
 | Cancelled, not refunded | Cancelled booking with a captured, unrefunded payment | 🟡 listed, human decides |
 | Refunded | Payment with `amount_refunded > 0` | ℹ️ listed |
 | Failed | `failed` payment with no booking | counted only |
-| Free | Booking with price 0 | ignored |
+| Free | Booking with price 0 and no kept payment | ignored |
 
 **Reschedules.** Cal ID creates a new booking and links it with
 `fromReschedule`; the payment stays on the original. A booking is paid if any

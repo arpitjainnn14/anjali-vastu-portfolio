@@ -22,7 +22,8 @@ canonical URLs and the sitemap; `FORMINIT_API_KEY` is used by the contact form.
 src/
   app/                  Routes only. Each page composes sections; no styling
     api/contact/        logic or copy lives here.
-    sitemap.ts, robots.ts
+    sitemap.ts, robots.ts  sitemap.xml and robots.txt; page list in lib/site-pages.ts
+    sitemap.html/       The same list for people, linked from the footer.
 
   content/              Every string a visitor reads, one module per area.
     index.ts            Import from '@/content', never from a module directly.

@@ -30,6 +30,7 @@ export * from './en/faq';
 export * from './en/contact';
 export * from './en/privacy';
 export * from './en/policies';
+export * from './en/sitemap';
 
 export * from './locale';
 

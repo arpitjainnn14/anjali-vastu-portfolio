@@ -1,7 +1,7 @@
 /** The English content bundle: every string an English-reading visitor sees. */
 
 import { site, seal, contact, whatsappMessages } from './site';
-import { nav, footer } from './navigation';
+import { nav, footer, notFound } from './navigation';
 import { hero } from './hero';
 import {
   services,
@@ -48,4 +48,5 @@ export const en = {
   refundPolicy,
   policyPages,
   siteMap,
+  notFound,
 } as const;

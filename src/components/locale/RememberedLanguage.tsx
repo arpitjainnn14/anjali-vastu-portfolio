@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { hindiLive } from '@/content/shared';
 import { LANGUAGE_STORAGE_KEY } from '@/components/locale/LanguageToggle';
+import { localePath } from '@/lib/locale-routing';
 
 /**
  * On the English home page only: a visitor who chose Hindi with the toggle
@@ -14,7 +15,10 @@ export function RememberedLanguage() {
   useEffect(() => {
     if (!hindiLive) return;
     try {
-      if (window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'hi') window.location.replace('/hi');
+      if (window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'hi') {
+        /* Keeps an anchor (/#services → /hi#services). */
+        window.location.replace(localePath('hi', `/${window.location.hash}`));
+      }
     } catch {
       /* Storage unavailable: stay on the English page. */
     }

@@ -46,7 +46,7 @@ export function Footer({ c, locale }: { c: Content; locale: Locale }) {
                   {link.label}
                 </SmartLink>
               ))}
-              {column.heading === 'Reach her' &&
+              {column.showMeta &&
                 footer.meta.map((item) => (
                   <span key={item} className="t-small">
                     {item}

@@ -34,6 +34,7 @@ export const footer = {
   columns: [
     {
       heading: 'Services',
+      showMeta: false,
       links: [
         { label: 'Vedic Astrology', href: '/services/vedic-astrology' },
         { label: 'Numerology', href: '/services/numerology' },
@@ -43,6 +44,7 @@ export const footer = {
     },
     {
       heading: 'Practice',
+      showMeta: false,
       links: [
         { label: 'About Anjali', href: '/about' },
         { label: 'Testimonials', href: '/#testimonials' },
@@ -60,6 +62,8 @@ export const footer = {
        * and WhatsApp is the route Anjali actually wants.
        */
       heading: 'Reach her',
+      /* Where `meta` (city, languages) is listed, under the links. */
+      showMeta: true,
       links: [{ label: 'WhatsApp', href: contact.whatsappUrl }],
     },
   ],
@@ -67,4 +71,12 @@ export const footer = {
   copyright: `© ${new Date().getFullYear()} ${site.brand}`,
   /** Under the wordmark: who the practice is. */
   practitioner: `${site.name}, ${site.credential}`,
+} as const;
+
+/** The page for an address that doesn't exist. */
+export const notFound = {
+  /** The browser tab. */
+  title: '404: This page could not be found.',
+  code: '404',
+  message: 'This page could not be found.',
 } as const;

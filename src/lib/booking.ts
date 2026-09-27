@@ -3,6 +3,7 @@ import {
   bookFirstStepLive,
   howItWorks,
   services,
+  servicesSection,
   serviceDetail,
   whatsappMessages,
   type Service,
@@ -43,9 +44,11 @@ export function findBookable(slug: string): BookableService | undefined {
   return bookableServices.find((s) => s.slug === slug);
 }
 
-/** The price for a service booked online, or `onRequest` for one that is not. */
-export function serviceFee(service: Service, onRequest: string): string {
-  return isBookable(service) ? service.booking.fee.display : onRequest;
+/** The price with what it includes, for the home list; `onRequest` when not booked online. */
+export function serviceFeeLine(service: Service, onRequest: string): string {
+  return isBookable(service)
+    ? `${service.booking.fee.display}, ${servicesSection.feeIncludes}`
+    : onRequest;
 }
 
 export type ServiceCta = { kind: 'book' | 'whatsapp'; href: string; label: string };

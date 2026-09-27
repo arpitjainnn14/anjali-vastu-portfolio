@@ -64,6 +64,9 @@ export default async function ServiceDetailPage({
       label: serviceDetail.glanceLabels.fees,
       value: isBookable(service) ? service.booking.fee.display : serviceDetail.glanceFees,
     },
+    ...(isBookable(service)
+      ? [{ label: serviceDetail.glanceLabels.includes, value: serviceDetail.glanceIncludes }]
+      : []),
   ];
 
   const cta = serviceCta(service);

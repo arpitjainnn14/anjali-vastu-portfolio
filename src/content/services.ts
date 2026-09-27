@@ -105,6 +105,8 @@ export const servicesSection = {
     'what is going on and she will point you to the right one.',
   /** Shown instead of a price for a service not booked online (Vastu). */
   priceOnRequest: 'Fees shared on WhatsApp',
+  /** After the price of a service booked online. */
+  feeIncludes: 'including three months of calls',
   needLabel: 'You will need',
   footnote: 'Every consultation is available in English or Hindi, in person in Palwal or by phone.',
 } as const;
@@ -177,11 +179,14 @@ export const serviceDetail = {
     length: 'Length',
     youWillNeed: 'You will need',
     fees: 'Fees',
+    includes: 'Includes',
   },
   glanceWhere: 'In person in Palwal, or by phone',
   /** Services booked online only. The calendar blocks an hour; she does not stop at one. */
   glanceLength: 'No fixed time limit',
   glanceFees: 'A package; details on WhatsApp',
+  /** Services booked online only: what the fee buys beyond the session. */
+  glanceIncludes: 'Three months of calling Anjali directly',
   ctaLabel: 'Ask about this on WhatsApp',
   reassurance: 'Anjali replies herself. There is no assistant.',
   otherHeading: 'Other consultations',

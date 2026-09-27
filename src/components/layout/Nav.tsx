@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { nav, site, contactSection } from '@/content';
 import { whatsappHref } from '@/lib/whatsapp';
 import { WhatsAppIcon } from '@/components/ui/Icons';
+import { Wordmark } from '@/components/ui/Wordmark';
 import { KundliMark } from '@/components/art/Kundli';
 import { liveLinks } from '@/lib/sections';
 import { ButtonLink } from '@/components/ui/Button';
@@ -110,9 +111,7 @@ export function Nav() {
         <div className="relative mx-auto flex h-16 max-w-[1440px] items-center justify-between px-6 md:h-20 md:px-20">
           <Link href="/" className="group flex min-h-11 items-center gap-3 no-underline md:min-h-0">
             <KundliMark size={22} className="text-sindoor transition-transform duration-500 group-hover:rotate-90" />
-            <span className="font-display text-[20px] leading-none tracking-[-0.01em] text-ink md:text-[22px]">
-              {site.name}
-            </span>
+            <Wordmark className="text-[17px] tracking-[-0.01em] text-ink md:text-[19px]" />
           </Link>
 
           {/* Desktop */}
@@ -168,9 +167,7 @@ export function Nav() {
                 className="flex min-h-11 items-center gap-3 no-underline"
               >
                 <KundliMark size={22} className="text-sindoor" />
-                <span className="font-display text-[20px] leading-none text-ink">
-                  {site.name}
-                </span>
+                <Wordmark className="text-[17px] text-ink" />
               </Link>
               <button
                 type="button"

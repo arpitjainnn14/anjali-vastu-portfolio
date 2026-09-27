@@ -11,7 +11,7 @@ import {
   findBookable,
   howItWorksSteps,
   serviceCta,
-  serviceFee,
+  serviceFeeLine,
   serviceReassurance,
 } from './booking';
 
@@ -74,16 +74,6 @@ describe('findBookable', () => {
     ['an empty slug', ''],
   ])('finds nothing for %s', (_label, slug) => {
     expect(findBookable(slug)).toBeUndefined();
-  });
-});
-
-describe('serviceFee', () => {
-  it('shows the price for a service booked online', () => {
-    expect(serviceFee(service('numerology'), 'On request')).toBe('₹2,151');
-  });
-
-  it('shows the fallback for Vastu', () => {
-    expect(serviceFee(service('vastu'), 'On request')).toBe('On request');
   });
 });
 
@@ -180,5 +170,17 @@ describe('detailsMessage', () => {
     expect(href.startsWith('https://wa.me/')).toBe(true);
     expect(href).toContain('%0A');
     expect(href).not.toContain('\n');
+  });
+});
+
+describe('serviceFeeLine', () => {
+  it('names the three months of calls after the price of a service booked online', () => {
+    expect(serviceFeeLine(service('numerology'), 'On request')).toBe(
+      '₹2,151, including three months of calls',
+    );
+  });
+
+  it('shows only the fallback for Vastu', () => {
+    expect(serviceFeeLine(service('vastu'), 'On request')).toBe('On request');
   });
 });

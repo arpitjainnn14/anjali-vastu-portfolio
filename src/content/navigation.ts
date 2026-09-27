@@ -1,6 +1,6 @@
 /** The nav bar and the footer. */
 
-import { contact } from './site';
+import { contact, site } from './site';
 
 export const nav = {
   /** Screen-reader labels for the bar and the mobile menu. */
@@ -62,5 +62,7 @@ export const footer = {
     },
   ],
   meta: ['Palwal, Haryana', 'English and Hindi'],
-  copyright: `© ${new Date().getFullYear()} Anjali Jain`,
+  copyright: `© ${new Date().getFullYear()} ${site.brand}`,
+  /** Under the wordmark: who the practice is. */
+  practitioner: `${site.name}, ${site.credential}`,
 } as const;

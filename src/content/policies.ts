@@ -5,6 +5,8 @@
  * corrects both before booking goes live; Razorpay's review reads them too.
  */
 
+import { site } from './site';
+
 export const terms = {
   heading: 'Terms of consultation',
   metaDescription:
@@ -18,6 +20,12 @@ export const terms = {
   reachLink: 'Message her on WhatsApp',
   reachNote: '. She answers these herself.',
   sections: [
+    {
+      heading: 'Who you are dealing with',
+      body:
+        `${site.brand} is run by ${site.name}, ${site.city}, ${site.state}. ` +
+        'Your consultation and your payment are with her.',
+    },
     {
       heading: 'What your fee covers',
       body:

@@ -1,6 +1,13 @@
 /** Who she is and how to reach her. The facts every other module leans on. */
 
 export const site = {
+  /**
+   * The business the site is branded as. `name` below stays the practitioner:
+   * copy about her, the seal and the Person in the structured data use it.
+   */
+  brand: 'Anjali Vastu & Astro Divine Solutions',
+  /** The header and footer wordmark, set on two lines so it fits beside the menu. */
+  brandLines: ['Anjali Vastu &', 'Astro Divine Solutions'],
   name: 'Anjali Jain',
   // Spelling confirmed as "Anjali Jain". Her Rotary badge reads ANJALLI;
   // that spelling is not used anywhere on this site.
@@ -10,7 +17,7 @@ export const site = {
    * and descriptions under ~160 so Google shows them whole; the search people
    * actually type ("astrologer in Palwal") leads.
    */
-  title: 'Astrologer in Palwal | Vedic Astrology & Vastu | Anjali Jain',
+  title: 'Anjali Vastu & Astro Divine Solutions | Astrologer in Palwal',
   description:
     'Vedic astrology, numerology and Vastu with Anjali Jain, Ph.D. in Astrology and Vastu. ' +
     'In person in Palwal or by phone, in English or Hindi.',

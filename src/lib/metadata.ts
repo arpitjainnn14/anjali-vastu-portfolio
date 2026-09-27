@@ -30,9 +30,9 @@ const shareImage = {
 };
 
 export function pageMetadata({ title, description, path, absolute = false }: PageMeta): Metadata {
-  /* "About Astrologer Anjali Jain | Anjali Jain" says her name twice. */
-  const standalone = absolute || title.includes(site.name);
-  const shareTitle = standalone ? title : `${title} | ${site.name}`;
+  /* A title that already names the business does not repeat it. */
+  const standalone = absolute || title.includes(site.brand);
+  const shareTitle = standalone ? title : `${title} | ${site.brand}`;
   return {
     title: standalone ? { absolute: title } : title,
     description,
@@ -40,7 +40,7 @@ export function pageMetadata({ title, description, path, absolute = false }: Pag
     openGraph: {
       type: 'website',
       locale: 'en_IN',
-      siteName: site.name,
+      siteName: site.brand,
       title: shareTitle,
       description,
       url: path,

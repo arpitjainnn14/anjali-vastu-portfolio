@@ -1,0 +1,18 @@
+/**
+ * Daily payments check. Compares Razorpay with Cal ID and posts to Telegram.
+ * Spec: docs/superpowers/specs/2026-09-26-payment-reconciliation-design.md
+ *
+ * No public URL: the only entry point is the cron trigger.
+ * Secrets (set in the dashboard, never here): RAZORPAY_KEY_ID,
+ * RAZORPAY_KEY_SECRET, CALID_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "anjali-payments-check",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "triggers": { "crons": ["30 2 * * *"] },
+  "observability": { "enabled": true }
+}

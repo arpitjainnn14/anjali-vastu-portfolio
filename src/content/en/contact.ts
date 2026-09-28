@@ -64,6 +64,15 @@ export const form = {
     'Learning from Anjali',
     'Not sure yet',
   ],
+  /** After the label of a field that can be left empty. */
+  optionalTag: 'optional',
+  /** The Topic menu's first line, before a choice is made. */
+  topicPlaceholder: 'Choose one',
+  /** Under a field, to help people write something she can answer. */
+  hints: {
+    phone: '10-digit mobile. WhatsApp works best.',
+    message: 'For example: “My son has finished Class 12. Which field would suit him?”',
+  },
   consentLabel: 'Anjali may keep my name and contact details so she can get back to me.',
   consentLinkLabel: 'How your details are used',
   /** Read only by screen readers that reach the hidden spam trap. */

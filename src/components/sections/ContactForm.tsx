@@ -152,6 +152,7 @@ export function ContactForm() {
           required
           disabled={busy}
           error={errors.phone}
+          hint={form.hints.phone}
         />
       </div>
 
@@ -165,14 +166,17 @@ export function ContactForm() {
           autoComplete="email"
           disabled={busy}
           error={errors.email}
+          optional={form.optionalTag}
         />
         <SelectField
           id={form.fields.service.id}
           name={form.fields.service.name}
           label={form.fields.service.label}
           options={form.serviceOptions}
+          placeholder={form.topicPlaceholder}
           disabled={busy}
           error={errors.service}
+          optional={form.optionalTag}
         />
       </div>
 
@@ -180,10 +184,11 @@ export function ContactForm() {
         id={form.fields.message.id}
         name={form.fields.message.name}
         label={form.fields.message.label}
-        rows={5}
+        rows={4}
         required
         disabled={busy}
         error={errors.message}
+        hint={form.hints.message}
       />
 
       <Honeypot id={form.fields.honeypot.id} name={form.fields.honeypot.name} label={form.honeypotLabel} />

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getContent, isLocale, type Locale } from '@/content';
 import { contact } from '@/content/shared';
 import { validate, hasErrors, type ContactValues, type ContactResult } from '@/lib/contact-form';
+import { contactAlert, sendTelegram } from '@/lib/telegram';
 
 /**
  * Contact form proxy.
@@ -116,6 +117,22 @@ export async function POST(request: Request) {
       });
       return json({ status: 'error' }, 502);
     }
+
+    /*
+     * Ping Anjali's phone. Awaited so the Worker does not stop before the
+     * request leaves; it never throws and gives up after five seconds, so a
+     * Telegram problem cannot turn a delivered message into an error.
+     */
+    await sendTelegram(
+      contactAlert({
+        name: values.name.trim(),
+        phone: values.phone.trim(),
+        email: values.email.trim(),
+        service: values.service.trim(),
+        message: values.message.trim(),
+        locale,
+      }),
+    );
 
     return json({ status: 'ok' });
   } catch (error) {

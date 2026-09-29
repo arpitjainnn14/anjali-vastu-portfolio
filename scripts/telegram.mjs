@@ -44,12 +44,18 @@ if (command === 'chat-id') {
   }
   const chats = new Map();
   for (const update of result.result) {
-    const chat = update.message?.chat;
-    if (chat) chats.set(chat.id, [chat.first_name, chat.last_name, chat.username && `@${chat.username}`].filter(Boolean).join(' '));
+    /* A group shows up when the bot is added (my_chat_member) or messaged. */
+    const chat = (update.message ?? update.my_chat_member ?? update.channel_post)?.chat;
+    if (!chat) continue;
+    const name = chat.title
+      ? `group "${chat.title}"`
+      : [chat.first_name, chat.last_name, chat.username && `@${chat.username}`].filter(Boolean).join(' ');
+    chats.set(chat.id, name);
   }
   if (chats.size === 0) {
-    console.log('No messages yet. Open the bot in Telegram, press Start (or send "hi"), then run this again.');
+    console.log('Nothing yet. In the group, send: /start@YourBotUsername  (or remove and re-add the bot), then run this again.');
   } else {
+    console.log('Use the group line (its id starts with a minus sign):');
     for (const [id, name] of chats) console.log(`TELEGRAM_CHAT_ID=${id}   (${name})`);
   }
 } else if (command === 'test') {

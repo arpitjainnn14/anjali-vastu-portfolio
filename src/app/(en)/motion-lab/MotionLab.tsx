@@ -10,6 +10,9 @@ type Testimonial = Content['testimonials'][number];
 import { Section, Container } from '@/components/ui/Section';
 import { Seal } from '@/components/art/Seal';
 
+import { ChartStory } from './ChartStory';
+import { Constellation } from './Constellation';
+
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------- 1. Seal stamps down when it scrolls into view ---------- */
@@ -271,7 +274,9 @@ export function MotionLab({
   opening,
   testimonials,
   portrait,
+  about,
 }: {
+  about: Pick<Content['about'], 'heading' | 'paragraphs' | 'facts' | 'portrait'>;
   portrait: { src: string; alt: string };
   seal: Content['seal'];
   opening: string;
@@ -285,6 +290,15 @@ export function MotionLab({
             <h1 className="t-h1 m-0 text-ink">Motion lab</h1>
             <p className="t-lead m-0 max-w-[50ch]">Throwaway previews for the About and Testimonials sections. Scroll down.</p>
           </div>
+        </Container>
+      </Section>
+
+      <ChartStory about={about} seal={seal} />
+
+      <Section className="bg-night">
+        <Container>
+          <h2 className="t-h2 mb-10 text-cream">Constellation of clients</h2>
+          <Constellation items={testimonials} />
         </Container>
       </Section>
 

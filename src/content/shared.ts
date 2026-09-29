@@ -40,10 +40,12 @@ export type Fee = typeof consultationFee;
 export const cal = { baseUrl: 'https://cal.id', username: 'anjali-jain13' } as const;
 
 /**
- * Off until Razorpay approves the live account. While false, service pages
- * keep their WhatsApp buttons, nothing links to /book, and /book is noindex.
+ * On since 2026-09-29: Razorpay is live, Cal ID's Razorpay app passed live
+ * payment, reschedule and refund tests, and the daily payments check runs.
+ * Set to false to hide booking again: service pages go back to their WhatsApp
+ * buttons, nothing links to /book, and /book becomes noindex.
  */
-export const bookingLive: boolean = false;
+export const bookingLive: boolean = true;
 
 /**
  * Cal ID's inline embed, from the Embed dialog in Cal ID. Checked in a

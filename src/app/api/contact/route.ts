@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getContent, isLocale, type Locale } from '@/content';
 import { contact } from '@/content/shared';
 import { validate, hasErrors, type ContactValues, type ContactResult } from '@/lib/contact-form';
+import { isRateLimited } from '@/lib/rate-limit';
 import { contactAlert, sendTelegram } from '@/lib/telegram';
 
 /**
@@ -43,6 +44,10 @@ function json(result: ContactResult, status = 200) {
 }
 
 export async function POST(request: Request) {
+  if (await isRateLimited(request)) {
+    return json({ status: 'rateLimited' }, 429);
+  }
+
   let values: ContactValues;
   let locale: Locale;
 

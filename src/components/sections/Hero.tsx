@@ -53,9 +53,9 @@ export function Hero({ c, locale }: { c: Content; locale: Locale }) {
             </span>
           </h1>
 
-          {/* Phone-only chart, under the headline and pushed to the right. */}
-          <div className="order-3 ml-auto w-full max-w-[200px] py-1 lg:hidden" aria-hidden="true">
-            <Kundli size={200} className="w-full" />
+          {/* Phone-only chart, under the headline, flush with the text column. */}
+          <div className="order-3 w-full max-w-[300px] py-2 sm:max-w-[360px] lg:hidden" aria-hidden="true">
+            <Kundli size={300} className="w-full" />
           </div>
 
           <p className="t-lead enter order-5 m-0 max-w-[40ch] text-body lg:order-none" style={delay(0.45)}>

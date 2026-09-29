@@ -38,22 +38,39 @@ export function Footer({ c, locale }: { c: Content; locale: Locale }) {
             <p className="m-0 max-w-[36ch] t-small">{footer.blurb}</p>
           </div>
 
-          {footer.columns.map((column) => (
-            <nav key={column.heading} className="flex flex-col gap-3" aria-label={column.heading}>
-              <span className="font-display text-[17px] text-haldi-light">{column.heading}</span>
-              {liveLinks(column.links, c.testimonials).map((link) => (
-                <SmartLink key={link.href} href={localePath(locale, link.href)} className={FOOTER_LINK}>
-                  {link.label}
-                </SmartLink>
-              ))}
-              {column.showMeta &&
-                footer.meta.map((item) => (
-                  <span key={item} className="t-small">
-                    {item}
-                  </span>
+          {/*
+            Two short lists (Services, Reach her) sit side by side on a phone;
+            the long one (Practice, with the policy links) would otherwise pair
+            with a short list and leave a tall gap under it, so it takes the
+            full row instead. Desktop ignores all of this and lays the columns
+            out in their natural order.
+          */}
+          {footer.columns.map((column, i) => {
+            const long = column.links.length > 5;
+            return (
+              <nav
+                key={column.heading}
+                className={
+                  'flex flex-col gap-3 md:order-none md:col-span-1 ' +
+                  (long ? 'order-3 col-span-2' : i === 0 ? 'order-1' : 'order-2')
+                }
+                aria-label={column.heading}
+              >
+                <span className="font-display text-[17px] text-haldi-light">{column.heading}</span>
+                {liveLinks(column.links, c.testimonials).map((link) => (
+                  <SmartLink key={link.href} href={localePath(locale, link.href)} className={FOOTER_LINK}>
+                    {link.label}
+                  </SmartLink>
                 ))}
-            </nav>
-          ))}
+                {column.showMeta &&
+                  footer.meta.map((item) => (
+                    <span key={item} className="t-small">
+                      {item}
+                    </span>
+                  ))}
+              </nav>
+            );
+          })}
         </div>
 
         <div className="flex flex-col gap-2 border-t border-night-line py-5 pb-20 t-caption lg:pb-10 sm:flex-row sm:items-center sm:justify-between">

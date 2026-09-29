@@ -12,5 +12,5 @@ export const metadata: Metadata = {
 export default function MotionLabPage() {
   if (process.env.NODE_ENV === 'production') notFound();
   const c = getContent('en');
-  return <MotionLab seal={c.seal} opening={c.about.paragraphs[0]} testimonials={c.testimonials} />;
+  return <MotionLab seal={c.seal} opening={c.about.paragraphs[0]} testimonials={c.testimonials} portrait={c.about.portrait} />;
 }

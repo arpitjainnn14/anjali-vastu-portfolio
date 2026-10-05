@@ -109,8 +109,8 @@ Only these routes are dynamic; every other page stays static:
 - `sitemap.xml`, which lists the published posts
 
 How it is wired: `lib/sitedesk.ts` is the client (pure, unit-tested); `lib/sitedesk-env.ts` picks the transport. Deployed,
-it uses the **service binding `SITEDESK`** (see `wrangler.jsonc`) and the secret **`SITEDESK_READ_TOKEN`** (set with
-`wrangler secret put`; never commit it). Locally it falls back to `SITEDESK_URL` plus the same token in `.dev.vars`.
+it uses the **service binding `SITEDESK`** (so `SITEDESK_URL` must stay unset in production) (see `wrangler.jsonc`) and the secret **`SITEDESK_READ_TOKEN`** (set with
+`wrangler secret put`; never commit it). Locally, `SITEDESK_URL` (plain HTTP, with the same token in `.dev.vars`) takes precedence over the binding.
 Sitedesk only ever serves the *published* copy of a live post, already converted to safe HTML.
 
 If Sitedesk cannot be reached, the blog pages say so and the sitemap leaves the blog out; nothing else is affected.

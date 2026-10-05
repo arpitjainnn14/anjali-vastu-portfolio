@@ -74,6 +74,7 @@ import { contactSection, form } from './contact';
 import { privacy } from './privacy';
 import { terms, refundPolicy, policyPages } from './policies';
 import { siteMap } from './sitemap';
+import { blog } from './blog';
 import type { Content } from '../locale';
 
 export const hi: Content = {
@@ -104,4 +105,5 @@ export const hi: Content = {
   policyPages,
   siteMap,
   notFound,
+  blog,
 };

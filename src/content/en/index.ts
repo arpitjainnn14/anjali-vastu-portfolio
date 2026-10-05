@@ -20,6 +20,7 @@ import { contactSection, form } from './contact';
 import { privacy } from './privacy';
 import { terms, refundPolicy, policyPages } from './policies';
 import { siteMap } from './sitemap';
+import { blog } from './blog';
 
 export const en = {
   site,
@@ -49,4 +50,5 @@ export const en = {
   policyPages,
   siteMap,
   notFound,
+  blog,
 } as const;

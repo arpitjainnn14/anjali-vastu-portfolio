@@ -29,7 +29,7 @@ npm run deploy       # OpenNext build + deploy to Cloudflare
 Deployed through `@opennextjs/cloudflare` (`wrangler.jsonc`, `open-next.config.ts`), not Vercel; some older comments and `.env.example` still say Vercel. Constraints that shape code:
 
 - **Stay inside free limits.** No paid Cloudflare products or other paid services; Razorpay fees are the only allowed running cost.
-- **Every page is static.** The incremental cache serves prerendered pages from Workers Static Assets. Adding `revalidate`/ISR to a page requires changing `open-next.config.ts` (and would need R2/KV).
+- **Every page is static, except the blog.** `/blog`, `/blog/[slug]`, their `/hi` twins and `sitemap.xml` are rendered per request from Sitedesk (README "Blog"). The incremental cache serves every other prerendered page from Workers Static Assets. Adding `revalidate`/ISR to a page requires changing `open-next.config.ts` (and would need R2/KV).
 - **`NEXT_PUBLIC_SITE_URL` must be set at build time.** `src/lib/site-url.ts` throws on a production or Workers CI build without it, so canonicals never point at localhost. Build absolute URLs with `siteUrl`/`absoluteUrl()` rather than a hardcoded host.
 - Secrets (`FORMINIT_API_KEY`, Razorpay keys) live in the Cloudflare dashboard in production and `.env.local` / `.dev.vars` locally. API routes run with `runtime = 'nodejs'`.
 

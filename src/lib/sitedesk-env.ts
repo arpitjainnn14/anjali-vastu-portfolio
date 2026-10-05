@@ -1,5 +1,7 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
-import { createSitedeskClient, type SitedeskClient } from './sitedesk';
+import { cache } from 'react';
+import type { Locale } from '@/content';
+import { createSitedeskClient, type BlogPost, type Fetched, type SitedeskClient } from './sitedesk';
 
 interface Env {
   SITEDESK?: { fetch(input: string, init?: RequestInit): Promise<Response> };
@@ -24,3 +26,6 @@ export function getSitedeskClient(): SitedeskClient {
     },
   });
 }
+
+/** One fetch per request: a post page asks for the post twice (its metadata and its body). */
+export const getBlogPost = cache((slug: string, locale: Locale): Promise<Fetched<BlogPost>> => getSitedeskClient().getPost(slug, locale));

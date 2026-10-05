@@ -38,7 +38,8 @@ src/
     en/                 The English bundle, one module per area: site,
                         navigation, hero, services, booking, picker, about,
                         teaching, testimonials, faq, contact, privacy,
-                        policies, sitemap.
+                        policies, sitemap, blog (the list/post page chrome;
+                        the posts themselves come from Sitedesk).
     hi/                 The Hindi bundle: the same modules, same shape. The
                         glossary Hindi copy follows is at the top of hi/index.ts.
     parity.test.ts, identifiers.test.ts
@@ -98,6 +99,22 @@ page static in both.
 - **`docs/hindi-review/`** holds `hi-site-text.md`, every line of the site in
   English beside Hindi, for her review. It is generated from the bundles;
   regenerate it after changing Hindi copy.
+
+## Blog
+
+The blog is written in Sitedesk (the content dashboard, a separate Worker and repo) and read from it per request.
+Only these routes are dynamic; every other page stays static:
+
+- `/blog`, `/blog/[slug]` and their `/hi` twins (`export const dynamic = 'force-dynamic'`)
+- `sitemap.xml`, which lists the published posts
+
+How it is wired: `lib/sitedesk.ts` is the client (pure, unit-tested); `lib/sitedesk-env.ts` picks the transport. Deployed,
+it uses the **service binding `SITEDESK`** (see `wrangler.jsonc`) and the secret **`SITEDESK_READ_TOKEN`** (set with
+`wrangler secret put`; never commit it). Locally it falls back to `SITEDESK_URL` plus the same token in `.dev.vars`.
+Sitedesk only ever serves the *published* copy of a live post, already converted to safe HTML.
+
+If Sitedesk cannot be reached, the blog pages say so and the sitemap leaves the blog out; nothing else is affected.
+The blog has no menu link yet: adding one is a design decision for Anjali.
 
 ## Conventions
 

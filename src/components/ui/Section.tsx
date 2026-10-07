@@ -95,19 +95,22 @@ export function SectionHeader({
   heading,
   lead,
   className = '',
+  as: Heading = 'h2',
 }: {
   heading: string;
   lead?: string | null;
   className?: string;
+  /** `h1` when the section is the whole page. */
+  as?: 'h1' | 'h2';
 }) {
   return (
     <div
       className={`grid gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-20 ${className}`}
       data-reveal
     >
-      <h2 className="t-h2 m-0 max-w-[16ch] text-balance text-ink in-[.on-night]:text-cream">
+      <Heading className="t-h2 m-0 max-w-[16ch] text-balance text-ink in-[.on-night]:text-cream">
         <Accented text={heading} />
-      </h2>
+      </Heading>
       {lead && <p className="t-body m-0 max-w-[46ch] lg:pb-2">{lead}</p>}
     </div>
   );

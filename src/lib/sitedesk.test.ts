@@ -52,3 +52,20 @@ describe('getPost', () => {
     expect(await client(async () => { throw new Error('down'); }).getPost('hello', 'en')).toEqual({ ok: false, reason: 'unavailable' });
   });
 });
+
+describe('what counts as "no such post"', () => {
+  it('only Sitedesk’s own 404 does; any other 404 means the integration is broken, not that the post is gone', async () => {
+    const html404 = async () => new Response('<html>404 This page could not be found</html>', { status: 404 });
+    const otherJson404 = async () => respond(404, { message: 'nope' });
+    expect(await client(html404).getPost('hello', 'en')).toEqual({ ok: false, reason: 'unavailable' });
+    expect(await client(otherJson404).getPost('hello', 'en')).toEqual({ ok: false, reason: 'unavailable' });
+    expect(await client(async () => respond(404, { error: 'Not found.' })).getPost('hello', 'en')).toEqual({ ok: false, reason: 'not_found' });
+  });
+
+  it('refuses an oversized slug without asking Sitedesk', async () => {
+    const request = vi.fn(async () => respond(200, { post }));
+    expect(await client(request).getPost('a'.repeat(101), 'en')).toEqual({ ok: false, reason: 'not_found' });
+    expect(request).not.toHaveBeenCalled();
+    expect((await client(request).getPost('a'.repeat(100), 'en')).ok).toBe(true);
+  });
+});

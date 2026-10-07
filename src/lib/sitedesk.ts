@@ -23,6 +23,8 @@ export type Fetched<T> = { ok: true; data: T } | { ok: false; reason: 'unavailab
 const UNAVAILABLE = { ok: false, reason: 'unavailable' } as const;
 const NOT_FOUND = { ok: false, reason: 'not_found' } as const;
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+/** Sitedesk's own web addresses are at most 80 characters plus a counter; anything longer is junk and never sent. */
+const MAX_SLUG = 100;
 
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 const isSummary = (v: unknown): v is BlogSummary =>
@@ -57,10 +59,15 @@ export function createSitedeskClient(opts: { request: (path: string) => Promise<
       return { ok: true, data: body.posts };
     },
     async getPost(slug: string, lang: Locale): Promise<Fetched<BlogPost>> {
-      if (!SLUG.test(slug)) return NOT_FOUND;
+      if (!SLUG.test(slug) || slug.length > MAX_SLUG) return NOT_FOUND;
       const res = await get(`${base}/${slug}?lang=${lang}`);
       if (!res) return UNAVAILABLE;
-      if (res.status === 404) return NOT_FOUND;
+      if (res.status === 404) {
+        // Only Sitedesk's own "Not found." is a missing post. A bare or HTML 404 means the wiring is wrong, and must not
+        // look like every post vanishing (search engines would drop them).
+        const body: unknown = await res.json().catch(() => null);
+        return isRecord(body) && body.error === 'Not found.' ? NOT_FOUND : UNAVAILABLE;
+      }
       if (!res.ok) return UNAVAILABLE;
       const body: unknown = await res.json().catch(() => null);
       if (!isRecord(body) || !isPost(body.post)) return UNAVAILABLE;

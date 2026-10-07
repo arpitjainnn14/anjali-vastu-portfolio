@@ -17,15 +17,16 @@ const TIMEOUT_MS = 4000;
  * registered locally). Otherwise the service binding is used (deployed: free, no network hop). Never set SITEDESK_URL in production.
  */
 export function getSitedeskClient(): SitedeskClient {
-  const env = getCloudflareContext().env as unknown as Env;
-  const token = env.SITEDESK_READ_TOKEN ?? '';
   return createSitedeskClient({
     site: SITE_SLUG,
-    request: (path) => {
+    request: async (path) => {
+      // Read inside the request, so a missing Cloudflare context becomes "unavailable" like any other failure.
+      const env = getCloudflareContext().env as unknown as Env;
+      const token = env.SITEDESK_READ_TOKEN ?? '';
       const init: RequestInit = { headers: { authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(TIMEOUT_MS) };
       if (env.SITEDESK_URL) return fetch(`${env.SITEDESK_URL}${path}`, init);
       if (env.SITEDESK) return env.SITEDESK.fetch(`https://sitedesk${path}`, init);
-      return Promise.reject(new Error('Sitedesk is not configured'));
+      throw new Error('Sitedesk is not configured');
     },
   });
 }

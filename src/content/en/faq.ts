@@ -47,5 +47,38 @@ export const faq = {
         'Yes. She teaches Vedic astrology, numerology and Vastu in three-month courses, ' +
         'live online, in small groups of four or five students.',
     },
+    {
+      q: 'What is the difference between astrology and Jyotish?',
+      a:
+        'They are close cousins. Jyotish is the traditional Indian word for the system, ' +
+        'and many people simply call it astrology. In her readings, Anjali explains ' +
+        'everything in plain language, so you do not need to know any of the technical terms.',
+    },
+    {
+      q: 'Does she visit the site for Vastu?',
+      a:
+        'Yes. Vastu is offered as a package: one fee, with site visits until the ' +
+        'building is complete.',
+    },
+    {
+      q: 'I am not sure which reading I need. What should I do?',
+      a:
+        'Contact Anjali and tell her what is going on. She will point you to the right ' +
+        'one, or you can answer the three quick questions on the website.',
+    },
+    {
+      q: 'Is astrology only for people with problems?',
+      a:
+        'Not at all. Some people come when life feels stuck, but others come before a ' +
+        'big decision, like a new job, a move or a marriage, simply because they want ' +
+        'to choose the right moment.',
+    },
+    {
+      q: `Is a consultation worth ${consultationFee.display}?`,
+      a:
+        'Anjali’s own story starts with paying too much for a reading that gave her no ' +
+        'clear answer. That is why her fee includes three months of follow-up calls, so ' +
+        'you are not left with questions and nobody to ask.',
+    },
   ],
 } as const;

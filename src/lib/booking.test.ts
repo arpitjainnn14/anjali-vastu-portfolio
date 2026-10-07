@@ -11,6 +11,7 @@ import {
   detailsMessage,
   findBookable,
   howItWorksSteps,
+  serviceSteps,
   serviceCta,
   serviceFeeLine,
   serviceReassurance,
@@ -90,7 +91,7 @@ describe('serviceCta', () => {
       const cta = serviceCta(c, s, 'en', false);
       expect(cta.kind).toBe('whatsapp');
       expect(cta.href.startsWith('https://wa.me/')).toBe(true);
-      expect(cta.label).toBe(c.serviceDetail.ctaLabel);
+      expect(cta.label).toBe(s.whatsappLabel);
     }
   });
 
@@ -135,6 +136,22 @@ describe('howItWorksSteps', () => {
     const steps = howItWorksSteps(c, true);
     expect(steps[0]).toEqual(c.bookFirstStepLive);
     expect(steps.slice(1)).toEqual(c.howItWorks.slice(1));
+  });
+});
+
+describe('serviceSteps', () => {
+  it('gives each service its own four steps while not live', () => {
+    for (const s of c.services) expect(serviceSteps(s, false)).toEqual(s.steps);
+  });
+
+  it('swaps step 1 for the booking wording once live, where the service has one', () => {
+    const vedic = service('vedic-astrology');
+    expect(serviceSteps(vedic, true)[0]).toEqual(vedic.liveFirstStep);
+    expect(serviceSteps(vedic, true).slice(1)).toEqual(vedic.steps.slice(1));
+  });
+
+  it('never swaps Vastu, which is not booked online', () => {
+    expect(serviceSteps(service('vastu'), true)).toEqual(service('vastu').steps);
   });
 });
 
@@ -186,7 +203,7 @@ describe('detailsMessage', () => {
 
 describe('serviceFeeLine', () => {
   it('names the three months of calls after the price of a service booked online', () => {
-    expect(serviceFeeLine(c, service('numerology'))).toBe('₹2,151, including three months of calls');
+    expect(serviceFeeLine(c, service('numerology'))).toBe('₹2,151, which includes three months of follow-up calls');
   });
 
   it('shows the fallback for Vastu', () => {

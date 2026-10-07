@@ -20,6 +20,7 @@ export const siteMap = {
     home: 'होम',
     about: 'अंजलि जी के बारे में',
     teaching: 'क्लास',
+    testimonials: 'अनुभव',
     contact: 'संपर्क',
     bookPrefix: 'बुकिंग:',
   },

@@ -108,6 +108,12 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const testimonialsSection = {
+  meta: {
+    title: 'ज्योतिषी अंजलि जैन के क्लाइंट के अनुभव',
+    description:
+      'फ़रीदाबाद, पलवल, दिल्ली और दूसरी जगहों के क्लाइंट अंजलि जैन के consultation के बाद ' +
+      'क्या कहते हैं: वैदिक ज्योतिष, अंकशास्त्र और वास्तु।',
+  },
   heading: 'क्लाइंट consultation के *बाद* क्या कहते हैं',
   swipeHint: 'स्वाइप करें',
   /** Opens the full testimonial in a dialog. */

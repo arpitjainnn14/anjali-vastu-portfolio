@@ -11,8 +11,9 @@ export const contactSection = {
   },
   heading: 'Tell Anjali what you *want to know*',
   lead:
-    'WhatsApp is the quickest way to reach her. If you would rather write, leave ' +
-    'your details below and she will reply herself, usually within 24 hours.',
+    'Have a question about your career, marriage, a name, or a home or shop? Contact ' +
+    'Anjali on WhatsApp for the quickest reply. If you would rather write, leave your ' +
+    'details below and she will reply herself shortly.',
   formTitle: 'Prefer to write? Leave your details',
   details: [
     { label: 'Where', value: 'Palwal, Haryana', link: { label: 'Open the location in Maps', href: site.mapsUrl } },
@@ -28,6 +29,11 @@ export const contactSection = {
    * answer "who reads this" and "what happens if I write".
    */
   page: {
+    /** Under the lead on the contact page only. Says where she is and what to expect. */
+    localNote:
+      'Whether you are looking for an astrologer in Palwal or just want to know which ' +
+      'reading suits you, tell her what is on your mind and she will point you the ' +
+      'right way. Consultations are available in English or Hindi, in person or by phone.',
     answeredBy: {
       heading: 'She answers herself',
       body:

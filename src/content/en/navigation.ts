@@ -21,7 +21,7 @@ export const nav = {
     { label: 'Services', href: '/#services' },
     { label: 'About', href: '/about' },
     { label: 'Teaching', href: '/teaching' },
-    { label: 'Testimonials', href: '/#testimonials' },
+    { label: 'Testimonials', href: '/testimonials' },
     { label: 'Contact', href: '/contact' },
   ],
 } as const;
@@ -47,7 +47,7 @@ export const footer = {
       showMeta: false,
       links: [
         { label: 'About Anjali', href: '/about' },
-        { label: 'Testimonials', href: '/#testimonials' },
+        { label: 'Testimonials', href: '/testimonials' },
         { label: 'Contact', href: '/contact' },
         { label: 'How your details are used', href: '/privacy' },
         { label: 'Terms of consultation', href: '/terms' },

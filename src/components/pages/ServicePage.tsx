@@ -6,7 +6,7 @@ import { serviceIcons, type ServiceIconKey, WhatsAppIcon, ArrowRightIcon } from 
 import { ButtonLink } from '@/components/ui/Button';
 import { whatsappHref } from '@/lib/whatsapp';
 import { SmartLink } from '@/components/ui/SmartLink';
-import { howItWorksSteps, isBookable, serviceCta, serviceReassurance, type Service } from '@/lib/booking';
+import { serviceSteps, isBookable, serviceCta, serviceReassurance, type Service } from '@/lib/booking';
 import { presentAll, present } from '@/lib/todo';
 import { pageMetadata } from '@/lib/metadata';
 import { serviceBreadcrumb, jsonLd } from '@/lib/structured-data';
@@ -33,7 +33,7 @@ export function ServicePage({ c, locale, service }: { c: Content; locale: Locale
   const others = c.services.filter((s) => s.slug !== service.slug);
 
   /* A step whose copy is unsupplied is dropped, so no numbered gap appears. */
-  const steps = howItWorksSteps(c).filter(
+  const steps = serviceSteps(service, c.booking.live).filter(
     (step) => present(step.title) !== null && present(step.body) !== null,
   );
 
@@ -48,9 +48,7 @@ export function ServicePage({ c, locale, service }: { c: Content; locale: Locale
       label: c.serviceDetail.glanceLabels.fees,
       value: isBookable(service) ? service.booking.fee.display : c.serviceDetail.glanceFees,
     },
-    ...(isBookable(service)
-      ? [{ label: c.serviceDetail.glanceLabels.includes, value: c.serviceDetail.glanceIncludes }]
-      : []),
+    { label: c.serviceDetail.glanceLabels.includes, value: service.includes },
   ];
 
   const cta = serviceCta(c, service, locale);
@@ -82,9 +80,9 @@ export function ServicePage({ c, locale, service }: { c: Content; locale: Locale
             <p className="t-small m-0 text-muted" data-reveal-item>{service.question}</p>
             <h1 className="t-h1 m-0 flex items-center gap-4 text-ink" data-reveal-item>
               <Icon size={44} strokeWidth={1.2} className="shrink-0 text-haldi" />
-              {service.name}
+              {service.heading}
             </h1>
-            <p className="t-lead m-0 max-w-[48ch]" data-reveal-item>{service.summary}</p>
+            <p className="t-lead m-0 max-w-[48ch]" data-reveal-item>{service.intro}</p>
           </div>
 
           {/* At a glance */}
@@ -180,6 +178,15 @@ export function ServicePage({ c, locale, service }: { c: Content; locale: Locale
               </div>
             )}
           </div>
+        </div>
+
+        {/* The closing ask, in the service's own words. */}
+        <div className="mt-16 flex flex-col items-start gap-5 md:mt-20" data-reveal>
+          <p className="t-h3 m-0 max-w-[32ch] text-balance text-ink">{service.closing}</p>
+          <ButtonLink href={cta.href}>
+            {cta.kind === 'whatsapp' && <WhatsAppIcon size={19} />}
+            {cta.label}
+          </ButtonLink>
         </div>
 
         {/* The other two */}

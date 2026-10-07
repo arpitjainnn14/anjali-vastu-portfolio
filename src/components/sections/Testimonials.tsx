@@ -13,7 +13,7 @@ import { TestimonialsRail } from '@/components/sections/TestimonialsRail';
  * Every card is an excerpt; "Read more" opens the full testimonial in a
  * dialog. See TestimonialsRail for the motion and the dialog.
  */
-export function Testimonials({ c }: { c: Content }) {
+export function Testimonials({ c, heading = 'h2' }: { c: Content; heading?: 'h1' | 'h2' }) {
   const { testimonialsSection } = c;
   /*
    * TestimonialsRail types its `quotes` prop with `Testimonial`, whose `lang`
@@ -35,7 +35,7 @@ export function Testimonials({ c }: { c: Content }) {
       <div className="relative z-10">
         <TestimonialsRail
           quotes={quotes}
-          header={<SectionHeader heading={testimonialsSection.heading} />}
+          header={<SectionHeader heading={testimonialsSection.heading} as={heading} />}
         />
       </div>
     </Section>

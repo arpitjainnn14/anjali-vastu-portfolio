@@ -77,7 +77,7 @@ export function serviceCta(
   return {
     kind: 'whatsapp',
     href: whatsappHref(c, c.whatsappMessages.service(service.name)),
-    label: c.serviceDetail.ctaLabel,
+    label: service.whatsappLabel,
   };
 }
 
@@ -87,6 +87,15 @@ export function serviceCta(
  */
 export function howItWorksSteps(c: Content, live: boolean = c.booking.live) {
   return live ? [c.bookFirstStepLive, ...c.howItWorks.slice(1)] : c.howItWorks;
+}
+
+/**
+ * One service page's "How it works": its own four steps, with step 1 swapped
+ * for the online-booking wording once booking is live (if it has any; Vastu
+ * is never booked online).
+ */
+export function serviceSteps(service: Service, live: boolean = false) {
+  return live && service.liveFirstStep ? [service.liveFirstStep, ...service.steps.slice(1)] : service.steps;
 }
 
 /** The line under a service page's main button. */

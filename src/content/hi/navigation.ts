@@ -15,7 +15,7 @@ export const nav = {
     { label: 'सेवाएँ', href: '/#services' },
     { label: 'परिचय', href: '/about' },
     { label: 'सीखें', href: '/teaching' },
-    { label: 'अनुभव', href: '/#testimonials' },
+    { label: 'अनुभव', href: '/testimonials' },
     { label: 'संपर्क', href: '/contact' },
   ],
 } as const;
@@ -41,7 +41,7 @@ export const footer = {
       showMeta: false,
       links: [
         { label: 'अंजलि जी के बारे में', href: '/about' },
-        { label: 'अनुभव', href: '/#testimonials' },
+        { label: 'अनुभव', href: '/testimonials' },
         { label: 'संपर्क', href: '/contact' },
         { label: 'आपकी जानकारी का उपयोग', href: '/privacy' },
         { label: 'Consultation की शर्तें', href: '/terms' },

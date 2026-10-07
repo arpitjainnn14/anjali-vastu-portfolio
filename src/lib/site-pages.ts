@@ -29,6 +29,12 @@ export function sitePageGroups(c: Content, locale: Locale, live: boolean = c.boo
         { href: '/', label: labels.home, description: c.site.description, indexed: true },
         { href: '/about', label: labels.about, description: c.about.meta.description, indexed: true },
         { href: '/teaching', label: labels.teaching, description: c.teaching.meta.description, indexed: true },
+        {
+          href: '/testimonials',
+          label: labels.testimonials,
+          description: c.testimonialsSection.meta.description,
+          indexed: true,
+        },
         { href: '/contact', label: labels.contact, description: c.contactSection.meta.description, indexed: true },
       ],
     },
@@ -84,7 +90,7 @@ export function indexedPaths(c: Content, locale: Locale, live: boolean = c.booki
 
 /** Pages with no parameter, in English paths. Each also exists under /hi. */
 const FIXED_PATHS = [
-  '/', '/about', '/teaching', '/contact', '/which-reading',
+  '/', '/about', '/teaching', '/testimonials', '/contact', '/which-reading',
   '/book', '/booked', '/terms', '/refund-policy', '/privacy', '/sitemap.html',
 ];
 

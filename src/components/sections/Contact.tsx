@@ -58,6 +58,7 @@ export function Contact({
                 <Accented text={contactSection.heading} />
               </Heading>
               <p className="t-body m-0 max-w-[46ch]">{contactSection.lead}</p>
+              {standalone && <p className="t-body m-0 max-w-[46ch]">{contactSection.page.localNote}</p>}
             </div>
 
             <ButtonLink

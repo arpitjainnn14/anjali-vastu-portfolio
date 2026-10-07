@@ -21,6 +21,7 @@ export const siteMap = {
     home: 'Home',
     about: 'About Anjali',
     teaching: 'Classes',
+    testimonials: 'Testimonials',
     contact: 'Contact',
     bookPrefix: 'Book',
   },

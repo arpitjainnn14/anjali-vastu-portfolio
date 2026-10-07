@@ -8,17 +8,22 @@ export const about = {
       'Anjali Jain has studied astrology since 1995 and read professionally since 2017. ' +
       'Ph.D. in Astrology and Vastu, consulting in Palwal in English and Hindi.',
   },
-  heading: 'She was once the client who never got a *straight answer*',
+  heading: 'The client who never got a *straight answer*',
   paragraphs: [
-    'Anjali started learning astrology in 1995, from books and from teachers. ' +
-      'Then life took over, and she set it aside for years.',
-    'She came back to it after a difficult period of her own. She went to an ' +
-      'astrologer for help, paid far more than it was worth, and still did not get ' +
-      'a clear answer. She decided that if she ever did this work, she would do it ' +
-      'differently.',
-    'She has been reading professionally since 2017. People come to her about work, ' +
-      'love and marriage, and the things that do not fit neatly into either. She ' +
-      'reads in English and Hindi.',
+    'Anjali first started learning astrology in 1995. She read books and studied ' +
+      'with a few good teachers. Later, life became busy, and she put astrology on ' +
+      'hold for many years.',
+    'A difficult time in her life made her return to it. She visited an astrologer ' +
+      'hoping to find answers, paid more than the session was worth, and left feeling ' +
+      'just as confused. That experience stayed with her. She promised herself that ' +
+      'if she ever did this work again, no client would leave without an answer.',
+    'She has been offering readings since 2017. People ask her about work, love, ' +
+      'marriage and other worries that do not fit into one category. She might give ' +
+      'a birth chart reading, a numerology reading for a name or date of birth, or ' +
+      'Vastu advice for a home or shop. Whatever the type, she explains everything as ' +
+      'if talking to a friend, in plain words, in English or Hindi.',
+    'Her clients come from Faridabad, Palwal and Delhi. Some meet her in person, ' +
+      'while many speak with her over the phone.',
   ],
   facts: ['Learning since 1995', 'Reading professionally since 2017', 'Ph.D. in Astrology & Vastu'],
   portrait: {

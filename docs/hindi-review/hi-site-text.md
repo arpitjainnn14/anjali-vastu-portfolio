@@ -122,22 +122,22 @@ Page address: `/hi`
 | English | हिंदी |
 |---|---|
 | Three ways Anjali can **help** | अंजलि जी तीन तरह से **मदद** करती हैं |
-| Each one suits a different kind of question. Not sure which you need? Tell her what is going on and she will point you to the right one. | हर consultation अलग तरह के सवाल के लिए है। समझ नहीं आ रहा कि आपको कौन-सा चाहिए? अंजलि जी को बताएँ कि क्या चल रहा है, वे सही consultation बता देंगी। |
+| Every question is different, so Anjali offers three types of consultations. Choose the one that fits your situation, or just tell her what is on your mind and she will guide you to the right option. | हर सवाल अलग होता है, इसलिए अंजलि जी तीन तरह के consultation देती हैं। जो आपकी स्थिति से मेल खाए वह चुनें, या बस उन्हें बताएँ कि मन में क्या है, वे सही विकल्प बता देंगी। |
 | Vedic Astrology | वैदिक ज्योतिष |
-| For questions about career, marriage and timing | करियर, शादी और सही समय के सवालों के लिए |
-| Your birth chart, read against the question you came with. Anjali looks at where the planets sit and which dasha you are running, then explains what this period is likely to bring and when things may shift. | आपकी कुंडली उसी सवाल को ध्यान में रखकर देखी जाती है जो आप लेकर आए हैं। अंजलि जी देखती हैं कि ग्रह कहाँ बैठे हैं और आपकी कौन-सी दशा चल रही है, फिर बताती हैं कि यह समय क्या लेकर आ सकता है और हालात कब बदल सकते हैं। |
+| Best for: questions about career, marriage and timing | इनके लिए सबसे अच्छा: करियर, शादी और सही समय के सवाल |
+| Many people reach out to Anjali when life feels stuck, or when a big decision is coming up and they want to know if the timing is right. In a Vedic astrology (Jyotish) reading, she studies your birth chart, looks at planetary positions, and checks which dasha period you are in. Then she explains in simple language what this phase is likely to bring and when you might see changes. Each reading is built around the specific question you came with. | कई लोग अंजलि जी के पास तब आते हैं जब ज़िंदगी अटकी हुई लगती है, या कोई बड़ा फ़ैसला सामने होता है और वे जानना चाहते हैं कि समय सही है या नहीं। वैदिक ज्योतिष (Jyotish) के reading में वे आपकी जन्म कुंडली देखती हैं, ग्रहों की स्थिति देखती हैं और यह भी कि आपकी कौन-सी दशा चल रही है। फिर आसान भाषा में बताती हैं कि यह दौर क्या लेकर आ सकता है और बदलाव कब दिख सकते हैं। हर reading उसी सवाल के हिसाब से होता है जो आप लेकर आए हैं। |
 | You will need: Birth date, time and place | आपको चाहिए: जन्म की तारीख, समय और स्थान |
-| ₹2,151, including three months of calls | ₹2,151, तीन महीने तक कॉल की सुविधा के साथ |
+| ₹2,151, which includes three months of follow-up calls | ₹2,151, तीन महीने तक कॉल की सुविधा के साथ |
 | Numerology | अंकशास्त्र |
-| For names, dates and new beginnings | नाम, तारीख और नई शुरुआत के लिए |
-| Your name and date of birth, worked through number by number. She tells you what they point to, and whether a name correction is actually worth making. | आपके नाम और जन्म की तारीख का एक-एक अंक देखा जाता है। अंजलि जी बताती हैं कि ये किस ओर इशारा करते हैं, और नाम में सुधार करवाना सच में ठीक रहेगा या नहीं। |
+| Best for: names, important dates and new beginnings | इनके लिए सबसे अच्छा: नाम, ज़रूरी तारीख़ें और नई शुरुआत |
+| Starting a business, naming a baby, or wondering if your name is helping or holding you back? Anjali goes through your name and date of birth number by number and tells you clearly what they suggest. If a name correction would be useful, she will recommend it. If it is not worth changing, she will tell you that too. | कारोबार शुरू कर रहे हैं, बच्चे का नाम रखना है, या सोच रहे हैं कि आपका नाम आपका साथ दे रहा है या रोक रहा है? अंजलि जी आपके नाम और जन्म की तारीख़ का एक-एक अंक देखकर साफ़ बताती हैं कि वे क्या इशारा करते हैं। अगर नाम में सुधार काम का होगा, तो वे सुझाएँगी। अगर बदलने लायक नहीं है, तो वह भी साफ़ बता देंगी। |
 | You will need: Full name and date of birth | आपको चाहिए: पूरा नाम और जन्म की तारीख |
-| ₹2,151, including three months of calls | ₹2,151, तीन महीने तक कॉल की सुविधा के साथ |
+| ₹2,151, which includes three months of follow-up calls | ₹2,151, तीन महीने तक कॉल की सुविधा के साथ |
 | Vastu | वास्तु |
-| For a home or shop that does not feel right | ऐसे घर या दुकान के लिए, जहाँ कुछ ठीक नहीं लगता |
-| Direction, layout and placement for a home or a shop, assessed around the people who actually live and work in it. It is a package: one fee, with site visits until the building is complete. Message her on WhatsApp for the details. | घर या दुकान की दिशा, बनावट और चीज़ों की जगह, उन लोगों को ध्यान में रखकर देखी जाती है जो वहाँ सच में रहते और काम करते हैं। यह एक पैकेज है: एक ही फ़ीस, और बिल्डिंग पूरी होने तक साइट विज़िट। पूरी जानकारी के लिए अंजलि जी को WhatsApp पर मैसेज करें। |
+| Best for: homes or shops that do not feel quite right | इनके लिए सबसे अच्छा: ऐसे घर या दुकान, जहाँ कुछ ठीक नहीं लगता |
+| Sometimes a space just feels heavy or “off”, and you cannot explain why. Anjali looks at direction, layout and placement, always keeping the people who live or work there in mind. Vastu for homes and Vastu for shops are offered as complete packages: one fee, with site visits as needed until the building work is finished. Message her on WhatsApp for full details. | कभी-कभी कोई जगह भारी या अजीब-सी लगती है, और आप समझा नहीं पाते कि क्यों। अंजलि जी दिशा, बनावट और चीज़ों की जगह देखती हैं, और हमेशा वहाँ रहने या काम करने वालों का ध्यान रखती हैं। घर और दुकान का वास्तु पूरे पैकेज के रूप में होता है: एक ही फ़ीस, और बिल्डिंग का काम पूरा होने तक ज़रूरत के हिसाब से साइट विज़िट। पूरी जानकारी के लिए उन्हें WhatsApp पर मैसेज करें। |
 | You will need: A plan or photographs of the space | आपको चाहिए: जगह का नक्शा या फ़ोटो |
-| Fees shared on WhatsApp | फ़ीस WhatsApp पर बताई जाती है |
+| Fee shared on WhatsApp | फ़ीस WhatsApp पर बताई जाती है |
 | Every consultation is available in English or Hindi, in person in Palwal or by phone. | हर consultation हिंदी या अंग्रेज़ी में, पलवल में मिलकर या फ़ोन पर हो सकता है। |
 | Not sure which one? Answer three questions | पक्का नहीं कि कौन-सा? तीन सवालों के जवाब दें |
 
@@ -178,13 +178,23 @@ Page address: `/hi`
 | Usually within 24 hours. She reads and answers every message herself; there is no assistant. | आमतौर पर 24 घंटे के अंदर। हर मैसेज वे खुद पढ़ती हैं और खुद जवाब देती हैं; कोई असिस्टेंट नहीं है। |
 | Can I learn astrology from her? | क्या अंजलि जी से ज्योतिष सीखा जा सकता है? |
 | Yes. She teaches Vedic astrology, numerology and Vastu in three-month courses, live online, in small groups of four or five students. | हाँ। वे वैदिक ज्योतिष, अंकशास्त्र और वास्तु के तीन महीने के कोर्स सिखाती हैं, ऑनलाइन लाइव, चार या पाँच स्टूडेंट के छोटे ग्रुप में। |
+| What is the difference between astrology and Jyotish? | ज्योतिष और Jyotish में क्या फ़र्क है? |
+| They are close cousins. Jyotish is the traditional Indian word for the system, and many people simply call it astrology. In her readings, Anjali explains everything in plain language, so you do not need to know any of the technical terms. | दोनों बहुत करीबी हैं। Jyotish इस विद्या का पारंपरिक भारतीय नाम है, और बहुत से लोग इसे सीधे ज्योतिष ही कहते हैं। अंजलि जी अपने reading में सब कुछ आसान भाषा में समझाती हैं, इसलिए आपको कोई तकनीकी शब्द जानने की ज़रूरत नहीं। |
+| Does she visit the site for Vastu? | क्या वे वास्तु के लिए साइट पर आती हैं? |
+| Yes. Vastu is offered as a package: one fee, with site visits until the building is complete. | हाँ। वास्तु एक पैकेज के रूप में होता है: एक ही फ़ीस, और बिल्डिंग पूरी होने तक साइट विज़िट। |
+| I am not sure which reading I need. What should I do? | मुझे पक्का नहीं पता कि कौन-सा reading चाहिए। क्या करूँ? |
+| Contact Anjali and tell her what is going on. She will point you to the right one, or you can answer the three quick questions on the website. | अंजलि जी को संपर्क करके बताएँ कि क्या चल रहा है। वे सही वाला बता देंगी, या आप वेबसाइट पर तीन छोटे सवालों के जवाब दे सकते हैं। |
+| Is astrology only for people with problems? | क्या ज्योतिष सिर्फ़ मुश्किल में फँसे लोगों के लिए है? |
+| Not at all. Some people come when life feels stuck, but others come before a big decision, like a new job, a move or a marriage, simply because they want to choose the right moment. | बिल्कुल नहीं। कुछ लोग तब आते हैं जब ज़िंदगी अटकी हुई लगती है, पर कई लोग किसी बड़े फ़ैसले से पहले आते हैं, जैसे नई नौकरी, घर बदलना या शादी, सिर्फ़ इसलिए कि वे सही समय चुनना चाहते हैं। |
+| Is a consultation worth ₹2,151? | क्या ₹2,151 का consultation सही रहेगा? |
+| Anjali’s own story starts with paying too much for a reading that gave her no clear answer. That is why her fee includes three months of follow-up calls, so you are not left with questions and nobody to ask. | अंजलि जी की अपनी कहानी इसी से शुरू होती है कि उन्होंने एक ऐसे reading के लिए ज़रूरत से ज़्यादा पैसे दिए जिसने कोई साफ़ जवाब नहीं दिया। इसीलिए उनकी फ़ीस में तीन महीने तक आगे के सवालों के लिए कॉल शामिल हैं, ताकि आपके पास सवाल हों और पूछने के लिए कोई न हो, ऐसा न हो। |
 
 ### Contact section
 
 | English | हिंदी |
 |---|---|
 | Tell Anjali what you **want to know** | अंजलि जी को बताएँ, आप क्या **जानना चाहते हैं** |
-| WhatsApp is the quickest way to reach her. If you would rather write, leave your details below and she will reply herself, usually within 24 hours. | WhatsApp पर अंजलि जी से सबसे जल्दी बात होती है। अगर आप लिखना पसंद करें, तो नीचे अपनी जानकारी छोड़ दें, वे खुद जवाब देंगी, आमतौर पर 24 घंटे के अंदर। |
+| Have a question about your career, marriage, a name, or a home or shop? Contact Anjali on WhatsApp for the quickest reply. If you would rather write, leave your details below and she will reply herself shortly. | करियर, शादी, किसी नाम, या घर या दुकान को लेकर कोई सवाल है? सबसे जल्दी जवाब के लिए अंजलि जी को WhatsApp पर संपर्क करें। अगर आप लिखना पसंद करें, तो नीचे अपनी जानकारी छोड़ दें, वे जल्द ही खुद जवाब देंगी। |
 | Where | कहाँ |
 | Palwal, Haryana | पलवल, हरियाणा |
 | Open the location in Maps | मैप में लोकेशन खोलें |
@@ -240,35 +250,85 @@ Page address: `/hi/services/vedic-astrology`
 | Fees | फ़ीस |
 | Includes | फ़ीस में शामिल |
 | In person in Palwal, or by phone | पलवल में मिलकर, या फ़ोन पर |
-| English and Hindi | हिंदी और अंग्रेज़ी |
 | No fixed time limit | समय की कोई तय सीमा नहीं |
-| A package; details on WhatsApp | पैकेज; जानकारी WhatsApp पर |
-| Three months of calling Anjali directly | तीन महीने तक अंजलि जी को सीधे कॉल |
-| Ask about this on WhatsApp | इसके बारे में WhatsApp पर पूछें |
+| Package pricing; full details shared on WhatsApp | पैकेज के रूप में; पूरी जानकारी WhatsApp पर बताई जाती है |
 | Anjali replies herself. There is no assistant. | अंजलि जी खुद जवाब देती हैं। कोई असिस्टेंट नहीं है। |
 
-### How it works
+### Vedic Astrology: page text
 
 | English | हिंदी |
 |---|---|
-| How it works | यह कैसे होता है |
-| Message her on WhatsApp, or send the form | WhatsApp पर मैसेज करें, या फ़ॉर्म भेजें |
-| Say briefly what is on your mind. She will tell you whether a chart reading is the right fit, or whether numerology or Vastu suits it better. | थोड़े में बताएँ कि मन में क्या है। अंजलि जी बताएँगी कि कुंडली देखना सही रहेगा, या इसके लिए अंकशास्त्र या वास्तु बेहतर है। |
-| Send her the details she needs | ज़रूरी जानकारी भेजें |
-| For a chart reading, your date, time and place of birth. For numerology, your full name and date of birth. For Vastu, a plan or photographs of the space. For a chart, the birth time matters more than most people expect, so check it beforehand if you can. | कुंडली के लिए: आपकी जन्म की तारीख, समय और स्थान। अंकशास्त्र के लिए: आपका पूरा नाम और जन्म की तारीख। वास्तु के लिए: जगह का नक्शा या फ़ोटो। कुंडली में जन्म का समय ज़्यादातर लोगों की सोच से ज़्यादा मायने रखता है, इसलिए हो सके तो उसे पहले से पक्का कर लें। |
-| The consultation | आपका consultation |
-| In person in Palwal or over the phone, in English or Hindi, whichever you are more comfortable with. There is no fixed time limit. | पलवल में मिलकर या फ़ोन पर, हिंदी या अंग्रेज़ी में, जिसमें भी आप सहज हों। समय की कोई तय सीमा नहीं है। |
-| Three months of calls | तीन महीने तक कॉल |
-| After a chart reading or numerology consultation, you can call Anjali directly for three months with follow-up questions. If a remedy such as a Vastu yantra would help, she tells you what it costs first. Remedies are always optional. | कुंडली या अंकशास्त्र के consultation के बाद, आप तीन महीने तक अपने आगे के सवालों के लिए अंजलि जी को सीधे कॉल कर सकते हैं। अगर वास्तु यंत्र जैसा कोई उपाय मदद करेगा, तो वे पहले ही उसकी कीमत बता देती हैं। उपाय करना हमेशा आपकी मर्ज़ी पर है। |
+| Vedic Astrology Consultation with Anjali | अंजलि जी के साथ वैदिक ज्योतिष consultation |
+| Vedic astrology is about looking at your birth chart through the lens of the question you came with. Anjali studies where the planets are placed and which dasha period you are in. Then she explains, in simple words, what this phase is likely to bring and when you might start to see changes. Her Jyotish readings are for anyone facing a big decision around career, marriage or timing. | वैदिक ज्योतिष में आपकी जन्म कुंडली को उसी सवाल की नज़र से देखा जाता है जो आप लेकर आए हैं। अंजलि जी देखती हैं कि ग्रह कहाँ बैठे हैं और आपकी कौन-सी दशा चल रही है। फिर सरल शब्दों में बताती हैं कि यह दौर क्या लेकर आ सकता है और बदलाव कब दिखने शुरू हो सकते हैं। उनके Jyotish reading उन सबके लिए हैं जो करियर, शादी या सही समय को लेकर किसी बड़े फ़ैसले के सामने हैं। |
+| At a glance, "Includes": Three months of calling Anjali directly for follow-ups | आगे के सवालों के लिए तीन महीने तक अंजलि जी को सीधे कॉल |
 
-### Step 1 once online booking is switched on
+#### Vedic Astrology: how it works
 
 | English | हिंदी |
 |---|---|
-| Book a time, or message her first | समय बुक करें, या पहले मैसेज करें |
-| A chart reading or numerology consultation can be booked and paid for online. For Vastu, or if you are not sure which you need, message her on WhatsApp and she will point you to the right one. | कुंडली या अंकशास्त्र का consultation ऑनलाइन बुक करके पेमेंट किया जा सकता है। वास्तु के लिए, या अगर आपको पक्का नहीं पता कि कौन-सा चाहिए, तो अंजलि जी को WhatsApp पर मैसेज करें, वे सही वाला बता देंगी। |
+| Message her first | पहले मैसेज करें |
+| Tell Anjali briefly what is on your mind, on WhatsApp or through the form. She will tell you whether a Vedic astrology reading is the right fit, or whether numerology or Vastu would suit it better. | अंजलि जी को WhatsApp पर या फ़ॉर्म से थोड़े में बताएँ कि मन में क्या है। वे बताएँगी कि वैदिक ज्योतिष का reading सही रहेगा, या अंकशास्त्र या वास्तु इसके लिए बेहतर है। |
+| Send her your birth details | अपनी जन्म की जानकारी भेजें |
+| For a birth chart reading, she needs your date, time and place of birth. The exact birth time matters more than most people realise, so if you can, confirm it with your family or your birth certificate before the session. | कुंडली के reading के लिए उन्हें आपकी जन्म की तारीख, समय और स्थान चाहिए। जन्म का सही समय ज़्यादातर लोगों की सोच से ज़्यादा मायने रखता है, इसलिए हो सके तो session से पहले परिवार से या अपने जन्म प्रमाणपत्र से उसे पक्का कर लें। |
+| Have your consultation | अपना consultation करें |
+| Meet her in person in Palwal or talk over the phone, in English or Hindi, whichever feels more comfortable. There is no fixed time limit, so you can ask everything that is on your mind. | पलवल में मिलकर या फ़ोन पर, हिंदी या अंग्रेज़ी में, जिसमें भी आप सहज हों। समय की कोई तय सीमा नहीं है, इसलिए मन में जो कुछ है, सब पूछ सकते हैं। |
+| Call her for three months | तीन महीने तक कॉल करें |
+| After your reading, you can call Anjali directly for three months with any follow-up questions. If she suggests a remedy, she will tell you the cost first, and you can decide. Remedies are always optional. | Reading के बाद आप तीन महीने तक अपने आगे के सवालों के लिए अंजलि जी को सीधे कॉल कर सकते हैं। अगर वे कोई उपाय बताएँ, तो पहले उसकी कीमत बता देंगी, और फ़ैसला आपका होगा। उपाय करना हमेशा आपकी मर्ज़ी पर है। |
+| Book a time, or message her first (step 1 once booking is on) | समय बुक करें, या पहले मैसेज करें |
+| You can book and pay for a Vedic astrology or numerology consultation online. If you are not sure which reading you need, or you are interested in Vastu, just message Anjali on WhatsApp. She will help you choose the right option. | वैदिक ज्योतिष या अंकशास्त्र का consultation आप ऑनलाइन बुक करके पेमेंट कर सकते हैं। अगर आपको पक्का नहीं पता कि कौन-सा reading चाहिए, या आपको वास्तु में दिलचस्पी है, तो अंजलि जी को WhatsApp पर मैसेज करें। वे सही विकल्प चुनने में मदद करेंगी। |
+| Ready to begin? | शुरू करने के लिए तैयार हैं? |
+| Ask about Vedic astrology on WhatsApp | वैदिक ज्योतिष के बारे में WhatsApp पर पूछें |
 
-### Once online booking is switched on
+### Numerology: page text
+
+| English | हिंदी |
+|---|---|
+| Numerology Consultation with Anjali | अंजलि जी के साथ अंकशास्त्र consultation |
+| Numerology looks at the numbers hidden in your name and date of birth. Anjali goes through them one by one and tells you plainly what they suggest, and whether a name correction is actually worth doing. People come to her when they are starting a business, naming a child, or simply wondering if their name is helping or holding them back. | अंकशास्त्र आपके नाम और जन्म की तारीख़ में छिपे अंकों को देखता है। अंजलि जी उन्हें एक-एक करके देखती हैं और सीधे शब्दों में बताती हैं कि वे क्या इशारा करते हैं, और नाम में सुधार करवाना सच में ठीक रहेगा या नहीं। लोग उनके पास तब आते हैं जब वे कारोबार शुरू कर रहे हों, बच्चे का नाम रख रहे हों, या बस यह जानना चाहते हों कि उनका नाम उनका साथ दे रहा है या रोक रहा है। |
+| At a glance, "Includes": Three months of calling Anjali directly for follow-ups | आगे के सवालों के लिए तीन महीने तक अंजलि जी को सीधे कॉल |
+
+#### Numerology: how it works
+
+| English | हिंदी |
+|---|---|
+| Message her first | पहले मैसेज करें |
+| Tell Anjali briefly what is on your mind, on WhatsApp or through the form. She will tell you whether numerology is the right fit, or whether a Vedic astrology reading or Vastu would suit it better. | अंजलि जी को WhatsApp पर या फ़ॉर्म से थोड़े में बताएँ कि मन में क्या है। वे बताएँगी कि अंकशास्त्र सही रहेगा, या वैदिक ज्योतिष का reading या वास्तु इसके लिए बेहतर है। |
+| Send her your name and date of birth | अपना नाम और जन्म की तारीख़ भेजें |
+| For a numerology reading, she needs your full name and date of birth. If you are asking about a child’s name or a business name, tell her that too, so she can read the numbers with your specific question in mind. | अंकशास्त्र के reading के लिए उन्हें आपका पूरा नाम और जन्म की तारीख़ चाहिए। अगर आप बच्चे के नाम या कारोबार के नाम के बारे में पूछ रहे हैं, तो वह भी बताएँ, ताकि वे अंकों को आपके सवाल के हिसाब से देख सकें। |
+| Have your consultation | अपना consultation करें |
+| Meet her in person in Palwal or talk over the phone, in English or Hindi, whichever feels more comfortable. There is no fixed time limit, so you can ask everything that is on your mind. | पलवल में मिलकर या फ़ोन पर, हिंदी या अंग्रेज़ी में, जिसमें भी आप सहज हों। समय की कोई तय सीमा नहीं है, इसलिए मन में जो कुछ है, सब पूछ सकते हैं। |
+| Call her for three months | तीन महीने तक कॉल करें |
+| After your numerology reading, you can call Anjali directly for three months with any follow-up questions. If she suggests a remedy, she will tell you the cost first, and you can decide. Remedies are always optional. | अंकशास्त्र के reading के बाद आप तीन महीने तक अपने आगे के सवालों के लिए अंजलि जी को सीधे कॉल कर सकते हैं। अगर वे कोई उपाय बताएँ, तो पहले उसकी कीमत बता देंगी, और फ़ैसला आपका होगा। उपाय करना हमेशा आपकी मर्ज़ी पर है। |
+| Book a time, or message her first (step 1 once booking is on) | समय बुक करें, या पहले मैसेज करें |
+| You can book and pay for a numerology consultation online. If you are not sure whether you need numerology, astrology or Vastu, just message Anjali on WhatsApp. She will help you choose the right option. | अंकशास्त्र का consultation आप ऑनलाइन बुक करके पेमेंट कर सकते हैं। अगर आपको पक्का नहीं पता कि अंकशास्त्र, ज्योतिष या वास्तु में से क्या चाहिए, तो अंजलि जी को WhatsApp पर मैसेज करें। वे सही विकल्प चुनने में मदद करेंगी। |
+| Ready to begin? | शुरू करने के लिए तैयार हैं? |
+| Ask about numerology on WhatsApp | अंकशास्त्र के बारे में WhatsApp पर पूछें |
+
+### Vastu: page text
+
+| English | हिंदी |
+|---|---|
+| Vastu Consultation with Anjali | अंजलि जी के साथ वास्तु consultation |
+| Vastu looks at how direction, layout and placement affect the way a space feels. Whether it is Vastu for a home or for a shop you work in every day, Anjali studies the space around the people who actually live and work there. Many people reach out to her when a place feels heavy or “off”, and they cannot explain why. Vastu is offered as a complete package: one fee, with site visits included until the building work is finished. | वास्तु यह देखता है कि दिशा, बनावट और चीज़ों की जगह किसी जगह के एहसास को कैसे प्रभावित करती हैं। चाहे घर का वास्तु हो या उस दुकान का जहाँ आप रोज़ काम करते हैं, अंजलि जी उस जगह को उन लोगों के हिसाब से देखती हैं जो वहाँ सच में रहते और काम करते हैं। कई लोग उनके पास तब आते हैं जब कोई जगह भारी या अजीब-सी लगती है और वे समझा नहीं पाते कि क्यों। वास्तु पूरे पैकेज के रूप में होता है: एक ही फ़ीस, और बिल्डिंग का काम पूरा होने तक साइट विज़िट शामिल। |
+| At a glance, "Includes": Site visits until the building is complete | बिल्डिंग पूरी होने तक साइट विज़िट |
+
+#### Vastu: how it works
+
+| English | हिंदी |
+|---|---|
+| Message Anjali on WhatsApp | अंजलि जी को WhatsApp पर मैसेज करें |
+| Vastu consultations are not booked online. Just send her a message, and she will reply personally with details about the package and the fee before anything is arranged. | वास्तु consultation ऑनलाइन बुक नहीं होते। बस उन्हें मैसेज भेज दें, और कुछ भी तय होने से पहले वे खुद जवाब देकर पैकेज और फ़ीस की जानकारी देंगी। |
+| Send her your plan or photos | अपना नक्शा या फ़ोटो भेजें |
+| A floor plan or a few clear photos of your home or shop is enough to get started. If you are not sure what to send, ask her and she will guide you. | शुरू करने के लिए घर या दुकान का नक्शा, या कुछ साफ़ फ़ोटो काफ़ी हैं। अगर पक्का नहीं पता कि क्या भेजें, तो उनसे पूछ लें, वे बता देंगी। |
+| Have your consultation | अपना consultation करें |
+| She will walk through your space with you, either in person in Palwal or over the phone, in English or Hindi, whichever you prefer. There is no fixed time limit, so you can ask everything that is on your mind. | वे आपके साथ आपकी जगह देखेंगी, पलवल में मिलकर या फ़ोन पर, हिंदी या अंग्रेज़ी में, जैसा आप चाहें। समय की कोई तय सीमा नहीं है, इसलिए मन में जो कुछ है, सब पूछ सकते हैं। |
+| Site visits until the building is complete | बिल्डिंग पूरी होने तक साइट विज़िट |
+| Because Vastu is a package, you do not pay again for each visit. Anjali stays involved until the building work is complete. If a remedy such as a Vastu yantra might help, she will tell you the cost first. Remedies are always optional. | वास्तु एक पैकेज है, इसलिए हर विज़िट के लिए अलग से पैसे नहीं देने पड़ते। बिल्डिंग का काम पूरा होने तक अंजलि जी साथ जुड़ी रहती हैं। अगर वास्तु यंत्र जैसा कोई उपाय मदद कर सकता है, तो वे पहले उसकी कीमत बता देंगी। उपाय करना हमेशा आपकी मर्ज़ी पर है। |
+| Have a home or shop that does not feel quite right? | क्या आपके घर या दुकान में कुछ ठीक नहीं लगता? |
+| Ask about Vastu on WhatsApp | वास्तु के बारे में WhatsApp पर पूछें |
+
+
+### Buttons once online booking is switched on
 
 | English | हिंदी |
 |---|---|
@@ -374,13 +434,31 @@ Page address: `/hi/about`
 
 | English | हिंदी |
 |---|---|
-| She was once the client who never got a **straight answer** | कभी वे खुद ऐसी क्लाइंट थीं, जिन्हें **सीधा जवाब** नहीं मिला |
-| Anjali started learning astrology in 1995, from books and from teachers. Then life took over, and she set it aside for years. | अंजलि जी ने 1995 में ज्योतिष सीखना शुरू किया, किताबों से और शिक्षकों से। फिर ज़िंदगी की भागदौड़ में यह पीछे छूट गया, और कई साल तक उन्होंने इसे अलग रखा। |
-| She came back to it after a difficult period of her own. She went to an astrologer for help, paid far more than it was worth, and still did not get a clear answer. She decided that if she ever did this work, she would do it differently. | अपने ही एक मुश्किल दौर के बाद वे इसकी ओर लौटीं। मदद के लिए वे एक ज्योतिषी के पास गईं, जितना बनता था उससे कहीं ज़्यादा पैसे दिए, और फिर भी साफ़ जवाब नहीं मिला। तभी उन्होंने तय किया कि अगर वे कभी यह काम करेंगी, तो अलग तरीके से करेंगी। |
-| She has been reading professionally since 2017. People come to her about work, love and marriage, and the things that do not fit neatly into either. She reads in English and Hindi. | वे 2017 से प्रोफ़ेशनल तौर पर consultation दे रही हैं। लोग उनके पास काम, प्यार और शादी के सवाल लेकर आते हैं, और उन बातों को लेकर भी जो इनमें से किसी में ठीक से नहीं बैठतीं। वे हिंदी और अंग्रेज़ी, दोनों में consultation देती हैं। |
+| The client who never got a **straight answer** | वह क्लाइंट, जिसे कभी **सीधा जवाब** नहीं मिला |
+| Anjali first started learning astrology in 1995. She read books and studied with a few good teachers. Later, life became busy, and she put astrology on hold for many years. | अंजलि जी ने 1995 में पहली बार ज्योतिष सीखना शुरू किया। उन्होंने किताबें पढ़ीं और कुछ अच्छे शिक्षकों से सीखा। बाद में ज़िंदगी व्यस्त हो गई, और उन्होंने कई साल तक ज्योतिष को अलग रखा। |
+| A difficult time in her life made her return to it. She visited an astrologer hoping to find answers, paid more than the session was worth, and left feeling just as confused. That experience stayed with her. She promised herself that if she ever did this work again, no client would leave without an answer. | अपने जीवन के एक मुश्किल दौर ने उन्हें इसकी ओर वापस लौटाया। जवाब की उम्मीद में वे एक ज्योतिषी के पास गईं, session की कीमत से ज़्यादा पैसे दिए, और उतनी ही उलझन लेकर लौटीं। वह अनुभव उनके मन में बैठ गया। उन्होंने खुद से वादा किया कि अगर वे कभी यह काम दोबारा करेंगी, तो कोई क्लाइंट बिना जवाब के नहीं लौटेगा। |
+| She has been offering readings since 2017. People ask her about work, love, marriage and other worries that do not fit into one category. She might give a birth chart reading, a numerology reading for a name or date of birth, or Vastu advice for a home or shop. Whatever the type, she explains everything as if talking to a friend, in plain words, in English or Hindi. | वे 2017 से reading दे रही हैं। लोग उनसे काम, प्यार, शादी और ऐसी चिंताओं के बारे में पूछते हैं जो किसी एक खाँचे में नहीं बैठतीं। वे जन्म कुंडली का reading दे सकती हैं, नाम या जन्म की तारीख़ का अंकशास्त्र reading, या घर या दुकान के लिए वास्तु की सलाह। चाहे जो भी हो, वे सब कुछ ऐसे समझाती हैं जैसे किसी दोस्त से बात कर रही हों, आसान शब्दों में, हिंदी या अंग्रेज़ी में। |
+| Her clients come from Faridabad, Palwal and Delhi. Some meet her in person, while many speak with her over the phone. | उनके क्लाइंट फ़रीदाबाद, पलवल और दिल्ली से आते हैं। कुछ लोग उनसे मिलकर बात करते हैं, जबकि कई फ़ोन पर। |
 | Learning since 1995 · Reading professionally since 2017 · Ph.D. in Astrology & Vastu | 1995 से अध्ययन · 2017 से प्रोफ़ेशनल प्रैक्टिस · ज्योतिष और वास्तु में Ph.D. |
 | Astrologer Anjali Jain · Palwal, Haryana | ज्योतिषी अंजलि जैन · पलवल, हरियाणा |
 | What she will not do | वे क्या नहीं करतीं |
+
+## Testimonials page
+
+Page address: `/hi/testimonials`
+
+### Google search result (title and description)
+
+| English | हिंदी |
+|---|---|
+| Client Testimonials for Astrologer Anjali Jain | ज्योतिषी अंजलि जैन के क्लाइंट के अनुभव |
+| What clients from Faridabad, Palwal, Delhi and beyond say after a consultation with Anjali Jain: Vedic astrology, numerology and Vastu. | फ़रीदाबाद, पलवल, दिल्ली और दूसरी जगहों के क्लाइंट अंजलि जैन के consultation के बाद क्या कहते हैं: वैदिक ज्योतिष, अंकशास्त्र और वास्तु। |
+
+*The page shows the same client testimonials as the home page, with the heading below.*
+
+| English | हिंदी |
+|---|---|
+| What clients say **after** a consultation | क्लाइंट consultation के **बाद** क्या कहते हैं |
 
 ## Learning (classes)
 
@@ -390,7 +468,7 @@ Page address: `/hi/teaching`
 
 | English | हिंदी |
 |---|---|
-| Learn Astrology, Numerology and Vastu Online | ऑनलाइन सीखें: ज्योतिष, अंकशास्त्र और वास्तु |
+| Astrology, Numerology and Vastu Classes Online | ऑनलाइन सीखें: ज्योतिष, अंकशास्त्र और वास्तु |
 | Three-month courses in Vedic astrology, numerology and Vastu with Anjali Jain. Live over video call, in small groups of four or five students. | अंजलि जैन के साथ वैदिक ज्योतिष, अंकशास्त्र और वास्तु के तीन महीने के कोर्स। वीडियो कॉल पर लाइव क्लास, चार या पाँच स्टूडेंट के छोटे ग्रुप में। |
 
 ### The page
@@ -423,6 +501,8 @@ Page address: `/hi/contact`
 
 | English | हिंदी |
 |---|---|
+| Whether you are looking for an astrologer in Palwal or just want to know which reading suits you, tell her what is on your mind and she will point you the right way. Consultations are available in English or Hindi, in person or by phone. | आप पलवल में ज्योतिषी ढूँढ रहे हों, या बस जानना चाहते हों कि कौन-सा reading आपके लिए ठीक रहेगा, अपने मन की बात उन्हें बताएँ, वे सही रास्ता दिखा देंगी। Consultation हिंदी या अंग्रेज़ी में, मिलकर या फ़ोन पर उपलब्ध हैं। |
+| Have a question about your career, marriage, a name, or a home or shop? Contact Anjali on WhatsApp for the quickest reply. If you would rather write, leave your details below and she will reply herself shortly. | करियर, शादी, किसी नाम, या घर या दुकान को लेकर कोई सवाल है? सबसे जल्दी जवाब के लिए अंजलि जी को WhatsApp पर संपर्क करें। अगर आप लिखना पसंद करें, तो नीचे अपनी जानकारी छोड़ दें, वे जल्द ही खुद जवाब देंगी। |
 | She answers herself | वे खुद जवाब देती हैं |
 | Every message is read and answered by Anjali. There is no assistant and no call centre, which is also why a reply can take a few hours rather than a few minutes. | हर मैसेज अंजलि जी खुद पढ़ती हैं और खुद जवाब देती हैं। न कोई असिस्टेंट है, न कोई कॉल सेंटर, इसीलिए जवाब आने में कुछ मिनट नहीं, कुछ घंटे लग सकते हैं। |
 | What happens after you write | लिखने के बाद क्या होता है |
@@ -627,5 +707,6 @@ Page address: `/hi/sitemap.html`
 | Home | होम |
 | About Anjali | अंजलि जी के बारे में |
 | Classes | क्लास |
+| Testimonials | अनुभव |
 | Contact | संपर्क |
 | Book | बुकिंग: |

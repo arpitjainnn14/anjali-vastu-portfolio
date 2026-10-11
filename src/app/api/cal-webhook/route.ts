@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { isValidCalSignature } from '@/lib/cal-webhook';
-import { bookingAlert, isAlertEvent, sendTelegram, type CalWebhook } from '@/lib/telegram';
+import { bookingAlert, isAlertEvent, parseCalWebhook, sendTelegram, type CalWebhook } from '@/lib/telegram';
 
 /**
  * Cal ID booking webhook → a Telegram alert on Anjali's phone.
@@ -18,8 +18,13 @@ import { bookingAlert, isAlertEvent, sendTelegram, type CalWebhook } from '@/lib
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+/** A real Cal ID booking message is a few KB; anything far larger is refused before the signature work. */
+const MAX_BODY_BYTES = 256 * 1024;
+
 export async function POST(request: Request) {
+  if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY_BYTES) return NextResponse.json({ ok: false }, { status: 413 });
   const body = await request.text();
+  if (body.length > MAX_BODY_BYTES) return NextResponse.json({ ok: false }, { status: 413 });
   const valid = await isValidCalSignature(
     body,
     request.headers.get('x-cal-signature-256'),
@@ -29,12 +34,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
-  let hook: CalWebhook;
+  let hook: CalWebhook | null;
   try {
-    hook = JSON.parse(body) as CalWebhook;
+    hook = parseCalWebhook(JSON.parse(body));
   } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
+  if (!hook) return NextResponse.json({ ok: false }, { status: 400 });
 
   if (isAlertEvent(hook.triggerEvent)) {
     const text = bookingAlert(hook);

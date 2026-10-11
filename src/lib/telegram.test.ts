@@ -99,3 +99,24 @@ describe('isValidCalSignature', () => {
     expect(await isValidCalSignature(body, signature, undefined)).toBe(false);
   });
 });
+
+describe('parseCalWebhook (review 23)', () => {
+  it('turns a signed message that is not an object into null, instead of crashing', async () => {
+    const { parseCalWebhook } = await import('./telegram');
+    for (const v of [null, 5, 'x', []]) expect(parseCalWebhook(v)).toBeNull();
+  });
+  it('keeps fields of the right type and drops the rest', async () => {
+    const { parseCalWebhook } = await import('./telegram');
+    const hook = parseCalWebhook({
+      triggerEvent: 'BOOKING_CREATED',
+      payload: { title: 7, type: 'Vastu', startTime: '2026-10-01T05:00:00Z', location: ['x'], attendees: [{ name: 'Priya', email: 3 }, 'junk'], responses: 'nope' },
+    });
+    expect(hook).toEqual({ triggerEvent: 'BOOKING_CREATED', payload: { type: 'Vastu', startTime: '2026-10-01T05:00:00Z', attendees: [{ name: 'Priya' }] } });
+  });
+  it('an event name like "constructor" is not an alert event', async () => {
+    const { isAlertEvent } = await import('./telegram');
+    expect(isAlertEvent('constructor')).toBe(false);
+    expect(isAlertEvent('toString')).toBe(false);
+    expect(isAlertEvent('BOOKING_PAID')).toBe(true);
+  });
+});

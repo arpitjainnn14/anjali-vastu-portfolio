@@ -88,7 +88,48 @@ const EVENT_HEADINGS: Record<string, string> = {
 
 /** The events worth a ping. Others (meetings, recordings…) are ignored. */
 export function isAlertEvent(event: string | undefined): event is string {
-  return event !== undefined && event in EVENT_HEADINGS;
+  return event !== undefined && Object.hasOwn(EVENT_HEADINGS, event);
+}
+
+const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
+const str = (v: unknown) => (typeof v === 'string' ? v : undefined);
+
+/**
+ * A signed Cal ID message, keeping only fields of the expected type. The signature proves who sent it, not that its
+ * shape is right; a field of the wrong type is dropped rather than reaching the alert text. Not an object → null.
+ */
+export function parseCalWebhook(value: unknown): CalWebhook | null {
+  if (!isObject(value)) return null;
+  const out: CalWebhook = {};
+  if (typeof value.triggerEvent === 'string') out.triggerEvent = value.triggerEvent;
+  if (!isObject(value.payload)) return out;
+  const p = value.payload;
+  const payload: NonNullable<CalWebhook['payload']> = {};
+  for (const key of ['title', 'type', 'startTime', 'location', 'status', 'currency', 'cancellationReason', 'rescheduleStartTime'] as const) {
+    const v = str(p[key]);
+    if (v !== undefined) payload[key] = v;
+  }
+  if (typeof p.paid === 'boolean') payload.paid = p.paid;
+  if (typeof p.price === 'number' && Number.isFinite(p.price)) payload.price = p.price;
+  if (Array.isArray(p.attendees)) {
+    payload.attendees = p.attendees.filter(isObject).map((a) => {
+      const attendee: { name?: string; email?: string; phoneNumber?: string } = {};
+      for (const key of ['name', 'email', 'phoneNumber'] as const) {
+        const v = str(a[key]);
+        if (v !== undefined) attendee[key] = v;
+      }
+      return attendee;
+    });
+  }
+  if (isObject(p.responses)) {
+    const responses: NonNullable<NonNullable<CalWebhook['payload']>['responses']> = {};
+    for (const [key, answer] of Object.entries(p.responses)) {
+      if (isObject(answer)) responses[key] = { label: str(answer.label), value: answer.value };
+    }
+    payload.responses = responses;
+  }
+  out.payload = payload;
+  return out;
 }
 
 function responseText(value: unknown): string {

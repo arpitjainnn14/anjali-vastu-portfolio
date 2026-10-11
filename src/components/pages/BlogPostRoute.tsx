@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { getContent, type Locale } from '@/content';
 import { localePath } from '@/lib/locale-routing';
+import { unlistedMetadata } from '@/lib/metadata';
 import { redirectTarget } from '@/lib/sitedesk';
 import { getBlogConfig, getBlogPost } from '@/lib/sitedesk-env';
 import { BlogNotice, BlogPostPage, blogPostMetadata } from './BlogPostPage';
@@ -10,7 +11,7 @@ import { BlogNotice, BlogPostPage, blogPostMetadata } from './BlogPostPage';
 export async function blogPostRouteMetadata(locale: Locale, slug: string): Promise<Metadata> {
   const c = getContent(locale);
   const result = await getBlogPost(slug, locale);
-  return result.ok ? blogPostMetadata(c, locale, result.data) : { title: c.blog.meta.title, robots: { index: false, follow: false } };
+  return result.ok ? blogPostMetadata(c, locale, result.data) : unlistedMetadata({ title: c.blog.meta.title, c });
 }
 
 /**

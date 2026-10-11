@@ -22,8 +22,9 @@ type PageMeta = {
  * layout's whole object and a page that doesn't inherits the home page's. Every
  * page goes through here instead, so none of them shares a stranger's preview.
  *
- * The image is app/opengraph-image.jpg, named explicitly: Next only applies a
- * file-based image to routes that don't set `openGraph` themselves. It is a
+ * The image is public/opengraph-image.jpg, named explicitly. It used to be
+ * app/opengraph-image.jpg, but Next then attached it on its own to pages that set
+ * no `openGraph` (404s, unlisted pages) with a localhost address. It is a
  * static JPEG, not a generated PNG, because WhatsApp drops previews over
  * roughly 300 KB and a photo as PNG comes out at twice that.
  */
@@ -59,5 +60,15 @@ export function pageMetadata({ title, description, path, locale, absolute = fals
       description,
       images: [shareImage(c)],
     },
+  };
+}
+
+/** A page that is not indexed (an unloadable note, the sandbox). It still names the share image, like every page. */
+export function unlistedMetadata({ title, c }: { title: string; c: Content }): Metadata {
+  return {
+    title,
+    robots: { index: false, follow: false },
+    openGraph: { images: [shareImage(c)] },
+    twitter: { images: [shareImage(c).url] },
   };
 }

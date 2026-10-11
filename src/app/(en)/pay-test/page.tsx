@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Section, Container } from '@/components/ui/Section';
 import { sandboxEnabled } from '@/lib/razorpay';
+import { getContent } from '@/content';
+import { unlistedMetadata } from '@/lib/metadata';
 import { PayTest } from './PayTest';
 import { WebhookLog } from './WebhookLog';
 
@@ -9,10 +11,7 @@ import { WebhookLog } from './WebhookLog';
  * Razorpay learning sandbox. `npm run dev` only; a 404 in any production
  * build, and never linked from anywhere. See src/lib/razorpay.ts.
  */
-export const metadata: Metadata = {
-  title: 'Razorpay sandbox',
-  robots: { index: false, follow: false },
-};
+export const metadata: Metadata = unlistedMetadata({ title: 'Razorpay sandbox', c: getContent('en') });
 
 export default function PayTestPage() {
   if (!sandboxEnabled) notFound();

@@ -14,6 +14,7 @@ export const siteMap = {
     practice: 'The practice',
     consultations: 'Consultations',
     booking: 'Book online',
+    blog: 'Notes from Anjali',
     policies: 'Notices',
   },
   /** Labels for pages whose own title is written for search, not for a list. */

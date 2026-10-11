@@ -21,6 +21,8 @@ export interface BlogPost extends BlogSummary {
   /** What the owner set in Sitedesk's SEO and Social tabs. Empty means "use the usual one". */
   seoTitle: string;
   seoDescription: string;
+  /** The phrase the owner wants the note found for; empty when none is set. */
+  focusKeyword: string;
   noindex: boolean;
   canonical: string;
   shareImage: string | null;
@@ -57,7 +59,7 @@ function toPost(v: unknown): BlogPost | null {
   if (typeof r.html !== 'string' || !Array.isArray(r.languages) || !r.languages.every((l) => typeof l === 'string' && isLocale(l))) return null;
   return {
     ...toSummary(v), html: r.html, languages: r.languages as Locale[],
-    seoTitle: orEmpty(r.seoTitle), seoDescription: orEmpty(r.seoDescription), noindex: r.noindex === true, canonical: WEB_ADDRESS.test(orEmpty(r.canonical)) ? orEmpty(r.canonical) : '',
+    seoTitle: orEmpty(r.seoTitle), seoDescription: orEmpty(r.seoDescription), focusKeyword: orEmpty(r.focusKeyword).trim(), noindex: r.noindex === true, canonical: WEB_ADDRESS.test(orEmpty(r.canonical)) ? orEmpty(r.canonical) : '',
     shareImage: orNull(r.shareImage), shareTitle: orEmpty(r.shareTitle), shareDescription: orEmpty(r.shareDescription),
   };
 }

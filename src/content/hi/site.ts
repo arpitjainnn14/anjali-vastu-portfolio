@@ -14,6 +14,8 @@ export const site = {
   description:
     'अंजलि जैन (ज्योतिष और वास्तु में Ph.D.) के साथ वैदिक ज्योतिष, अंकशास्त्र और वास्तु। ' +
     'पलवल में मिलकर या फ़ोन पर, हिंदी या अंग्रेज़ी में।',
+  /** हर पेज का keywords टैग; अंग्रेज़ी वाले की तरह। */
+  keywords: ['पलवल में ज्योतिषी', 'वैदिक ज्योतिष', 'अंकशास्त्र', 'वास्तु', 'वास्तु सलाहकार', 'कुंडली', 'नाम सुधार', 'अंजलि जैन'],
   locale: 'hi-IN',
   /* City and state are shared facts (structured data uses them); running text spells them पलवल, हरियाणा. */
   city: geo.city,

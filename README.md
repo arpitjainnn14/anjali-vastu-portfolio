@@ -107,6 +107,7 @@ Only these routes are dynamic; every other page stays static:
 
 - `/blog`, `/blog/[slug]` and their `/hi` twins (`export const dynamic = 'force-dynamic'`)
 - `sitemap.xml`, which lists the published posts
+- `sitemap.html` (and `/hi/sitemap.html`), the site map for people, which lists them too
 - `robots.txt`, which follows Sitedesk's "Let search engines show this site" switch (if Sitedesk cannot be reached the site stays visible)
 
 How it is wired: `lib/sitedesk.ts` is the client (pure, unit-tested); `lib/sitedesk-env.ts` picks the transport. Deployed,

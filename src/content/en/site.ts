@@ -23,6 +23,14 @@ export const site = {
   description:
     'Vedic astrology, numerology and Vastu with Anjali Jain, Ph.D. in Astrology and Vastu. ' +
     'In person in Palwal or by phone, in English or Hindi.',
+  /**
+   * The keywords tag on every page: what people search for, in her words. Search engines mostly ignore the tag,
+   * but SEO audits check for it. A note adds its own focus keyword and tags in front (from Sitedesk).
+   */
+  keywords: [
+    'astrologer in Palwal', 'Vedic astrology', 'numerology', 'Vastu', 'Vastu consultant', 'kundli reading',
+    'name correction numerology', 'Anjali Jain',
+  ],
   locale: 'en-IN',
   city: geo.city,
   state: geo.state,

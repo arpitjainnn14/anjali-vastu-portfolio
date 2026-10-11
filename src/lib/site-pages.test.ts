@@ -76,3 +76,19 @@ describe('language switch on blog pages (review 29)', () => {
     expect(languageSwitchHref(c, '/nowhere', 'hi')).toBe('/hi');
   });
 });
+
+describe('the blog on sitemap.html', () => {
+  const summary = { slug: 'saturn-return', title: 'Saturn return', excerpt: 'What changes.', category: '', tags: [], publishedAt: 1, featuredImage: null };
+  it('lists the blog page and each live note, in the page language', async () => {
+    const { blogSiteMapGroup } = await import('./site-pages');
+    const g = blogSiteMapGroup(c, 'en', { ok: true, data: [summary] });
+    expect(g.heading).toBe(c.siteMap.groups.blog);
+    expect(g.pages.map((p) => p.href)).toEqual(['/blog', '/blog/saturn-return']);
+    expect(g.pages[1]).toMatchObject({ label: 'Saturn return', description: 'What changes.' });
+    expect(blogSiteMapGroup(hi, 'hi', { ok: true, data: [summary] }).pages.map((p) => p.href)).toEqual(['/hi/blog', '/hi/blog/saturn-return']);
+  });
+  it('still lists the blog page when Sitedesk cannot be reached', async () => {
+    const { blogSiteMapGroup } = await import('./site-pages');
+    expect(blogSiteMapGroup(c, 'en', { ok: false, reason: 'unavailable' }).pages.map((p) => p.href)).toEqual(['/blog']);
+  });
+});

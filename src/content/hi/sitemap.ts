@@ -14,6 +14,7 @@ export const siteMap = {
     practice: 'प्रैक्टिस',
     consultations: 'Consultation',
     booking: 'ऑनलाइन बुकिंग',
+    blog: 'अंजलि के नोट्स',
     policies: 'नियम और सूचनाएँ',
   },
   labels: {

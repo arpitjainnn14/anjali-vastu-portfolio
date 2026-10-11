@@ -4,6 +4,7 @@ import { Section, Container } from '@/components/ui/Section';
 import { SmartLink } from '@/components/ui/SmartLink';
 import { localePath } from '@/lib/locale-routing';
 import { pageMetadata } from '@/lib/metadata';
+import { blogPosting, jsonLd } from '@/lib/structured-data';
 import type { BlogPost } from '@/lib/sitedesk';
 import { locales } from '@/content';
 import { hindiLive } from '@/content/shared';
@@ -25,7 +26,7 @@ export function postAlternates(locale: Locale, slug: string, languages: Locale[]
 /** Title, description, canonical, robots and share card: the owner's choices from Sitedesk where set, the usual ones otherwise. */
 export function blogPostMetadata(c: Content, locale: Locale, post: BlogPost): Metadata {
   const description = post.seoDescription || post.excerpt || c.blog.meta.description;
-  const base = pageMetadata({ title: post.seoTitle || post.title, description, path: `/blog/${post.slug}`, locale, c });
+  const base = pageMetadata({ title: post.seoTitle || post.title, description, path: `/blog/${post.slug}`, locale, c, keywords: [post.focusKeyword, ...post.tags].map((k) => k.trim()).filter(Boolean) });
   const image = post.shareImage ?? post.featuredImage;
   const shareTitle = post.shareTitle || (typeof base.openGraph?.title === 'string' ? base.openGraph.title : post.title);
   const shareDescription = post.shareDescription || description;
@@ -44,6 +45,7 @@ export function BlogPostPage({ c, locale, post }: { c: Content; locale: Locale; 
   const other = locales.find((l) => l !== locale) as Locale;
   return (
     <Section className="pt-28 md:pt-40">
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(blogPosting(c, locale, post))} />
       <Container>
         <article className="flex max-w-[760px] flex-col gap-6">
           <SmartLink href={localePath(locale, '/blog')} className={`${blogLink} t-small self-start`}>

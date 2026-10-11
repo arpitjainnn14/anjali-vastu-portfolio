@@ -1,6 +1,7 @@
 import type { Content, Locale } from '@/content';
 import { bookableServices, bookPageHref } from './booking';
 import { alternatePath, localeOfPath, localePath } from './locale-routing';
+import type { BlogSummary, Fetched } from './sitedesk';
 
 /**
  * Every public page, grouped, for both site maps: sitemap.xml (search engines)
@@ -116,5 +117,17 @@ export function languageSwitchHref(c: Content, pathname: string, target: Locale)
   const english = localeOfPath(pathname) === 'hi' ? alternatePath(pathname) : pathname;
   if (BLOG_PAGE.test(english)) return localePath(target, '/blog');
   return isKnownPath(c, pathname) ? alternatePath(pathname) : localePath(target, '/');
+}
+
+/**
+ * The blog's group on sitemap.html: the blog page, then each live note from Sitedesk, newest first. Built on every
+ * visit, so a note appears here as soon as it is published. If Sitedesk cannot be reached, only the blog page is listed.
+ */
+export function blogSiteMapGroup(c: Content, locale: Locale, posts: Fetched<BlogSummary[]>): SitePageGroup {
+  const list: SitePage = { href: localePath(locale, '/blog'), label: c.blog.meta.title, description: c.blog.meta.description, indexed: true };
+  const notes = posts.ok
+    ? posts.data.map((p) => ({ href: localePath(locale, `/blog/${p.slug}`), label: p.title, description: p.excerpt, indexed: true }))
+    : [];
+  return { heading: c.siteMap.groups.blog, pages: [list, ...notes] };
 }
 

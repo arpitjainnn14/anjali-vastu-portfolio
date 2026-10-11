@@ -155,3 +155,11 @@ describe('dates that cannot be shown (review 25)', () => {
     expect(await client(async () => respond(200, { entries, robots: '', indexing: true })).getSitemap()).toEqual({ ok: false, reason: 'unavailable' });
   });
 });
+
+describe('focus keyword from Sitedesk', () => {
+  it('passes it through, and is empty when Sitedesk sends none or something odd', async () => {
+    expect(await client(async () => respond(200, { post: { ...post, focusKeyword: 'saturn return' } })).getPost('hello', 'en')).toMatchObject({ ok: true, data: { focusKeyword: 'saturn return' } });
+    expect(await client(async () => respond(200, { post })).getPost('hello', 'en')).toMatchObject({ ok: true, data: { focusKeyword: '' } });
+    expect(await client(async () => respond(200, { post: { ...post, focusKeyword: 7 } })).getPost('hello', 'en')).toMatchObject({ ok: true, data: { focusKeyword: '' } });
+  });
+});

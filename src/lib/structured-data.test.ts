@@ -66,3 +66,18 @@ describe('serviceBreadcrumb', () => {
     expect(items('hi')).toEqual([`${siteUrl}/hi#services`, `${siteUrl}/hi/services/${service.slug}`]);
   });
 });
+
+describe('blogPosting (SEO audit: publisher and author on notes)', () => {
+  const note = { slug: 'saturn-return', title: 'Saturn return', excerpt: 'What changes.', category: 'Astrology', tags: ['saturn'], publishedAt: Date.UTC(2026, 9, 1), featuredImage: 'https://sd.example/media/x', html: '', languages: ['en'] as ('en' | 'hi')[], seoTitle: '', seoDescription: 'About Saturn.', focusKeyword: 'saturn return', noindex: false, canonical: '', shareImage: null, shareTitle: '', shareDescription: '' };
+  it('names the note, its date, Anjali as author and the business as publisher, linked to the site graph', async () => {
+    const { blogPosting } = await import('./structured-data');
+    const { getContent } = await import('@/content');
+    const { absoluteUrl } = await import('./site-url');
+    const g = blogPosting(getContent('en'), 'en', note);
+    expect(g).toMatchObject({
+      '@type': 'BlogPosting', headline: 'Saturn return', description: 'About Saturn.', inLanguage: 'en-IN',
+      datePublished: '2026-10-01T00:00:00.000Z', url: absoluteUrl('/blog/saturn-return'), image: 'https://sd.example/media/x',
+      keywords: 'saturn return, saturn', author: { '@id': absoluteUrl('/#anjali') }, publisher: { '@id': absoluteUrl('/#business') },
+    });
+  });
+});

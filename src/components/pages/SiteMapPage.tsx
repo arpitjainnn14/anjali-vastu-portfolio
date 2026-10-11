@@ -3,17 +3,19 @@ import Link from 'next/link';
 import type { Content, Locale } from '@/content';
 import { Section, Container, Accented } from '@/components/ui/Section';
 import { pageMetadata } from '@/lib/metadata';
-import { sitePageGroups } from '@/lib/site-pages';
+import { blogSiteMapGroup, sitePageGroups } from '@/lib/site-pages';
+import type { BlogSummary, Fetched } from '@/lib/sitedesk';
 
 /**
  * The site map for people, at /sitemap.html. The same page list as
- * sitemap.xml (lib/site-pages.ts), plus the noindex notices.
+ * sitemap.xml (lib/site-pages.ts), plus the noindex notices, and the blog's live
+ * notes from Sitedesk (so it changes by itself when a note is published).
  */
 export function siteMapMetadata(c: Content, locale: Locale): Metadata {
   return pageMetadata({ ...c.siteMap.meta, path: c.siteMap.href, locale, c });
 }
 
-export function SiteMapPage({ c, locale }: { c: Content; locale: Locale }) {
+export function SiteMapPage({ c, locale, posts }: { c: Content; locale: Locale; posts: Fetched<BlogSummary[]> }) {
   return (
     <Section className="pt-28 md:pt-40">
       <Container>
@@ -22,7 +24,7 @@ export function SiteMapPage({ c, locale }: { c: Content; locale: Locale }) {
         </h1>
 
         <div className="mt-10 grid gap-12 md:mt-16 md:grid-cols-2 md:gap-x-20 md:gap-y-16">
-          {sitePageGroups(c, locale).map((group) => (
+          {[...sitePageGroups(c, locale), blogSiteMapGroup(c, locale, posts)].map((group) => (
             <nav key={group.heading} aria-label={group.heading} className="flex flex-col gap-5">
               <h2 className="t-h3 m-0 text-ink">{group.heading}</h2>
               <ul className="m-0 flex list-none flex-col gap-5 p-0">

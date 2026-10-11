@@ -12,6 +12,8 @@ type PageMeta = {
   absolute?: boolean;
   /** The page's content bundle, for the brand name and the share image's alt text. */
   c: Content;
+  /** Keywords for this page, put in front of the site's own. */
+  keywords?: string[];
 };
 
 /**
@@ -37,13 +39,17 @@ function shareImage(c: Content) {
   };
 }
 
-export function pageMetadata({ title, description, path, locale, absolute = false, c }: PageMeta): Metadata {
+export function pageMetadata({ title, description, path, locale, absolute = false, c, keywords = [] }: PageMeta): Metadata {
   /* A title that already names the business does not repeat it. */
   const standalone = absolute || title.includes(c.site.brand);
   const shareTitle = standalone ? title : `${title} | ${c.site.brand}`;
   return {
     title: standalone ? { absolute: title } : title,
     description,
+    // Keywords, author and publisher: search engines rely on the structured data, but SEO audits check these tags.
+    keywords: [...new Set([...keywords, ...c.site.keywords])],
+    authors: [{ name: c.site.name, url: localePath(locale, '/about') }],
+    publisher: c.site.brand,
     ...localeMetadata(locale, path),
     openGraph: {
       type: 'website',

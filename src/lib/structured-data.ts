@@ -2,6 +2,7 @@ import { getContent, type Content, type Locale } from '@/content';
 import { absoluteUrl, siteUrl } from './site-url';
 import type { Service } from './booking';
 import { localePath } from './locale-routing';
+import type { BlogPost } from './sitedesk';
 
 /**
  * JSON-LD for search engines and AI answer engines.
@@ -166,6 +167,31 @@ export function faqPage(c: Content, locale: Locale) {
       name: item.q,
       acceptedAnswer: { '@type': 'Answer', text: item.a },
     })),
+  };
+}
+
+/**
+ * One note from the blog, as an article: its words, date and picture, with Anjali as author and the business as
+ * publisher (the same @ids as the site graph, so search engines see one author and one publisher, not new ones).
+ */
+export function blogPosting(c: Content, locale: Locale, post: BlogPost) {
+  const url = post.canonical || absoluteUrl(localePath(locale, `/blog/${post.slug}`));
+  const keywords = [...new Set([post.focusKeyword, ...post.tags].map((k) => k.trim()).filter(Boolean))];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt,
+    inLanguage: inLanguageOf(locale),
+    datePublished: new Date(post.publishedAt).toISOString(),
+    url,
+    mainEntityOfPage: url,
+    ...(post.shareImage ?? post.featuredImage ? { image: post.shareImage ?? post.featuredImage } : {}),
+    ...(keywords.length ? { keywords: keywords.join(', ') } : {}),
+    ...(post.category ? { articleSection: post.category } : {}),
+    author: { '@id': ids.person },
+    publisher: { '@id': ids.business },
+    isPartOf: { '@id': ids.website },
   };
 }
 

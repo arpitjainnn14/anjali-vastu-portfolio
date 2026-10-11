@@ -20,3 +20,15 @@ describe('alternate languages for a note (review 29)', () => {
     expect(postAlternates('hi', 'n', ['hi'], true)).toEqual({ canonical: '/hi/blog/n' });
   });
 });
+
+describe('note keywords (SEO audit)', () => {
+  it('puts the focus keyword and tags in front of the site keywords', async () => {
+    const { blogPostMetadata } = await import('./BlogPostPage');
+    const { getContent } = await import('@/content');
+    const c = getContent('en');
+    const note = { slug: 'n', title: 'T', excerpt: 'e', category: 'x', tags: ['saturn'], publishedAt: 1, featuredImage: null, html: '', languages: ['en'] as ('en' | 'hi')[], seoTitle: '', seoDescription: '', focusKeyword: 'saturn return', noindex: false, canonical: '', shareImage: null, shareTitle: '', shareDescription: '' };
+    const kw = blogPostMetadata(c, 'en', note).keywords as string[];
+    expect(kw.slice(0, 2)).toEqual(['saturn return', 'saturn']);
+    expect(kw).toContain(c.site.keywords[0]);
+  });
+});

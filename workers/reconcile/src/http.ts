@@ -46,8 +46,17 @@ export function createHttp(fetchImpl: FetchLike, opts: Options = {}): Http {
         }
 
         if (response.ok) {
+          // Reading the body can time out or drop like the request itself; that is worth another try.
+          // A body that arrived whole but is not JSON is not: it would come back the same.
+          let text: string;
           try {
-            return await response.json();
+            text = await response.text();
+          } catch {
+            lastStatus = null;
+            continue;
+          }
+          try {
+            return JSON.parse(text);
           } catch {
             throw new ServiceError(service, response.status, 'sent a response that is not JSON.');
           }

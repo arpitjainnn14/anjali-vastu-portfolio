@@ -80,3 +80,31 @@ describe('createHttp().getJson', () => {
     expect(String(error.message)).not.toContain('SECRET123');
   });
 });
+
+describe('a reply that stops partway (review 20)', () => {
+  const stalled = () => {
+    const r = json(200, { ok: 1 });
+    const abort = () => Promise.reject(new DOMException('The operation timed out.', 'TimeoutError'));
+    Object.defineProperty(r, 'text', { value: abort });
+    Object.defineProperty(r, 'json', { value: abort });
+    return r;
+  };
+  it('is retried like a network failure, and succeeds when the next reply arrives whole', async () => {
+    const fetchImpl = vi.fn().mockResolvedValueOnce(stalled()).mockResolvedValueOnce(json(200, { ok: 3 }));
+    const http = createHttp(fetchImpl, { sleep: noSleep });
+    await expect(http.getJson('Razorpay', 'https://x.test', {})).resolves.toEqual({ ok: 3 });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+  it('gives up as "could not be reached" after the usual retries', async () => {
+    const fetchImpl = vi.fn(async () => stalled());
+    const http = createHttp(fetchImpl, { sleep: noSleep });
+    await expect(http.getJson('Razorpay', 'https://x.test', {})).rejects.toThrow('could not be reached');
+    expect(fetchImpl).toHaveBeenCalledTimes(4);
+  });
+  it('a reply that arrives whole but is not JSON is still not retried', async () => {
+    const fetchImpl = vi.fn(async () => new Response('<html>', { status: 200 }));
+    const http = createHttp(fetchImpl, { sleep: noSleep });
+    await expect(http.getJson('Cal ID', 'https://x.test', {})).rejects.toThrow('not JSON');
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+});

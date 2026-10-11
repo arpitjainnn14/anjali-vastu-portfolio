@@ -40,12 +40,14 @@ const WEB_ADDRESS = /^https?:\/\//;
 const MAX_SLUG = 100;
 
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
+/** A time JavaScript can turn into a date (the largest is 8.64e15 ms); anything else would crash the date formatting. */
+const isTimestamp = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && Math.abs(v) <= 8.64e15;
 const isSummary = (v: unknown): v is Omit<BlogSummary, 'featuredImage'> & { featuredImage?: unknown } =>
   isRecord(v) &&
   typeof v.slug === 'string' && SLUG.test(v.slug) &&
   typeof v.title === 'string' && typeof v.excerpt === 'string' && typeof v.category === 'string' &&
   Array.isArray(v.tags) && v.tags.every((t) => typeof t === 'string') &&
-  typeof v.publishedAt === 'number';
+  isTimestamp(v.publishedAt);
 const orNull = (v: unknown): string | null => (typeof v === 'string' && WEB_ADDRESS.test(v) ? v : null);
 const orEmpty = (v: unknown): string => (typeof v === 'string' ? v : '');
 const toSummary = (v: Omit<BlogSummary, 'featuredImage'> & { featuredImage?: unknown }): BlogSummary => ({ ...v, featuredImage: orNull(v.featuredImage) });
@@ -94,7 +96,7 @@ export function createSitedeskClient(opts: { request: (path: string) => Promise<
       if (!res || !res.ok) return UNAVAILABLE;
       const body: unknown = await res.json().catch(() => null);
       if (!isRecord(body) || !Array.isArray(body.entries)) return UNAVAILABLE;
-      if (!body.entries.every((e) => isRecord(e) && typeof e.path === 'string' && typeof e.lastModified === 'number')) return UNAVAILABLE;
+      if (!body.entries.every((e) => isRecord(e) && typeof e.path === 'string' && isTimestamp(e.lastModified))) return UNAVAILABLE;
       const safe = (body.entries as SitemapEntry[]).filter((e) => e.path.startsWith('/') && !e.path.startsWith('//'));
       return { ok: true, data: safe.map((e) => ({ path: e.path, lastModified: e.lastModified })), indexing: body.indexing !== false };
     },

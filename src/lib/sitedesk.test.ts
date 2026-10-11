@@ -142,3 +142,16 @@ describe('search engine switch', () => {
     expect(r).toEqual({ ok: true, data: [], indexing: false });
   });
 });
+
+describe('dates that cannot be shown (review 25)', () => {
+  it('treats a post whose date is not a real date as unavailable, instead of crashing the page', async () => {
+    for (const publishedAt of [1e308, -1e308, 1.5e16]) {
+      expect(await client(async () => respond(200, { posts: [{ ...summary, publishedAt }] })).listPosts('en')).toEqual({ ok: false, reason: 'unavailable' });
+      expect(await client(async () => respond(200, { post: { ...post, publishedAt } })).getPost('hello', 'en')).toEqual({ ok: false, reason: 'unavailable' });
+    }
+  });
+  it('treats a sitemap date that is not a real date as unavailable', async () => {
+    const entries = [{ path: '/blog/a', lastModified: 1e308 }];
+    expect(await client(async () => respond(200, { entries, robots: '', indexing: true })).getSitemap()).toEqual({ ok: false, reason: 'unavailable' });
+  });
+});

@@ -11,10 +11,8 @@ export const blog = {
   postUnavailable: 'This note cannot be loaded right now. Please try again in a few minutes.',
   readMore: 'Read the note',
   backToList: 'All notes',
-  publishedLabel: 'Published',
+  /** The line under a note's title: its date, and its category when it has one. */
+  dateLine: (date: string, category: string) => (category ? `${date} · ${category}` : date),
+  publishedLine: (date: string, category: string) => `Published ${date}${category ? ` · ${category}` : ''}`,
   otherLanguage: 'हिंदी में पढ़ें',
-  notFound: {
-    heading: 'This note is not here',
-    body: 'It may have been moved or taken down.',
-  },
 };

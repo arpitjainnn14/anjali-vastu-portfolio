@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createSitedeskClient, redirectTarget } from './sitedesk';
+import { blogSitemap, createSitedeskClient, redirectTarget } from './sitedesk';
 
 const summary = { slug: 'hello', title: 'Hello', excerpt: 'Hi.', category: 'Care', tags: ['a'], publishedAt: 5 };
 const post = { ...summary, html: '<p>Hi.</p>', languages: ['en'] };
@@ -109,13 +109,36 @@ describe('redirects from Sitedesk', () => {
 describe('sitemap addresses from Sitedesk', () => {
   it('returns the addresses (already without hidden posts), and refuses junk', async () => {
     const entries = [{ path: '/blog/a', lastModified: 5 }, { path: '/hi/blog/a', lastModified: 5 }];
-    expect(await client(async () => respond(200, { entries, robots: 'x', indexing: true })).getSitemap()).toEqual({ ok: true, data: entries });
+    expect(await client(async () => respond(200, { entries, robots: 'x', indexing: true })).getSitemap()).toEqual({ ok: true, data: entries, indexing: true });
     expect(await client(async () => respond(200, { entries: [{ path: 5 }] })).getSitemap()).toEqual({ ok: false, reason: 'unavailable' });
     expect(await client(async () => respond(500, {})).getSitemap()).toEqual({ ok: false, reason: 'unavailable' });
   });
   it('drops any entry that is not a plain site path', async () => {
     const entries = [{ path: '/blog/a', lastModified: 1 }, { path: 'https://evil.example/x', lastModified: 1 }, { path: '//evil', lastModified: 1 }];
     const r = await client(async () => respond(200, { entries, robots: '', indexing: true })).getSitemap();
-    expect(r).toEqual({ ok: true, data: [{ path: '/blog/a', lastModified: 1 }] });
+    expect(r).toEqual({ ok: true, data: [{ path: '/blog/a', lastModified: 1 }], indexing: true });
+  });
+});
+
+describe('blogSitemap', () => {
+  const entries = [
+    { path: '/blog/a', lastModified: 5 }, { path: '/hi/blog/a', lastModified: 5 }, { path: '/store', lastModified: 1 }, { path: '/hi/store', lastModified: 1 },
+  ];
+  it('keeps only blog addresses, adds the blog index, and leaves Hindi out until it is live', () => {
+    expect(blogSitemap(entries, { hindiLive: false, siteUrl: 'https://x.in' })).toEqual([
+      { url: 'https://x.in/blog' }, { url: 'https://x.in/blog/a', lastModified: new Date(5) },
+    ]);
+    const withHi = blogSitemap(entries, { hindiLive: true, siteUrl: 'https://x.in' }).map((e) => e.url);
+    expect(withHi).toEqual(['https://x.in/blog', 'https://x.in/hi/blog', 'https://x.in/blog/a', 'https://x.in/hi/blog/a']);
+  });
+  it('lists nothing when there are no posts', () => {
+    expect(blogSitemap([], { hindiLive: true, siteUrl: 'https://x.in' })).toEqual([]);
+  });
+});
+
+describe('search engine switch', () => {
+  it('reports whether the owner lets search engines show the site', async () => {
+    const r = await client(async () => respond(200, { entries: [], robots: '', indexing: false })).getSitemap();
+    expect(r).toEqual({ ok: true, data: [], indexing: false });
   });
 });

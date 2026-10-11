@@ -6,13 +6,13 @@ import { SmartLink } from '@/components/ui/SmartLink';
 import { localePath } from '@/lib/locale-routing';
 import { pageMetadata } from '@/lib/metadata';
 import type { Fetched, BlogSummary } from '@/lib/sitedesk';
+import { blogDate } from '@/lib/blog-date';
+import { blogLink } from './blogStyles';
 
 export function blogIndexMetadata(c: Content, locale: Locale): Metadata {
   return pageMetadata({ ...c.blog.meta, path: '/blog', locale, c });
 }
 
-export const blogDate = (ms: number, locale: Locale): string =>
-  new Intl.DateTimeFormat(locale === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(ms));
 
 /** The list of notes. Posts come from Sitedesk per request; if it cannot be reached the page says so. */
 export function BlogIndexPage({ c, locale, posts }: { c: Content; locale: Locale; posts: Fetched<BlogSummary[]> }) {
@@ -37,12 +37,12 @@ export function BlogIndexPage({ c, locale, posts }: { c: Content; locale: Locale
                       <img src={post.featuredImage} alt="" loading="lazy" className="aspect-[1200/630] w-full object-cover" />
                     </SmartLink>
                   )}
-                  <span className="t-small text-muted">{blogDate(post.publishedAt, locale)}{post.category ? ` · ${post.category}` : ''}</span>
+                  <span className="t-small text-muted">{blog.dateLine(blogDate(post.publishedAt, locale), post.category)}</span>
                   <h2 className="t-h3 m-0 text-ink">
                     <SmartLink href={localePath(locale, `/blog/${post.slug}`)} className="ink-link">{post.title}</SmartLink>
                   </h2>
                   {post.excerpt && <p className="t-body m-0">{post.excerpt}</p>}
-                  <SmartLink href={localePath(locale, `/blog/${post.slug}`)} className="ink-link inline-flex min-h-11 items-center text-sindoor md:min-h-0">
+                  <SmartLink href={localePath(locale, `/blog/${post.slug}`)} className={blogLink}>
                     {blog.readMore}
                   </SmartLink>
                 </li>

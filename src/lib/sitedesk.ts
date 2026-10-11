@@ -1,4 +1,4 @@
-import type { Locale } from '@/content';
+import { isLocale, type Locale } from '@/content';
 
 /**
  * The blog's source of posts: Sitedesk, the content dashboard. Only the published copy of a live post is ever served.
@@ -35,6 +35,7 @@ export type Fetched<T> = { ok: true; data: T } | { ok: false; reason: 'unavailab
 const UNAVAILABLE = { ok: false, reason: 'unavailable' } as const;
 const NOT_FOUND = { ok: false, reason: 'not_found' } as const;
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const WEB_ADDRESS = /^https?:\/\//;
 /** Sitedesk's own web addresses are at most 80 characters plus a counter; anything longer is junk and never sent. */
 const MAX_SLUG = 100;
 
@@ -45,16 +46,16 @@ const isSummary = (v: unknown): v is Omit<BlogSummary, 'featuredImage'> & { feat
   typeof v.title === 'string' && typeof v.excerpt === 'string' && typeof v.category === 'string' &&
   Array.isArray(v.tags) && v.tags.every((t) => typeof t === 'string') &&
   typeof v.publishedAt === 'number';
-const orNull = (v: unknown): string | null => (typeof v === 'string' && /^https?:\/\//.test(v) ? v : null);
+const orNull = (v: unknown): string | null => (typeof v === 'string' && WEB_ADDRESS.test(v) ? v : null);
 const orEmpty = (v: unknown): string => (typeof v === 'string' ? v : '');
 const toSummary = (v: Omit<BlogSummary, 'featuredImage'> & { featuredImage?: unknown }): BlogSummary => ({ ...v, featuredImage: orNull(v.featuredImage) });
 function toPost(v: unknown): BlogPost | null {
   if (!isSummary(v)) return null;
   const r = v as unknown as Record<string, unknown>;
-  if (typeof r.html !== 'string' || !Array.isArray(r.languages) || !r.languages.every((l) => l === 'en' || l === 'hi')) return null;
+  if (typeof r.html !== 'string' || !Array.isArray(r.languages) || !r.languages.every((l) => typeof l === 'string' && isLocale(l))) return null;
   return {
     ...toSummary(v), html: r.html, languages: r.languages as Locale[],
-    seoTitle: orEmpty(r.seoTitle), seoDescription: orEmpty(r.seoDescription), noindex: r.noindex === true, canonical: /^https?:\/\//.test(orEmpty(r.canonical)) ? orEmpty(r.canonical) : '',
+    seoTitle: orEmpty(r.seoTitle), seoDescription: orEmpty(r.seoDescription), noindex: r.noindex === true, canonical: WEB_ADDRESS.test(orEmpty(r.canonical)) ? orEmpty(r.canonical) : '',
     shareImage: orNull(r.shareImage), shareTitle: orEmpty(r.shareTitle), shareDescription: orEmpty(r.shareDescription),
   };
 }
@@ -64,7 +65,7 @@ export function redirectTarget(redirects: Redirect[], path: string): string | nu
   const to = redirects.find((r) => r.from === path)?.to;
   if (!to) return null;
   if (to.startsWith('/') && !to.startsWith('//')) return to;
-  return /^https?:\/\//.test(to) ? to : null;
+  return WEB_ADDRESS.test(to) ? to : null;
 }
 
 export function createSitedeskClient(opts: { request: (path: string) => Promise<Response>; site: string }) {
@@ -88,14 +89,14 @@ export function createSitedeskClient(opts: { request: (path: string) => Promise<
       return { ok: true, data: { redirects: (cfg.redirects as Redirect[]).map((r) => ({ from: r.from, to: r.to })) } };
     },
     /** Live addresses for sitemap.xml. Posts the owner hid from search engines are already left out. */
-    async getSitemap(): Promise<Fetched<SitemapEntry[]>> {
+    async getSitemap(): Promise<{ ok: true; data: SitemapEntry[]; indexing: boolean } | { ok: false; reason: 'unavailable' }> {
       const res = await get(`/api/v1/sites/${opts.site}/sitemap`);
       if (!res || !res.ok) return UNAVAILABLE;
       const body: unknown = await res.json().catch(() => null);
       if (!isRecord(body) || !Array.isArray(body.entries)) return UNAVAILABLE;
       if (!body.entries.every((e) => isRecord(e) && typeof e.path === 'string' && typeof e.lastModified === 'number')) return UNAVAILABLE;
       const safe = (body.entries as SitemapEntry[]).filter((e) => e.path.startsWith('/') && !e.path.startsWith('//'));
-      return { ok: true, data: safe.map((e) => ({ path: e.path, lastModified: e.lastModified })) };
+      return { ok: true, data: safe.map((e) => ({ path: e.path, lastModified: e.lastModified })), indexing: body.indexing !== false };
     },
     async listPosts(lang: Locale): Promise<Fetched<BlogSummary[]>> {
       const res = await get(`${base}?lang=${lang}`);
@@ -123,3 +124,20 @@ export function createSitedeskClient(opts: { request: (path: string) => Promise<
 }
 
 export type SitedeskClient = ReturnType<typeof createSitedeskClient>;
+
+const BLOG_PATH = /^(\/hi)?\/blog\//;
+
+/**
+ * The blog's sitemap entries from Sitedesk's list: blog addresses only (other Sitedesk pages are not routes of this
+ * site), each blog index once it has a post, and Hindi only while the Hindi site is live.
+ */
+export function blogSitemap(entries: SitemapEntry[], opts: { hindiLive: boolean; siteUrl: string }): { url: string; lastModified?: Date }[] {
+  const live = entries.filter((e) => BLOG_PATH.test(e.path) && (opts.hindiLive || !e.path.startsWith('/hi/')));
+  const en = live.some((e) => !e.path.startsWith('/hi/'));
+  const hi = live.some((e) => e.path.startsWith('/hi/'));
+  return [
+    ...(en ? [{ url: `${opts.siteUrl}/blog` }] : []),
+    ...(hi ? [{ url: `${opts.siteUrl}/hi/blog` }] : []),
+    ...live.map((e) => ({ url: `${opts.siteUrl}${e.path}`, lastModified: new Date(e.lastModified) })),
+  ];
+}

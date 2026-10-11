@@ -13,10 +13,7 @@ export const blog = {
   postUnavailable: 'अभी यह नोट लोड नहीं हो पा रहा है। कृपया कुछ मिनट बाद फिर कोशिश करें।',
   readMore: 'नोट पढ़ें',
   backToList: 'सभी नोट्स',
-  publishedLabel: 'प्रकाशित',
+  dateLine: (date: string, category: string) => (category ? `${date} · ${category}` : date),
+  publishedLine: (date: string, category: string) => `${date} को प्रकाशित${category ? ` · ${category}` : ''}`,
   otherLanguage: 'Read in English',
-  notFound: {
-    heading: 'यह नोट यहाँ नहीं है',
-    body: 'हो सकता है इसे हटा दिया गया हो या दूसरी जगह ले जाया गया हो।',
-  },
 };

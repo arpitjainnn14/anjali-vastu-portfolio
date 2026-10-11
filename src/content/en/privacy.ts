@@ -44,8 +44,10 @@ export const privacy = {
       body:
         'Anjali. The form is delivered by Forminit, a form service that stores your ' +
         'submission so she can read it. Bookings are handled by Cal ID, a scheduling ' +
-        'service, and payments by Razorpay, a payment gateway. Each of them handles ' +
-        'your details only to do that job. TODO(forminit-cal-id-razorpay-privacy-links)',
+        'service, and payments by Razorpay, a payment gateway. When you send the contact ' +
+        'form, a copy of what you wrote also goes to her phone through Telegram, a ' +
+        'messaging app, so she sees it quickly. Each of them handles your details only ' +
+        'to do that job. TODO(forminit-cal-id-razorpay-privacy-links)',
     },
     {
       heading: 'How long it is kept',

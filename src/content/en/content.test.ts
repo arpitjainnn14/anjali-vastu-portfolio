@@ -78,3 +78,11 @@ describe('policy pages', () => {
     expect(contactSection.details.some((d) => d.value === contact.email)).toBe(true);
   });
 });
+
+describe('privacy notice names every place contact details go (review 26)', () => {
+  // src/app/api/contact/route.ts sends each contact message to Anjali's phone through Telegram.
+  it.each(['en', 'hi'] as const)('the %s notice mentions Telegram', (locale) => {
+    const text = JSON.stringify(getContent(locale).privacy);
+    expect(text).toContain('Telegram');
+  });
+});

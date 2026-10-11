@@ -298,3 +298,29 @@ describe('reconcile', () => {
     });
   });
 });
+
+describe('a payment that arrives just before the check runs (review 17)', () => {
+  it('does not raise "booking not paid" for a booking whose payment is too fresh to judge', () => {
+    const fresh = new Date(NOW.getTime() - 60_000); // paid one minute before the run
+    const r = run([payment({ createdAt: fresh })], [order()], [booking()]);
+    expect(kinds(r)).not.toContain('booking_no_payment');
+  });
+  it('still raises it when there really is no payment', () => {
+    expect(kinds(run([], [order()], [booking()]))).toContain('booking_no_payment');
+  });
+});
+
+describe('an order claimed next to an uncertain one (review 19)', () => {
+  it('is not counted as a confident match', () => {
+    const t = yesterdayIst(10).getTime();
+    const a = booking({ id: 1, uid: 'bk_A', createdAt: new Date(t) });
+    const b = booking({ id: 2, uid: 'bk_B', createdAt: new Date(t + 25_000), firstName: 'Ravi' });
+    const o1 = order({ id: 'order_1', createdAt: new Date(t + 13_000) });
+    const o2 = order({ id: 'order_2', createdAt: new Date(t + 27_000) });
+    const pay = payment({ id: 'pay_B', orderId: 'order_2', createdAt: new Date(t + 40_000) });
+    const r = run([pay], [o1, o2], [a, b]);
+    expect(r.yesterday.matched).toBe(0);
+    expect(kinds(r)).toContain('cant_verify');
+    expect(kinds(r)).not.toContain('booking_no_payment'); // uncertainty alone is never made red
+  });
+});

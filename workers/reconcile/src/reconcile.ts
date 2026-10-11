@@ -170,16 +170,30 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     claimants.set(selected.id, [...(claimants.get(selected.id) ?? []), root]);
   }
 
-  for (const [root, order] of tentative) {
-    if ((claimants.get(order.id)?.length ?? 0) > 1) {
-      flagAmbiguous(root, rawCandidatesOf.get(root)!);
-      continue;
+  // A selection is only trusted when its order is not also a candidate of an uncertain chain: that other booking
+  // could be the one this order belongs to. Flagging can make more orders uncertain, so repeat until nothing changes.
+  const linked = new Map(tentative);
+  for (let changed = true; changed; ) {
+    changed = false;
+    for (const [root, order] of linked) {
+      if ((claimants.get(order.id)?.length ?? 0) > 1 || ambiguousOrderIds.has(order.id)) {
+        linked.delete(root);
+        flagAmbiguous(root, rawCandidatesOf.get(root)!);
+        changed = true;
+      }
     }
+  }
+  for (const [root, order] of linked) {
     chainOfKey.set(order.id, root);
     calAmountOfKey.set(order.id, chainChargeAmount.get(root)!);
   }
 
   const keptByChain = new Map<string, Payment[]>();
+  // Chains with a payment too fresh to judge: it may be the very payment the booking is waiting for.
+  const recentlyPaidRoots = new Set<string>();
+  for (const p of payments) {
+    if (fresh(p.createdAt) && p.status !== 'failed' && p.orderId && chainOfKey.has(p.orderId)) recentlyPaidRoots.add(chainOfKey.get(p.orderId)!);
+  }
   for (const p of payments) {
     if (fresh(p.createdAt) || p.status === 'created' || p.status === 'failed') continue;
     const ids = { paymentId: p.id, orderId: p.orderId };
@@ -249,7 +263,8 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
         kept.length === 0 &&
         !fresh(accepted.createdAt) &&
         !rootBooking.fromReschedule &&
-        !ambiguousRoots.has(root)
+        !ambiguousRoots.has(root) &&
+        !recentlyPaidRoots.has(root)
       ) {
         const markedPaid = chain.some((b) => b.paid);
         add('booking_no_payment', accepted.createdAt, {

@@ -112,8 +112,9 @@ closer than the next-nearest, it is trusted on timing alone (Cal ID/Razorpay's
 own 1–3 s gap makes this decisive almost always, including telling an
 abandoned checkout's order apart from a same-day retry's); otherwise, the
 amount narrows the field, and exactly one same-amount candidate is linked.
-Anything else — no candidate resolves it, or two chains settle on the same
-order — can't be trusted. It is reported as `cant_verify` and never linked,
+Anything else — no candidate resolves it, two chains settle on the same
+order, or the chosen order is also a candidate of a chain that could not be
+resolved — can't be trusted. It is reported as `cant_verify` and never linked,
 and, importantly, ambiguity alone is never promoted to a red finding: a
 payment whose order is one of an ambiguous chain's candidates gets its own
 `cant_verify` instead of `paid_no_booking`, and the chain itself is exempted
@@ -129,7 +130,8 @@ line rather than a new rule.
 
 Windows: problems are looked for over the last **30 days**. Summary counts
 cover the **previous IST calendar day**. Payments created in the last
-**30 minutes** are skipped (a booking may still be completing).
+**30 minutes** are skipped (a booking may still be completing), and a booking
+whose linked order has such a fresh payment is not reported as unpaid.
 
 | Finding | Rule | Severity |
 |---|---|---|

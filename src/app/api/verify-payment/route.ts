@@ -14,10 +14,9 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   if (!sandboxEnabled) return new NextResponse(null, { status: 404 });
 
-  const keys = razorpayKeys();
-  if (!keys) {
-    return NextResponse.json({ verified: false, error: 'Razorpay keys are not set.' }, { status: 500 });
-  }
+  const loaded = razorpayKeys();
+  if (!loaded.ok) return NextResponse.json({ verified: false, error: loaded.error }, { status: 500 });
+  const keys = loaded.keys;
 
   const body = ((await request.json().catch(() => null)) ?? {}) as Record<string, unknown>;
   const field = (key: string) => (typeof body[key] === 'string' ? (body[key] as string) : '');

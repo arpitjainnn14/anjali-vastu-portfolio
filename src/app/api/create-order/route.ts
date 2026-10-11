@@ -15,12 +15,10 @@ export const dynamic = 'force-dynamic';
 export async function POST() {
   if (!sandboxEnabled) return new NextResponse(null, { status: 404 });
 
-  const keys = razorpayKeys();
-  if (!keys) {
-    return NextResponse.json({ error: 'RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET are not set in .env.local.' }, { status: 500 });
-  }
+  const loaded = razorpayKeys();
+  if (!loaded.ok) return NextResponse.json({ error: loaded.error }, { status: 500 });
 
-  const result = await createOrder(keys, SANDBOX_AMOUNT_PAISE, `pay-test-${Date.now()}`);
+  const result = await createOrder(loaded.keys, SANDBOX_AMOUNT_PAISE, `pay-test-${Date.now()}`);
 
   if (!result.ok) {
     console.error('[create-order] failed', result);
@@ -34,7 +32,7 @@ export async function POST() {
     order_id: result.order.id,
     amount: result.order.amount,
     currency: result.order.currency,
-    key_id: keys.keyId,
+    key_id: loaded.keys.keyId,
   });
 }
 

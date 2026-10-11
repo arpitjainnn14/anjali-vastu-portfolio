@@ -24,10 +24,13 @@ export const SANDBOX_CURRENCY = 'INR';
 
 export type RazorpayKeys = { keyId: string; keySecret: string };
 
-export function razorpayKeys(): RazorpayKeys | null {
+/** The sandbox's keys. Only Razorpay test keys are accepted: a live key would let this learning page take real money. */
+export function razorpayKeys(): { ok: true; keys: RazorpayKeys } | { ok: false; error: string } {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
-  return keyId && keySecret ? { keyId, keySecret } : null;
+  if (!keyId || !keySecret) return { ok: false, error: 'RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET are not set in .env.local.' };
+  if (!keyId.startsWith('rzp_test_')) return { ok: false, error: 'The payment sandbox only works with a Razorpay test key (rzp_test_…). Live keys are refused.' };
+  return { ok: true, keys: { keyId, keySecret } };
 }
 
 export type Order = { id: string; amount: number; currency: string };

@@ -21,14 +21,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...indexedPaths(getContent('en'), 'en'),
     ...(hindiLive ? indexedPaths(getContent('hi'), 'hi') : []),
   ];
-  const client = getSitedeskClient();
-  const [en, hi] = await Promise.all([client.listPosts('en'), hindiLive ? client.listPosts('hi') : Promise.resolve(null)]);
-  /* If Sitedesk cannot be reached the blog entries are simply left out; the rest of the sitemap is unaffected. */
+  const entries = await getSitedeskClient().getSitemap();
+  /* If Sitedesk cannot be reached the blog entries are simply left out; the rest of the sitemap is unaffected.
+     Posts hidden from search engines, and everything when indexing is switched off, are already absent from the list. */
+  /* Only blog addresses: any other pages in Sitedesk are not routes of this site. */
+  const live = entries.ok ? entries.data.filter((e) => /^(\/hi)?\/blog\//.test(e.path) && (hindiLive || !e.path.startsWith('/hi'))) : [];
   const blog = [
-    ...(en.ok && en.data.length > 0 ? [{ url: `${siteUrl}${localePath('en', '/blog')}` }] : []),
-    ...(hi && hi.ok && hi.data.length > 0 ? [{ url: `${siteUrl}${localePath('hi', '/blog')}` }] : []),
-    ...(en.ok ? en.data.map((p) => ({ url: `${siteUrl}${localePath('en', `/blog/${p.slug}`)}`, lastModified: new Date(p.publishedAt) })) : []),
-    ...(hi && hi.ok ? hi.data.map((p) => ({ url: `${siteUrl}${localePath('hi', `/blog/${p.slug}`)}`, lastModified: new Date(p.publishedAt) })) : []),
+    ...(live.some((e) => !e.path.startsWith('/hi')) ? [{ url: `${siteUrl}${localePath('en', '/blog')}` }] : []),
+    ...(live.some((e) => e.path.startsWith('/hi')) ? [{ url: `${siteUrl}${localePath('hi', '/blog')}` }] : []),
+    ...live.map((e) => ({ url: `${siteUrl}${e.path}`, lastModified: new Date(e.lastModified) })),
   ];
   return [...paths.map((path) => ({ url: `${siteUrl}${path}` })), ...blog];
 }

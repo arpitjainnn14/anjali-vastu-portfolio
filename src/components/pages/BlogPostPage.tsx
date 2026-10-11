@@ -7,8 +7,21 @@ import { pageMetadata } from '@/lib/metadata';
 import type { BlogPost } from '@/lib/sitedesk';
 import { blogDate } from './BlogIndexPage';
 
+/** Title, description, canonical, robots and share card: the owner's choices from Sitedesk where set, the usual ones otherwise. */
 export function blogPostMetadata(c: Content, locale: Locale, post: BlogPost): Metadata {
-  return pageMetadata({ title: post.title, description: post.excerpt || c.blog.meta.description, path: `/blog/${post.slug}`, locale, c });
+  const description = post.seoDescription || post.excerpt || c.blog.meta.description;
+  const base = pageMetadata({ title: post.seoTitle || post.title, description, path: `/blog/${post.slug}`, locale, c });
+  const image = post.shareImage ?? post.featuredImage;
+  const shareTitle = post.shareTitle || (typeof base.openGraph?.title === 'string' ? base.openGraph.title : post.title);
+  const shareDescription = post.shareDescription || description;
+  const images = image ? [{ url: image, width: 1200, height: 630, alt: post.title }] : undefined;
+  return {
+    ...base,
+    ...(post.canonical ? { alternates: { ...base.alternates, canonical: post.canonical } } : {}),
+    ...(post.noindex ? { robots: { index: false, follow: true } } : {}),
+    openGraph: { ...base.openGraph, title: shareTitle, description: shareDescription, ...(images ? { images } : {}) },
+    twitter: { ...base.twitter, title: shareTitle, description: shareDescription, ...(images ? { images: [image as string] } : {}) },
+  };
 }
 
 export function BlogPostPage({ c, locale, post }: { c: Content; locale: Locale; post: BlogPost }) {

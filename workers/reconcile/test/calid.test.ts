@@ -155,3 +155,10 @@ describe('listBookings', () => {
     expect(result.unreadable).toEqual([]);
   });
 });
+
+describe('impossible booking payment figures are unreadable (review 18)', () => {
+  it('refuses a payment amount that is not a whole, non-negative number of paise', () => {
+    expect(parseBooking(raw({ payment: [{ success: true, amount: 21.5 }] }))).toBe('malformed payment record');
+    expect(parseBooking(raw({ payment: [{ success: true, amount: -1 }] }))).toBe('malformed payment record');
+  });
+});

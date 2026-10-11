@@ -14,10 +14,10 @@ function parsePayments(raw: unknown): BookingPayment[] | string {
   const out: BookingPayment[] = [];
   for (const p of raw) {
     const r = (p ?? {}) as Record<string, unknown>;
-    if (typeof r.success !== 'boolean' || typeof r.amount !== 'number') {
+    if (typeof r.success !== 'boolean' || !Number.isSafeInteger(r.amount) || (r.amount as number) < 0) {
       return 'malformed payment record';
     }
-    out.push({ success: r.success, amount: r.amount });
+    out.push({ success: r.success, amount: r.amount as number });
   }
   return out;
 }
@@ -33,7 +33,7 @@ export function parseBooking(raw: unknown): Booking | string {
   // eventType.price is 0 (or absent) when the event type was later deleted; it is
   // only a fallback, so a missing/non-number value defaults to 0 rather than failing.
   const eventType = (r.eventType ?? {}) as Record<string, unknown>;
-  const price = typeof eventType.price === 'number' ? eventType.price : 0;
+  const price = Number.isSafeInteger(eventType.price) && (eventType.price as number) >= 0 ? (eventType.price as number) : 0;
 
   const payments = parsePayments(r.payment);
   if (typeof payments === 'string') return payments;

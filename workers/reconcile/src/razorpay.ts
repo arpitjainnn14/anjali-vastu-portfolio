@@ -3,6 +3,11 @@ import type { Fetched, Order, Payment, PaymentStatus, Unreadable } from './types
 
 const STATUSES: readonly PaymentStatus[] = ['created', 'authorized', 'captured', 'refunded', 'failed'];
 const PAGE = 100;
+
+/** Whole, non-negative paise that JavaScript counts exactly. */
+const isPaise = (v: unknown): v is number => Number.isSafeInteger(v) && (v as number) >= 0;
+/** Unix seconds that make a real date. */
+const isSeconds = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && Math.abs(v) <= 8.64e12;
 const MAX_PAGES = 10;
 
 export function parsePayment(raw: unknown): Payment | string {
@@ -11,14 +16,21 @@ export function parsePayment(raw: unknown): Payment | string {
   if (typeof r.id !== 'string') return 'missing id';
   if (!STATUSES.includes(r.status as PaymentStatus)) return `unknown status ${String(r.status)}`;
   if (typeof r.amount !== 'number') return 'missing amount';
+  if (!isPaise(r.amount)) return 'invalid amount';
   if (typeof r.created_at !== 'number') return 'missing created_at';
+  if (!isSeconds(r.created_at)) return 'invalid created_at';
+  // A missing or impossible refund figure must not read as "nothing refunded".
+  if (r.amount_refunded === undefined || r.amount_refunded === null) return 'missing amount_refunded';
+  if (!isPaise(r.amount_refunded)) return 'invalid amount_refunded';
+  if (r.amount_refunded > r.amount) return 'refund larger than the payment';
+  if (r.amount_refunded > 0 && r.status !== 'captured' && r.status !== 'refunded') return `refund on a ${String(r.status)} payment`;
 
   return {
     id: r.id,
     orderId: typeof r.order_id === 'string' ? r.order_id : null,
     status: r.status as PaymentStatus,
     amount: r.amount,
-    amountRefunded: typeof r.amount_refunded === 'number' ? r.amount_refunded : 0,
+    amountRefunded: r.amount_refunded,
     createdAt: new Date(r.created_at * 1000),
   };
 }
@@ -28,7 +40,9 @@ export function parseOrder(raw: unknown): Order | string {
   const r = raw as Record<string, unknown>;
   if (typeof r.id !== 'string') return 'missing id';
   if (typeof r.amount !== 'number') return 'missing amount';
+  if (!isPaise(r.amount)) return 'invalid amount';
   if (typeof r.created_at !== 'number') return 'missing created_at';
+  if (!isSeconds(r.created_at)) return 'invalid created_at';
 
   return {
     id: r.id,

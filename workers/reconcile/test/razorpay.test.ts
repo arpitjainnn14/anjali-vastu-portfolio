@@ -145,3 +145,21 @@ describe('listOrders', () => {
     expect(error.message).toBe('sent an unexpected response (no items list).');
   });
 });
+
+describe('impossible money figures are unreadable, never reassuring (review 18)', () => {
+  it.each([
+    ['a fractional amount', { amount: 2151.5 }, 'invalid amount'],
+    ['a negative amount', { amount: -100 }, 'invalid amount'],
+    ['an amount too large to count exactly', { amount: 1e20 }, 'invalid amount'],
+    ['a time that is not a real date', { created_at: 1e308 }, 'invalid created_at'],
+    ['no refunded figure', { amount_refunded: undefined }, 'missing amount_refunded'],
+    ['more refunded than charged (₹1 charged, ₹2 refunded)', { amount: 100, amount_refunded: 200 }, 'refund larger than the payment'],
+    ['a negative refund', { amount_refunded: -1 }, 'invalid amount_refunded'],
+    ['a refund on a payment that never succeeded', { status: 'failed', amount_refunded: 100 }, 'refund on a failed payment'],
+  ])('%s', (_, over, reason) => expect(parsePayment(raw(over))).toBe(reason));
+
+  it('orders get the same checks', () => {
+    expect(parseOrder({ id: 'o', amount: -5, created_at: 1790380800 })).toBe('invalid amount');
+    expect(parseOrder({ id: 'o', amount: 100, created_at: 1e308 })).toBe('invalid created_at');
+  });
+});

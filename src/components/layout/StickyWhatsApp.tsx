@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useContent } from '@/components/locale/LocaleProvider';
 import { whatsappHref } from '@/lib/whatsapp';
@@ -24,6 +25,8 @@ export function StickyWhatsApp() {
   const { c } = useContent();
   const { contactSection } = c;
   const [visible, setVisible] = useState(false);
+  // This button lives in the layout, so it outlives page changes: look for the new page's own buttons on each one.
+  const pathname = usePathname();
 
   useEffect(() => {
     const targets = document.querySelectorAll('[data-hides-sticky]');
@@ -47,7 +50,7 @@ export function StickyWhatsApp() {
       observer.disconnect();
       window.removeEventListener('scroll', update);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <a

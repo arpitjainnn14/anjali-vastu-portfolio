@@ -100,8 +100,14 @@ export function Nav() {
     }
 
     document.addEventListener('keydown', onKeyDown);
+    // The drawer is hidden from 1024px up (lg). Widening the window or turning a tablet would otherwise leave it
+    // "open" but invisible, with the page still locked and no close button on screen.
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const onBreakpoint = (e: MediaQueryListEvent) => { if (e.matches) setOpen(false); };
+    desktop.addEventListener('change', onBreakpoint);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
+      desktop.removeEventListener('change', onBreakpoint);
       document.body.style.overflow = overflow;
       previouslyFocused?.focus();
     };

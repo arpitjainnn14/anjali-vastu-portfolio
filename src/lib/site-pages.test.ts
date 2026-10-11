@@ -58,3 +58,21 @@ describe('isKnownPath', () => {
     },
   );
 });
+
+describe('language switch on blog pages (review 29)', () => {
+  it('the blog list switches to the other language’s blog list', async () => {
+    const { languageSwitchHref } = await import('./site-pages');
+    expect(languageSwitchHref(c, '/blog', 'hi')).toBe('/hi/blog');
+    expect(languageSwitchHref(hi, '/hi/blog', 'en')).toBe('/blog');
+  });
+  it('a note switches to the other language’s blog list, since the note may not exist in that language', async () => {
+    const { languageSwitchHref } = await import('./site-pages');
+    expect(languageSwitchHref(c, '/blog/saturn-return', 'hi')).toBe('/hi/blog');
+    expect(languageSwitchHref(hi, '/hi/blog/saturn-return', 'en')).toBe('/blog');
+  });
+  it('other pages keep switching to their twin, and unknown ones to the home page', async () => {
+    const { languageSwitchHref } = await import('./site-pages');
+    expect(languageSwitchHref(c, '/about', 'hi')).toBe('/hi/about');
+    expect(languageSwitchHref(c, '/nowhere', 'hi')).toBe('/hi');
+  });
+});

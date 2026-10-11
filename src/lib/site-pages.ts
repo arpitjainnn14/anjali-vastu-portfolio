@@ -105,3 +105,16 @@ export function isKnownPath(c: Content, path: string): boolean {
   if (c.services.some((s) => english === `/services/${s.slug}`)) return true;
   return bookableServices(c).some((s) => english === `/book/${s.slug}` || english === `/booked/${s.slug}`);
 }
+
+const BLOG_PAGE = /^\/blog(\/[a-z0-9]+(-[a-z0-9]+)*)?$/;
+
+/**
+ * Where the language switch leads from this page. The blog (its list or one note) goes to the other language's blog
+ * list, because a note may not exist in that language; other pages go to their twin, and unknown ones to the home page.
+ */
+export function languageSwitchHref(c: Content, pathname: string, target: Locale): string {
+  const english = localeOfPath(pathname) === 'hi' ? alternatePath(pathname) : pathname;
+  if (BLOG_PAGE.test(english)) return localePath(target, '/blog');
+  return isKnownPath(c, pathname) ? alternatePath(pathname) : localePath(target, '/');
+}
+

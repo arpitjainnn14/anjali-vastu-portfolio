@@ -10,3 +10,13 @@ describe('metadata for a blog address with no post (review 24)', () => {
     expect(m.robots).toEqual({ index: false, follow: false });
   });
 });
+
+describe('alternate languages for a note (review 29)', () => {
+  it('names only the languages the note is published in, and only once Hindi is live', async () => {
+    const { postAlternates } = await import('./BlogPostPage');
+    expect(postAlternates('en', 'n', ['en'], true)).toEqual({ canonical: '/blog/n' });
+    expect(postAlternates('en', 'n', ['en', 'hi'], true)).toEqual({ canonical: '/blog/n', languages: { 'en-IN': '/blog/n', 'hi-IN': '/hi/blog/n', 'x-default': '/blog/n' } });
+    expect(postAlternates('en', 'n', ['en', 'hi'], false)).toEqual({ canonical: '/blog/n' });
+    expect(postAlternates('hi', 'n', ['hi'], true)).toEqual({ canonical: '/hi/blog/n' });
+  });
+});

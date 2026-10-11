@@ -6,8 +6,21 @@ import { localePath } from '@/lib/locale-routing';
 import { pageMetadata } from '@/lib/metadata';
 import type { BlogPost } from '@/lib/sitedesk';
 import { locales } from '@/content';
+import { hindiLive } from '@/content/shared';
 import { blogDate } from '@/lib/blog-date';
 import { blogLink } from './blogStyles';
+
+/**
+ * The note's address and its other-language versions for search engines: only languages it is published in, and
+ * Hindi only once the Hindi site is live. The generic page metadata would promise a Hindi twin for every note.
+ */
+export function postAlternates(locale: Locale, slug: string, languages: Locale[], live: boolean = hindiLive): NonNullable<Metadata['alternates']> {
+  const path = `/blog/${slug}`;
+  const canonical = localePath(locale, path);
+  if (!live || !languages.includes('en') || !languages.includes('hi')) return { canonical };
+  const english = localePath('en', path);
+  return { canonical, languages: { 'en-IN': english, 'hi-IN': localePath('hi', path), 'x-default': english } };
+}
 
 /** Title, description, canonical, robots and share card: the owner's choices from Sitedesk where set, the usual ones otherwise. */
 export function blogPostMetadata(c: Content, locale: Locale, post: BlogPost): Metadata {
@@ -19,7 +32,7 @@ export function blogPostMetadata(c: Content, locale: Locale, post: BlogPost): Me
   const images = image ? [{ url: image, width: 1200, height: 630, alt: post.title }] : undefined;
   return {
     ...base,
-    ...(post.canonical ? { alternates: { ...base.alternates, canonical: post.canonical } } : {}),
+    alternates: { ...postAlternates(locale, post.slug, post.languages), ...(post.canonical ? { canonical: post.canonical } : {}) },
     ...(post.noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: { ...base.openGraph, title: shareTitle, description: shareDescription, ...(images ? { images } : {}) },
     twitter: { ...base.twitter, title: shareTitle, description: shareDescription, ...(images ? { images: [image as string] } : {}) },
@@ -43,7 +56,7 @@ export function BlogPostPage({ c, locale, post }: { c: Content; locale: Locale; 
             className="t-body flex flex-col gap-5 [&_a]:ink-link [&_a]:text-sindoor [&_blockquote]:m-0 [&_h2]:mt-6 [&_h2]:font-display [&_h2]:text-[28px] [&_h2]:text-ink [&_h3]:mt-4 [&_h3]:font-display [&_h3]:text-[22px] [&_h3]:text-ink [&_li]:ml-6 [&_p]:m-0 [&_ul]:m-0 [&_ul]:list-disc"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
-          {post.languages.includes(other) && (
+          {post.languages.includes(other) && (other === 'en' || hindiLive) && (
             <SmartLink href={localePath(other, `/blog/${post.slug}`)} className={`${blogLink} t-small self-start`} lang={other}>
               {blog.otherLanguage}
             </SmartLink>

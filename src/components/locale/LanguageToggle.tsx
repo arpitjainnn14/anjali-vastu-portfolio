@@ -3,8 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { hindiLive, languageNames } from '@/content/shared';
 import { useContent } from '@/components/locale/LocaleProvider';
-import { alternatePath, localePath } from '@/lib/locale-routing';
-import { isKnownPath } from '@/lib/site-pages';
+import { languageSwitchHref } from '@/lib/site-pages';
 
 /** Where the visitor's chosen language is remembered; read by RememberedLanguage. */
 export const LANGUAGE_STORAGE_KEY = 'lang';
@@ -27,7 +26,7 @@ export function LanguageToggle({ className = '', onNavigate }: { className?: str
   if (!hindiLive) return null;
 
   const target = locale === 'hi' ? 'en' : 'hi';
-  const href = isKnownPath(c, pathname) ? alternatePath(pathname) : localePath(target, '/');
+  const href = languageSwitchHref(c, pathname, target);
 
   function remember() {
     try {

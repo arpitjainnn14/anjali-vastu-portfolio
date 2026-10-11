@@ -30,8 +30,6 @@ export const about = {
     src: '/portrait/anjali.png',
     alt: 'ज्योतिषी अंजलि जैन',
     caption: 'ज्योतिषी अंजलि जैन · पलवल, हरियाणा',
-    objectPositionDesktop: '55% 45%',
-    objectPositionMobile: '52% 28%',
   },
   willNotDo: {
     heading: 'वे क्या नहीं करतीं',

@@ -40,7 +40,6 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(true);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   /*
@@ -147,7 +146,6 @@ export function Nav() {
 
           {/* Mobile */}
           <button
-            ref={triggerRef}
             type="button"
             aria-label={nav.labels.openMenu}
             aria-expanded={open}

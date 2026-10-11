@@ -1,15 +1,14 @@
 /** Online booking: Cal ID for the calendar, Razorpay for payment. */
 
 import { whatsappMessages } from './site';
-import { consultationFee, cal, bookingLive, bookingEmbed } from '../shared';
+import { consultationFee, bookingLive, bookingEmbed } from '../shared';
 
 export type { Fee } from '../shared';
 
 /**
  * The fee for the consultations booked online, and the language-independent
  * Cal ID / Razorpay facts. Defined once in shared.ts; re-exported here so
- * existing call sites (`content.consultationFee`, `content.booking.calUsername`)
- * keep working unchanged.
+ * existing call sites (`content.consultationFee`) keep working unchanged.
  */
 export { consultationFee };
 
@@ -19,8 +18,6 @@ export const booking = {
    * keep their WhatsApp buttons, nothing links to /book, and /book is noindex.
    */
   live: bookingLive,
-  calBaseUrl: cal.baseUrl,
-  calUsername: cal.username,
   /**
    * Cal ID's inline embed, from the Embed dialog in Cal ID. Checked in a
    * real browser (Sept 2026): the calendar renders. Headless browsers get a

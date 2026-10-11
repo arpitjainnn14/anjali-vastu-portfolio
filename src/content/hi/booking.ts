@@ -1,13 +1,11 @@
 /** Online booking: Cal ID for the calendar, Razorpay for payment. */
 
 import { whatsappMessages } from './site';
-import { cal, bookingLive, bookingEmbed } from '../shared';
+import { bookingLive, bookingEmbed } from '../shared';
 
 /** DRAFTED, like the English. */
 export const booking = {
   live: bookingLive,
-  calBaseUrl: cal.baseUrl,
-  calUsername: cal.username,
   embed: bookingEmbed,
   ctaLabel: (fee: string) => `अपना consultation बुक करें · ${fee}`,
   unsureLink: 'पक्का नहीं पता? WhatsApp पर पूछें',

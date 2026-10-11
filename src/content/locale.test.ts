@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isLocale, locales, defaultLocale, type Content } from './locale';
+import { isLocale, locales, type Content } from './locale';
 import { en } from './en';
 
 describe('isLocale', () => {
@@ -13,9 +13,8 @@ describe('isLocale', () => {
     expect(isLocale('')).toBe(false);
   });
 
-  it('lists both locales, defaulting to en', () => {
+  it('lists both locales, English first', () => {
     expect(locales).toEqual(['en', 'hi']);
-    expect(defaultLocale).toBe('en');
   });
 });
 

@@ -30,9 +30,6 @@ export const about = {
     src: '/portrait/anjali.png',
     alt: 'Astrologer Anjali Jain',
     caption: 'Astrologer Anjali Jain · Palwal, Haryana',
-    /** Source is 1138×1382. Frames crop with object-fit: cover. */
-    objectPositionDesktop: '55% 45%',
-    objectPositionMobile: '52% 28%',
   },
   /**
    * The highest-trust block on the page, and the one thing someone taking

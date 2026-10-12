@@ -9,6 +9,7 @@ import { SmartLink } from '@/components/ui/SmartLink';
  *   hover   deeper sindoor, and the icon or arrow inside nudges forward
  *   active  pressed 1px down
  *   focus   2px sindoor outline at 3px offset, never transitioned
+ *   pointer leans a little toward a mouse pointer (`data-magnetic`, Motion.tsx)
  *
  * Renders a real <a> when it navigates and a real <button> when it acts.
  */
@@ -54,7 +55,7 @@ export function ButtonLink({
   ...rest
 }: Shared & { href: string } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>) {
   return (
-    <SmartLink href={href} className={classes(variant, block, className)} {...rest}>
+    <SmartLink href={href} className={classes(variant, block, className)} data-magnetic {...rest}>
       {children}
     </SmartLink>
   );
@@ -69,7 +70,7 @@ export function Button({
   ...rest
 }: Shared & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button type={type} className={classes(variant, block, className)} {...rest}>
+    <button type={type} className={classes(variant, block, className)} data-magnetic {...rest}>
       {children}
     </button>
   );

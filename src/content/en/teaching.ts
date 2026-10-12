@@ -2,7 +2,7 @@
 
 export const teaching = {
   meta: {
-    title: 'Astrology, Numerology and Vastu Classes Online',
+    title: 'Astrology, Numerology and Vastu Classes',
     description:
       'Three-month courses in Vedic astrology, numerology and Vastu with Anjali Jain. ' +
       'Live over video call, in small groups of four or five students.',

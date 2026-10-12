@@ -12,8 +12,8 @@ export const booking = {
   offerLine: 'फ़ीस में तीन महीने तक अंजलि जी को सीधे कॉल करने की सुविधा शामिल है।',
   page: {
     metaTitleFor: (name: string) => `अंजलि जैन के साथ ${name} consultation बुक करें`,
-    metaDescription:
-      'अंजलि जैन के साथ वैदिक ज्योतिष या अंकशास्त्र का consultation बुक करें और ऑनलाइन ' +
+    metaDescriptionFor: (name: string) =>
+      `अंजलि जैन के साथ ${name} का consultation बुक करें और ऑनलाइन ` +
       'पेमेंट करें। पलवल में मिलकर या फ़ोन पर, हिंदी या अंग्रेज़ी में।',
     heading: 'अपना consultation बुक करें',
     lead: 'अपनी सुविधा का समय चुनें और ऑनलाइन पेमेंट करें। आपकी बुकिंग तुरंत पक्की हो जाती है।',

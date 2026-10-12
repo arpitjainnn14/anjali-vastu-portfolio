@@ -126,7 +126,7 @@ export const testimonials: Testimonial[] = [
 
 export const testimonialsSection = {
   meta: {
-    title: 'Client Testimonials for Astrologer Anjali Jain',
+    title: 'Testimonials for Astrologer Anjali Jain',
     description:
       'What clients from Faridabad, Palwal, Delhi and beyond say after a consultation ' +
       'with Anjali Jain: Vedic astrology, numerology and Vastu.',

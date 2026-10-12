@@ -8,6 +8,8 @@
  */
 
 export const brand = 'Anjali Vastu & Astro Divine Solutions';
+/** Ends every page's search title: the full name made most titles too long for Google to show whole (~60 characters). */
+export const shortBrand = 'Anjali Vastu';
 /** The header and footer wordmark, set on two lines so it fits beside the menu. */
 export const brandLines = ['Anjali Vastu &', 'Astro Divine Solutions'] as const;
 

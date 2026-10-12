@@ -1,6 +1,6 @@
 /** Who she is and how to reach her. The facts every other module leans on. */
 
-import { brand, brandLines, practisingSince, geo } from '../shared';
+import { brand, brandLines, practisingSince, geo, shortBrand } from '../shared';
 
 export const site = {
   /**
@@ -8,6 +8,8 @@ export const site = {
    * copy about her, the seal and the Person in the structured data use it.
    */
   brand,
+  /** After every page title in search results (the layout's title template). */
+  shortBrand,
   /** The header and footer wordmark, set on two lines so it fits beside the menu. */
   brandLines,
   name: 'Anjali Jain',

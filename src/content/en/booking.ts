@@ -31,10 +31,11 @@ export const booking = {
   offerLine: 'Includes three months of calling Anjali directly.',
   /** The /book pages. DRAFTED. */
   page: {
-    metaTitleFor: (name: string) => `Book a ${name} Consultation with Anjali Jain`,
-    metaDescription:
-      'Book a Vedic astrology or numerology consultation with Anjali Jain and pay ' +
-      'online. In person in Palwal or by phone, in English or Hindi.',
+    metaTitleFor: (name: string) => `Book ${name} with Anjali Jain`,
+    /** One per service, so the two booking pages do not share a description. */
+    metaDescriptionFor: (name: string) =>
+      `Book a ${name} consultation with Anjali Jain and pay online. ` +
+      'In person in Palwal or by phone, in English or Hindi.',
     heading: 'Book a consultation',
     lead: 'Choose a time that suits you and pay online. Your booking is confirmed straight away.',
     detailsNote:

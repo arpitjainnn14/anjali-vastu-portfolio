@@ -38,6 +38,9 @@ export type Booking = {
 };
 
 /** A record the checker could not read. Reported as "can't verify", never dropped. */
+/** One refund, dated when it was issued (not when the payment was made). */
+export type Refund = { id: string; paymentId: string; amount: number; createdAt: Date };
+
 export type Unreadable = { source: 'Razorpay' | 'Cal ID'; id: string; reason: string };
 
 export type Fetched<T> = { items: T[]; unreadable: Unreadable[] };

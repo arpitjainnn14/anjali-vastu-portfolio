@@ -1,5 +1,5 @@
 import { rupees } from './money';
-import type { Booking, Order, Payment, Unreadable } from './types';
+import type { Booking, Order, Payment, Refund, Unreadable } from './types';
 
 /**
  * Pure comparison of Razorpay (the money) with Cal ID (the bookings). No I/O.
@@ -70,7 +70,8 @@ export function istYesterday(now: Date): { start: Date; end: Date } {
   return { start: new Date(todayStart - DAY), end: new Date(todayStart) };
 }
 
-export function reconcile(payments: Payment[], orders: Order[], bookings: Booking[], unreadable: Unreadable[], now: Date): Report {
+/** `refunds`, when given, are refunds by the day they were issued; "Refunded yesterday" then counts those. */
+export function reconcile(payments: Payment[], orders: Order[], bookings: Booking[], unreadable: Unreadable[], now: Date, refunds?: Refund[]): Report {
   const t = now.getTime();
   const findings: Finding[] = [];
   const add = (kind: Kind, since: Date, extra: Partial<Finding> = {}) =>
@@ -296,9 +297,11 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     if (p.status !== 'captured' && p.status !== 'refunded') continue;
     yesterday.payments++;
     yesterday.capturedPaise += p.amount;
-    yesterday.refundedPaise += p.amountRefunded;
+    if (!refunds) yesterday.refundedPaise += p.amountRefunded;
     if (matchedIds.has(p.id)) yesterday.matched++;
   }
+
+  if (refunds) for (const r of refunds) if (inDay(r.createdAt)) yesterday.refundedPaise += r.amount;
 
   return { findings, yesterday };
 }

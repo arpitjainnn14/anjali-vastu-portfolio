@@ -163,3 +163,19 @@ describe('impossible money figures are unreadable, never reassuring (review 18)'
     expect(parseOrder({ id: 'o', amount: 100, created_at: 1e308 })).toBe('invalid created_at');
   });
 });
+
+describe('refunds by the day they were issued (decision 4)', () => {
+  it('parseRefund reads a refund and refuses impossible ones', async () => {
+    const { parseRefund } = await import('../src/razorpay');
+    expect(parseRefund({ id: 'rfnd_1', payment_id: 'pay_1', amount: 5000, created_at: 1790380800 })).toEqual({ id: 'rfnd_1', paymentId: 'pay_1', amount: 5000, createdAt: new Date(1790380800 * 1000) });
+    expect(parseRefund({ id: 'rfnd_1', payment_id: 'pay_1', amount: -1, created_at: 1790380800 })).toBe('invalid amount');
+    expect(parseRefund({ id: 'rfnd_1', amount: 5, created_at: 1790380800 })).toBe('missing payment_id');
+  });
+  it('listRefunds asks Razorpay’s refunds list for the window, read only', async () => {
+    const { listRefunds } = await import('../src/razorpay');
+    const getJson = vi.fn(async () => ({ items: [{ id: 'rfnd_1', payment_id: 'pay_1', amount: 5000, created_at: 1790380800 }] }));
+    const r = await listRefunds({ getJson } as unknown as Http, 'k', 's', new Date(1790380800000), new Date(1790467200000));
+    expect(r.items).toHaveLength(1);
+    expect((getJson.mock.calls[0] as unknown as [string, string])[1]).toContain('https://api.razorpay.com/v1/refunds?from=1790380800&to=1790467200');
+  });
+});

@@ -337,3 +337,15 @@ describe('partial refunds (decision 3)', () => {
     expect(kinds(r)).not.toContain('partly_refunded');
   });
 });
+
+describe('refunded yesterday counts refunds issued yesterday (decision 4)', () => {
+  it('includes a refund issued yesterday on an older payment, and leaves out one issued today', () => {
+    const old = payment({ id: 'pay_old', createdAt: daysAgo(5), amountRefunded: 50000 });
+    const refunds = [
+      { id: 'rfnd_y', paymentId: 'pay_old', amount: 50000, createdAt: yesterdayIst(15) },
+      { id: 'rfnd_t', paymentId: 'pay_A', amount: 100, createdAt: new Date(NOW.getTime() - 60_000) },
+    ];
+    const r = reconcile([old, payment()], [order()], [booking()], [], NOW, refunds);
+    expect(r.yesterday.refundedPaise).toBe(50000);
+  });
+});

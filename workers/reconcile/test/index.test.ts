@@ -34,10 +34,10 @@ describe('run', () => {
     expect(telegramCalls).toHaveLength(1);
   });
 
-  it('uses 7 subrequests: 1 Razorpay payments, 1 Razorpay orders, 4 Cal ID, 1 Telegram', async () => {
+  it('uses 8 subrequests: 1 Razorpay payments, 1 Razorpay orders, 1 Razorpay refunds, 4 Cal ID, 1 Telegram', async () => {
     const fetchImpl = fakeFetch();
     await run(env, deps(fetchImpl));
-    expect(fetchImpl).toHaveBeenCalledTimes(7);
+    expect(fetchImpl).toHaveBeenCalledTimes(8);
   });
 
   it('sends the FAILED message when Cal ID rejects the key, without the key', async () => {

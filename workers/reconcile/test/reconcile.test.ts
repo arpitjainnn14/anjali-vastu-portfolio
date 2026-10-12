@@ -324,3 +324,16 @@ describe('an order claimed next to an uncertain one (review 19)', () => {
     expect(kinds(r)).not.toContain('booking_no_payment'); // uncertainty alone is never made red
   });
 });
+
+describe('partial refunds (decision 3)', () => {
+  it('a booking refunded only in part is flagged yellow for a look, with how much was refunded', () => {
+    const r = run([payment({ amountRefunded: 215000 })], [order()], [booking()]);
+    expect(r.findings).toContainEqual(expect.objectContaining({ kind: 'partly_refunded', severity: 'yellow', amount: 215000 }));
+    expect(kinds(r)).not.toContain('refunded');
+  });
+  it('a full refund stays informational', () => {
+    const r = run([payment({ amountRefunded: 215100, status: 'refunded' })], [order()], [booking({ status: 'CANCELLED' })]);
+    expect(r.findings.find((f) => f.kind === 'refunded')?.severity).toBe('info');
+    expect(kinds(r)).not.toContain('partly_refunded');
+  });
+});

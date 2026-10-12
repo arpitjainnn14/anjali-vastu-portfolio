@@ -17,6 +17,7 @@ export type Kind =
   | 'held_not_taken'
   | 'cant_verify'
   | 'cancelled_not_refunded'
+  | 'partly_refunded'
   | 'refunded';
 
 export type Finding = {
@@ -57,6 +58,7 @@ const SEVERITY: Record<Kind, Severity> = {
   held_not_taken: 'orange',
   cant_verify: 'orange',
   cancelled_not_refunded: 'yellow',
+  partly_refunded: 'yellow',
   refunded: 'info',
 };
 const RANK: Record<Severity, number> = { red: 0, orange: 1, yellow: 2, info: 3 };
@@ -204,7 +206,8 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     }
 
     // captured or refunded
-    if (p.amountRefunded > 0) add('refunded', p.createdAt, { ...ids, amount: p.amountRefunded });
+    // A full refund is routine. Part of a fee given back is worth a look: it is easy to type the wrong amount.
+    if (p.amountRefunded > 0) add(p.amountRefunded < p.amount ? 'partly_refunded' : 'refunded', p.createdAt, { ...ids, amount: p.amountRefunded, ...(p.amountRefunded < p.amount ? { detail: `of ${rupees(p.amount)} paid` } : {}) });
     const kept = p.amount - p.amountRefunded > 0;
     const root = p.orderId ? chainOfKey.get(p.orderId) : undefined;
     if (!root) {

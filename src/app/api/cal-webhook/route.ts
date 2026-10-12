@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { isValidCalSignature } from '@/lib/cal-webhook';
+import { firstDelivery, type DedupeStore } from '@/lib/webhook-dedupe';
 import { bookingAlert, isAlertEvent, parseCalWebhook, sendTelegram, type CalWebhook } from '@/lib/telegram';
 
 /**
@@ -20,6 +22,14 @@ export const dynamic = 'force-dynamic';
 
 /** A real Cal ID booking message is a few KB; anything far larger is refused before the signature work. */
 const MAX_BODY_BYTES = 256 * 1024;
+
+function dedupeStore(): DedupeStore | undefined {
+  try {
+    return (getCloudflareContext().env as { CAL_DEDUPE?: DedupeStore }).CAL_DEDUPE;
+  } catch {
+    return undefined; // outside the Worker (plain next dev without bindings)
+  }
+}
 
 export async function POST(request: Request) {
   if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY_BYTES) return NextResponse.json({ ok: false }, { status: 413 });
@@ -42,7 +52,8 @@ export async function POST(request: Request) {
   }
   if (!hook) return NextResponse.json({ ok: false }, { status: 400 });
 
-  if (isAlertEvent(hook.triggerEvent)) {
+  // Cal ID can deliver the same message twice; she gets one ping per message.
+  if (isAlertEvent(hook.triggerEvent) && (await firstDelivery(dedupeStore(), body))) {
     const text = bookingAlert(hook);
     if (text) await sendTelegram(text);
   }

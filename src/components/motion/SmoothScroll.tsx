@@ -23,17 +23,47 @@ const NAV_ROOM = 96;
 
 export function SmoothScroll() {
   useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const preference = matchMedia('(prefers-reduced-motion: reduce)');
+    let dispose: (() => void) | undefined;
 
-    const lenis = new Lenis({ lerp: 0.09, anchors: { offset: -NAV_ROOM } });
-    lenis.on('scroll', ScrollTrigger.update);
-    const tick = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    const syncPreference = () => {
+      dispose?.();
+      dispose = undefined;
+      if (preference.matches) return;
+
+      const lenis = new Lenis({ lerp: 0.09, anchors: { offset: -NAV_ROOM } });
+      lenis.on('scroll', ScrollTrigger.update);
+      const tick = (time: number) => lenis.raf(time * 1000);
+      gsap.ticker.add(tick);
+
+      // Existing overlays lock either html or body. Lenis scrolls imperatively,
+      // so it must stop too, including a wheel animation already in progress.
+      // Read their inline locks: Lenis's own stopped class also sets overflow.
+      const syncLock = () => {
+        const locked = [document.documentElement, document.body].some((el) =>
+          ['hidden', 'clip'].includes(el.style.overflowY),
+        );
+        if (locked) lenis.stop();
+        else lenis.start();
+      };
+      const observer = new MutationObserver(syncLock);
+      for (const el of [document.documentElement, document.body]) {
+        observer.observe(el, { attributes: true, attributeFilter: ['style'] });
+      }
+      syncLock();
+      dispose = () => {
+        observer.disconnect();
+        gsap.ticker.remove(tick);
+        lenis.destroy();
+      };
+    };
+
+    syncPreference();
+    preference.addEventListener('change', syncPreference);
 
     return () => {
-      gsap.ticker.remove(tick);
-      lenis.destroy();
+      preference.removeEventListener('change', syncPreference);
+      dispose?.();
     };
   }, []);
 

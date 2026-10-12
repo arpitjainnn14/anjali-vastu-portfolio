@@ -60,6 +60,7 @@ export function Services({ c, locale }: { c: Content; locale: Locale }) {
             return (
               <li
                 key={service.slug}
+                data-stack-slot
                 className={
                   /* Phones: the card sits low, clear of the pinned WhatsApp button. */
                   'pointer-events-none sticky top-0 flex h-svh items-end justify-center px-6 pb-24 md:px-12 md:pb-16 ' +

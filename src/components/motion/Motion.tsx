@@ -55,6 +55,7 @@ export function Motion() {
 
       media.add(
         {
+          all: 'all',
           motion: '(prefers-reduced-motion: no-preference)',
           desktop: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
         },
@@ -198,10 +199,12 @@ function easeOpen(): () => void {
     const summary = details.querySelector('summary');
     const body = summary?.nextElementSibling as HTMLElement | null;
     if (!summary || !body) return () => {};
+    let expanded = details.open;
     const click = (e: MouseEvent) => {
       e.preventDefault();
       gsap.killTweensOf(body);
-      if (details.open) {
+      expanded = !expanded;
+      if (!expanded) {
         gsap.to(body, {
           height: 0,
           opacity: 0,
@@ -213,12 +216,18 @@ function easeOpen(): () => void {
           },
         });
       } else {
+        if (!details.open) gsap.set(body, { height: 0, opacity: 0 });
         details.open = true;
-        gsap.fromTo(body, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.55, ease: 'power2.out', clearProps: 'height,opacity' });
+        gsap.to(body, { height: 'auto', opacity: 1, duration: 0.55, ease: 'power2.out', clearProps: 'height,opacity' });
       }
     };
     summary.addEventListener('click', click);
-    return () => summary.removeEventListener('click', click);
+    return () => {
+      summary.removeEventListener('click', click);
+      gsap.killTweensOf(body);
+      details.open = expanded;
+      gsap.set(body, { clearProps: 'height,opacity' });
+    };
   });
   return () => offs.forEach((off) => off());
 }

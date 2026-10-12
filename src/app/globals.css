@@ -210,6 +210,20 @@ html.lenis body {
   overflow: clip;
 }
 
+/* Short screens need natural card scrolling: a full sticky card can otherwise
+   extend behind the nav. This fallback also works before hydration/without JS. */
+@media (max-height: 700px) {
+  [data-stack-slot] {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100svh;
+    align-items: flex-start;
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
+
 /* Page cross-fade (SiteBody's <ViewTransition>): a little slower than the default. */
 ::view-transition-old(*),
 ::view-transition-new(*) {

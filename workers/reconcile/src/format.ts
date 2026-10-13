@@ -57,6 +57,10 @@ const TEXT: Record<Kind, { title: string; action: string | null }> = {
     title: '🟡 Cancelled, not refunded',
     action: '→ Decide: keep it (no-refund policy) or refund in Razorpay.',
   },
+  partly_refunded: {
+    title: '🟡 Partly refunded',
+    action: '→ Check in Razorpay that the amount refunded was the one you meant.',
+  },
   refunded: { title: 'ℹ️ Refunded', action: null },
 };
 

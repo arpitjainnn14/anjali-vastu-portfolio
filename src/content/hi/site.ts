@@ -1,10 +1,12 @@
 /** Who she is and how to reach her. The facts every other module leans on. */
 
-import { brand, brandLines, practisingSince, geo } from '../shared';
+import { brand, brandLines, practisingSince, geo, shortBrand } from '../shared';
 
 export const site = {
   /** The business name stays in English on Hindi pages. */
   brand,
+  /** After every page title in search results (the layout's title template). */
+  shortBrand,
   brandLines,
   name: 'अंजलि जैन',
   /** Her legal name, as it is written on documents: kept in Latin letters. */

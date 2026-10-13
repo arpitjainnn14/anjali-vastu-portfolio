@@ -136,3 +136,14 @@ describe('formatFailure', () => {
     expect(formatFailure(new Error('boom'), NOW).split('\n')[1]).toBe('Unexpected error: boom');
   });
 });
+
+describe('partial refund wording (decision 3)', () => {
+  it('names the refund and the action, and is not "Nothing needs you today"', async () => {
+    const { reconcile } = await import('../src/reconcile');
+    const { formatReport } = await import('../src/format');
+    const { NOW, booking, order, payment } = await import('./fixtures');
+    const text = formatReport(reconcile([payment({ amountRefunded: 215000 })], [order()], [booking()], [], NOW), NOW);
+    expect(text).toContain('Partly refunded');
+    expect(text).not.toContain('Nothing needs you today');
+  });
+});

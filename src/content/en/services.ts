@@ -170,7 +170,7 @@ export const services: Service[] = [
     whatsappLabel: 'Ask about numerology on WhatsApp',
     includes: 'Three months of calling Anjali directly for follow-ups',
     meta: {
-      title: 'Numerologist in Palwal: Name and Date Readings',
+      title: 'Numerologist in Palwal: Name and Date Reading',
       description:
         'Your name and date of birth, worked through number by number, and a straight ' +
         'answer on whether a name correction is worth it. In Palwal or by phone.',
@@ -239,7 +239,7 @@ export const services: Service[] = [
     whatsappLabel: 'Ask about Vastu on WhatsApp',
     includes: 'Site visits until the building is complete',
     meta: {
-      title: 'Vastu Consultant in Palwal for Homes and Shops',
+      title: 'Vastu Consultant in Palwal: Homes and Shops',
       description:
         'Vastu for a home or shop: direction, layout and placement, assessed around the ' +
         'people who use it. In person in Palwal or by phone, in English or Hindi.',

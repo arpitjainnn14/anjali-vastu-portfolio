@@ -1,5 +1,5 @@
 import { ServiceError, type Http } from './http';
-import type { Fetched, Order, Payment, PaymentStatus, Unreadable } from './types';
+import type { Fetched, Order, Payment, PaymentStatus, Refund, Unreadable } from './types';
 
 const STATUSES: readonly PaymentStatus[] = ['created', 'authorized', 'captured', 'refunded', 'failed'];
 const PAGE = 100;
@@ -122,3 +122,29 @@ export async function listOrders(
     'returned more than 1,000 orders in 30 days; the checker needs paging changes.',
   );
 }
+
+export function parseRefund(raw: unknown): Refund | string {
+  if (typeof raw !== 'object' || raw === null) return 'not an object';
+  const r = raw as Record<string, unknown>;
+  if (typeof r.id !== 'string') return 'missing id';
+  if (typeof r.payment_id !== 'string') return 'missing payment_id';
+  if (typeof r.amount !== 'number') return 'missing amount';
+  if (!isPaise(r.amount)) return 'invalid amount';
+  if (typeof r.created_at !== 'number') return 'missing created_at';
+  if (!isSeconds(r.created_at)) return 'invalid created_at';
+  return { id: r.id, paymentId: r.payment_id, amount: r.amount, createdAt: new Date(r.created_at * 1000) };
+}
+
+/** Refunds issued in the window, for "Refunded yesterday" (a refund on an older payment counts on the day it was issued). */
+export async function listRefunds(http: Http, keyId: string, keySecret: string, from: Date, to: Date): Promise<Fetched<Refund>> {
+  const auth = 'Basic ' + btoa(`${keyId}:${keySecret}`);
+  const window = `from=${Math.floor(from.getTime() / 1000)}&to=${Math.floor(to.getTime() / 1000)}`;
+  return listPaged(
+    http,
+    auth,
+    (skip) => `https://api.razorpay.com/v1/refunds?${window}&count=${PAGE}&skip=${skip}`,
+    parseRefund,
+    'returned more than 1,000 refunds in two days; the checker needs paging changes.',
+  );
+}
+

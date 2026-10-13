@@ -324,3 +324,28 @@ describe('an order claimed next to an uncertain one (review 19)', () => {
     expect(kinds(r)).not.toContain('booking_no_payment'); // uncertainty alone is never made red
   });
 });
+
+describe('partial refunds (decision 3)', () => {
+  it('a booking refunded only in part is flagged yellow for a look, with how much was refunded', () => {
+    const r = run([payment({ amountRefunded: 215000 })], [order()], [booking()]);
+    expect(r.findings).toContainEqual(expect.objectContaining({ kind: 'partly_refunded', severity: 'yellow', amount: 215000 }));
+    expect(kinds(r)).not.toContain('refunded');
+  });
+  it('a full refund stays informational', () => {
+    const r = run([payment({ amountRefunded: 215100, status: 'refunded' })], [order()], [booking({ status: 'CANCELLED' })]);
+    expect(r.findings.find((f) => f.kind === 'refunded')?.severity).toBe('info');
+    expect(kinds(r)).not.toContain('partly_refunded');
+  });
+});
+
+describe('refunded yesterday counts refunds issued yesterday (decision 4)', () => {
+  it('includes a refund issued yesterday on an older payment, and leaves out one issued today', () => {
+    const old = payment({ id: 'pay_old', createdAt: daysAgo(5), amountRefunded: 50000 });
+    const refunds = [
+      { id: 'rfnd_y', paymentId: 'pay_old', amount: 50000, createdAt: yesterdayIst(15) },
+      { id: 'rfnd_t', paymentId: 'pay_A', amount: 100, createdAt: new Date(NOW.getTime() - 60_000) },
+    ];
+    const r = reconcile([old, payment()], [order()], [booking()], [], NOW, refunds);
+    expect(r.yesterday.refundedPaise).toBe(50000);
+  });
+});

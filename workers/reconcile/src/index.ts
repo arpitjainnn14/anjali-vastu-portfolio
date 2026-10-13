@@ -1,7 +1,7 @@
 import { listBookings } from './calid';
 import { formatFailure, formatReport } from './format';
 import { createHttp, type FetchLike } from './http';
-import { listOrders, listPayments } from './razorpay';
+import { listOrders, listPayments, listRefunds } from './razorpay';
 import { reconcile } from './reconcile';
 import { sendTelegram } from './telegram';
 
@@ -38,17 +38,20 @@ export async function run(env: Env, deps: Deps): Promise<string> {
     // Orders are fetched a day further back than payments/bookings. In practice an order
     // follows its booking by a couple of seconds, so this is a cheap margin, not a real need —
     // one extra Razorpay call, cheaper than reasoning precisely about the window's edge.
-    const [payments, orders, bookings] = await Promise.all([
+    const refundsFrom = new Date(deps.now.getTime() - 2 * 86_400_000); // covers "yesterday" in IST
+    const [payments, orders, bookings, refunds] = await Promise.all([
       listPayments(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, from, deps.now),
       listOrders(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, new Date(from.getTime() - 86_400_000), deps.now),
       listBookings(http, env.CALID_API_KEY!, from),
+      listRefunds(http, env.RAZORPAY_KEY_ID!, env.RAZORPAY_KEY_SECRET!, refundsFrom, deps.now),
     ]);
     const report = reconcile(
       payments.items,
       orders.items,
       bookings.items,
-      [...payments.unreadable, ...orders.unreadable, ...bookings.unreadable],
+      [...payments.unreadable, ...orders.unreadable, ...bookings.unreadable, ...refunds.unreadable],
       deps.now,
+      refunds.items,
     );
     text = formatReport(report, deps.now);
   } catch (error) {

@@ -28,9 +28,23 @@ export * from './locale';
 
 import { en } from './en';
 import { hi } from './hi';
+import { applyPublished, editableLimits, parsePublished } from './editable';
 import type { Locale, Content } from './locale';
 
-/** The full content bundle for one language. */
+export { editablePages, type EditablePage, type EditableGroup, type EditableField } from './editable';
+
+/** The copy as written in this folder, before any change published from Sitedesk (what Sitedesk starts from). */
+export const codeContent = { en, hi } as const;
+
+/** Words published from Sitedesk, put into the build by next.config.ts. Empty in tests and when nothing is published. */
+const published = parsePublished(process.env.SITE_TEXT);
+const limits = editableLimits(en, hi);
+const bundles: Record<Locale, Content> = {
+  en: applyPublished(en, published.en, limits),
+  hi: applyPublished(hi, published.hi, limits),
+};
+
+/** The full content bundle for one language, with any words published from Sitedesk. */
 export function getContent(locale: Locale): Content {
-  return locale === 'hi' ? hi : en;
+  return bundles[locale];
 }

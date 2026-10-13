@@ -1,5 +1,5 @@
 import { rupees } from './money';
-import type { Booking, Order, Payment, Unreadable } from './types';
+import type { Booking, Order, Payment, Refund, Unreadable } from './types';
 
 /**
  * Pure comparison of Razorpay (the money) with Cal ID (the bookings). No I/O.
@@ -17,6 +17,7 @@ export type Kind =
   | 'held_not_taken'
   | 'cant_verify'
   | 'cancelled_not_refunded'
+  | 'partly_refunded'
   | 'refunded';
 
 export type Finding = {
@@ -57,6 +58,7 @@ const SEVERITY: Record<Kind, Severity> = {
   held_not_taken: 'orange',
   cant_verify: 'orange',
   cancelled_not_refunded: 'yellow',
+  partly_refunded: 'yellow',
   refunded: 'info',
 };
 const RANK: Record<Severity, number> = { red: 0, orange: 1, yellow: 2, info: 3 };
@@ -68,7 +70,8 @@ export function istYesterday(now: Date): { start: Date; end: Date } {
   return { start: new Date(todayStart - DAY), end: new Date(todayStart) };
 }
 
-export function reconcile(payments: Payment[], orders: Order[], bookings: Booking[], unreadable: Unreadable[], now: Date): Report {
+/** `refunds`, when given, are refunds by the day they were issued; "Refunded yesterday" then counts those. */
+export function reconcile(payments: Payment[], orders: Order[], bookings: Booking[], unreadable: Unreadable[], now: Date, refunds?: Refund[]): Report {
   const t = now.getTime();
   const findings: Finding[] = [];
   const add = (kind: Kind, since: Date, extra: Partial<Finding> = {}) =>
@@ -204,7 +207,8 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     }
 
     // captured or refunded
-    if (p.amountRefunded > 0) add('refunded', p.createdAt, { ...ids, amount: p.amountRefunded });
+    // A full refund is routine. Part of a fee given back is worth a look: it is easy to type the wrong amount.
+    if (p.amountRefunded > 0) add(p.amountRefunded < p.amount ? 'partly_refunded' : 'refunded', p.createdAt, { ...ids, amount: p.amountRefunded, ...(p.amountRefunded < p.amount ? { detail: `of ${rupees(p.amount)} paid` } : {}) });
     const kept = p.amount - p.amountRefunded > 0;
     const root = p.orderId ? chainOfKey.get(p.orderId) : undefined;
     if (!root) {
@@ -293,9 +297,11 @@ export function reconcile(payments: Payment[], orders: Order[], bookings: Bookin
     if (p.status !== 'captured' && p.status !== 'refunded') continue;
     yesterday.payments++;
     yesterday.capturedPaise += p.amount;
-    yesterday.refundedPaise += p.amountRefunded;
+    if (!refunds) yesterday.refundedPaise += p.amountRefunded;
     if (matchedIds.has(p.id)) yesterday.matched++;
   }
+
+  if (refunds) for (const r of refunds) if (inDay(r.createdAt)) yesterday.refundedPaise += r.amount;
 
   return { findings, yesterday };
 }

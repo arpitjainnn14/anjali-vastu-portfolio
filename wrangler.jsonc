@@ -41,10 +41,6 @@
       "simple": { "limit": 5, "period": 60 }
     }
   ],
-  /*
-   * Lets Workers Builds make a preview of each pull request (`wrangler preview`
-   * refuses to run without this block). Previews have no secrets of their own,
-   * so the contact form and the blog do not work there; the pages do.
-   */
-  "previews": {}
+  /* Fingerprints of Cal ID webhook messages already alerted on (src/lib/webhook-dedupe.ts), kept a week. Workers KV free tier. */
+  "kv_namespaces": [{ "binding": "CAL_DEDUPE", "id": "2e3ca9bd43b34a50b92b096418a30b28" }]
 }

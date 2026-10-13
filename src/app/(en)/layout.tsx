@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: c.site.title,
-    template: `%s | ${c.site.brand}`,
+    template: `%s | ${c.site.shortBrand}`,
   },
   description: c.site.description,
   icons: {

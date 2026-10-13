@@ -17,7 +17,7 @@ export function bookingMetadata(c: Content, locale: Locale, chosen: BookableServ
   return {
     ...pageMetadata({
       title: c.booking.page.metaTitleFor(chosen.name),
-      description: c.booking.page.metaDescription,
+      description: c.booking.page.metaDescriptionFor(chosen.name),
       /*
        * The canonical points at /book/<service>, not /book: the two pages have
        * the same content, and /book/<service> is the one form of the URL a

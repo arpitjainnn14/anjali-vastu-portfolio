@@ -118,6 +118,26 @@ Sitedesk only ever serves the *published* copy of a live post, already converted
 If Sitedesk cannot be reached, the blog pages say so and the sitemap leaves the blog out; nothing else is affected.
 The blog has no menu link yet: adding one is a design decision for Anjali.
 
+## Website content (words edited in Sitedesk)
+
+Anjali can change the words on these pages from Sitedesk's "Website content" section, in English and Hindi. Only words:
+links, prices, slugs, icons, images and the shape of each section stay in code.
+
+- `content/editable.ts` decides which strings are editable (by page and section) and lays published changes over the
+  copy in `content/en` and `content/hi`. A change is keyed by its path (`hero.lead`, `faq.items.3.a`); a path that no
+  longer exists, or is not editable, is ignored. `getContent()` returns the copy with her changes; `codeContent` is the copy as written here.
+- `/api/site-text/fields` (static) lists the editable strings with the code's own text. Sitedesk reads it, so a new
+  string in an editable module appears there after the next deploy with no other work.
+- Published changes arrive **at build time**: `next.config.ts` calls `lib/published-text.ts`, which reads them from
+  Sitedesk and puts them in `process.env.SITE_TEXT`. Every page stays prebuilt. Publishing in Sitedesk calls the
+  Worker's deploy hook, which starts a Workers Build; the words are live a few minutes later.
+- A build that goes live (Workers Builds, `npm run deploy`, `npm run upload`) needs the build variables
+  **`SITEDESK_BUILD_URL`** (Sitedesk's public address) and **`SITEDESK_READ_TOKEN`**. Without them, or if Sitedesk
+  cannot be read, the build stops rather than putting the old words back. `npm run build`, `npm run dev` and the tests
+  need neither and use the copy in code.
+- An edit made in code to a string she has changed in Sitedesk does not show until she presses "Use the original
+  words" there. `src/content/en/content.test.ts` does not see her changes.
+
 ## Conventions
 
 - **Copy lives in `content/en/` and `content/hi/`.** Components take strings

@@ -13,6 +13,8 @@ describe('editablePages', () => {
     expect(byPath.get('hero.lead')).toMatchObject({ en: en.hero.lead, hi: hi.hero.lead, multiline: true, todo: false });
     expect(byPath.get('faq.items.3.a')).toMatchObject({ label: 'Item 4 › Answer', en: en.faq.items[3].a });
     expect(byPath.get('about.heading')?.accent).toBe(true);
+    expect(byPath.get('hero.headingAccent')?.label).toBe('Heading, highlighted word');
+    expect(byPath.get('teaching.spec.0.label')?.label).toBe('Spec 1 › Label');
   });
   it('leaves links, images, slugs, prices, icons, emails and quote languages in code', () => {
     for (const path of ['hero.primaryCta.href', 'hero.proof.lang', 'about.portrait.src', 'services.0.slug', 'services.0.icon', 'services.0.booking.fee.display', 'contactSection.details.3.value', 'contactSection.details.3.link.href']) {

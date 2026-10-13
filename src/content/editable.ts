@@ -73,11 +73,14 @@ const NAMES: Record<string, string> = {
   meta: 'Search result', title: 'Title', description: 'Description', metaDescription: 'Search result description',
   q: 'Question', a: 'Answer', items: 'Item', paragraphs: 'Paragraph', cta: 'Button', primaryCta: 'Main button',
   secondaryCta: 'Second button', label: 'Label', body: 'Text', heading: 'Heading', lead: 'Intro',
+  standfirst: 'Line above the heading', proof: 'Quote under the buttons', willNotDo: 'What she will not do',
+  headingLine1: 'Heading, first line', headingLine2Before: 'Heading, second line before the highlighted word',
+  headingAccent: 'Heading, highlighted word', headingAfter: 'Heading, after the highlighted word',
 };
 
 function words(key: string): string {
   if (NAMES[key]) return NAMES[key];
-  const spaced = key.replace(/([a-z])([A-Z0-9])/g, '$1 $2').toLowerCase();
+  const spaced = key.replace(/([a-z])([A-Z0-9])/g, '$1 $2').replace(/([0-9])([A-Za-z])/g, '$1 $2').toLowerCase();
   return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 

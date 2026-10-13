@@ -131,10 +131,10 @@ links, prices, slugs, icons, images and the shape of each section stay in code.
 - Published changes arrive **at build time**: `next.config.ts` calls `lib/published-text.ts`, which reads them from
   Sitedesk and puts them in `process.env.SITE_TEXT`. Every page stays prebuilt. Publishing in Sitedesk calls the
   Worker's deploy hook, which starts a Workers Build; the words are live a few minutes later.
-- A build that goes live (Workers Builds, `npm run deploy`, `npm run upload`) needs the build variables
-  **`SITEDESK_BUILD_URL`** (Sitedesk's public address) and **`SITEDESK_READ_TOKEN`**. Without them, or if Sitedesk
-  cannot be read, the build stops rather than putting the old words back. `npm run build`, `npm run dev` and the tests
-  need neither and use the copy in code.
+- A build that goes live (Workers Builds, `npm run deploy`, `npm run upload`) always reads the published words from
+  Sitedesk's public address and stops if it cannot, rather than putting the old words back. Nothing to set up: the
+  words are public, so no key is used. `npm run build`, `npm run dev` and the tests use the copy in code and need no
+  network; `SITEDESK_BUILD_URL` points one of those at a Sitedesk (a local one, for testing).
 - An edit made in code to a string she has changed in Sitedesk does not show until she presses "Use the original
   words" there. `src/content/en/content.test.ts` does not see her changes.
 

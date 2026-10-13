@@ -2,21 +2,21 @@ import Link from 'next/link';
 import type { Content, Locale } from '@/content';
 import { Section, Container, SectionHeader } from '@/components/ui/Section';
 import { serviceIcons, type ServiceIconKey, ArrowRightIcon } from '@/components/ui/Icons';
+import { ServiceScene } from '@/components/art/ServiceScenes';
 import { serviceFeeLine } from '@/lib/booking';
 import { localePath } from '@/lib/locale-routing';
 
 /**
- * Services, as a numbered index rather than three identical cards.
+ * Services, as a stage the visitor scrolls through, at every screen size.
  *
- * Each row is one link to the service page. On hover the row's paper deepens,
- * the number turns sindoor and the arrow moves forward: small, but it tells a
- * pointer user the whole row is the target.
+ * A night panel pins to the screen and each service card, a full screen of
+ * scroll apart, slides up over the one before it while the scene behind
+ * changes to that service's (art/ServiceScenes). On phones the card sits along
+ * the bottom over the photograph; from `lg` it stands on the right.
  *
- * Phones get swipeable cards instead. Stacked, the three rows became ~1,600px
- * of paragraphs and lost the "three ways" composition. As cards, each keeps
- * its number, icon, name, question and a clamped summary, and the next card
- * peeks in from the right so the swipe needs no instruction. From `md` up the
- * cards dissolve back into the desktop rows.
+ * The stacking is plain CSS sticky, so it works without JavaScript or under
+ * reduced motion; `[data-stack]` in Motion.tsx adds the panel's entrance, the
+ * card hand-off and the scene cross-fade. The whole card is the link.
  */
 export function Services({ c, locale }: { c: Content; locale: Locale }) {
   const { services, servicesSection, picker } = c;
@@ -28,74 +28,82 @@ export function Services({ c, locale }: { c: Content; locale: Locale }) {
      * slab, and the section read as mostly background. See the same call in
      * Testimonials.
      */
-    <Section id="services" tone="deep" className="py-14! md:py-20!">
+    <Section id="services" tone="deep" className="overflow-visible! py-14! md:py-20!">
       <Container>
         <SectionHeader
           heading={servicesSection.heading}
           lead={servicesSection.lead}
         />
+      </Container>
 
-        <ol
-          className={
-            'm-0 mt-8 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto p-0 ' +
-            '-mx-6 px-6 pb-3 scroll-px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ' +
-            'md:mx-0 md:mt-14 md:block md:overflow-visible md:border-t md:border-line-strong md:px-0 md:pb-0'
-          }
-          data-reveal-group
-        >
+      <div data-stack className="relative mx-auto mt-8 w-full max-w-[1440px] px-3 md:mt-12 md:px-5">
+        <div data-stack-stage aria-hidden="true" className="sticky top-0 h-svh py-3 md:py-5">
+          <div data-stack-panel className="relative h-full overflow-hidden rounded-[16px] bg-night md:rounded-[20px]">
+            {services.map((service, i) => (
+              <div
+                key={service.slug}
+                data-stack-scene
+                className={`absolute inset-0 bg-night ${i ? 'opacity-0' : ''}`}
+              >
+                <ServiceScene icon={service.icon} />
+              </div>
+            ))}
+            {/* Shade under the card: along the bottom on phones, down the right side on desktop. */}
+            <div className="absolute inset-x-0 bottom-0 h-3/4 bg-linear-to-b from-night/0 to-night/85 lg:inset-x-auto lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[55%] lg:bg-linear-to-r lg:to-night/80" />
+          </div>
+        </div>
+
+        {/* The ::after holds the last card a while: sticky ignores the list's padding. */}
+        <ol className="relative z-10 m-0 -mt-[100svh] list-none p-0 after:block after:h-[40svh]">
           {services.map((service) => {
             const Icon = serviceIcons[service.icon as ServiceIconKey];
             return (
               <li
                 key={service.slug}
-                className="flex w-[80%] max-w-[330px] shrink-0 snap-start md:block md:w-auto md:max-w-none md:border-b md:border-line-strong"
-                data-reveal-item
+                data-stack-slot
+                className={
+                  /* Phones: the card sits low, clear of the pinned WhatsApp button. */
+                  'pointer-events-none sticky top-0 flex h-svh items-end justify-center px-6 pb-24 md:px-12 md:pb-16 ' +
+                  'lg:items-start lg:justify-end lg:pb-0 lg:pr-[clamp(40px,7vw,120px)] lg:pt-[max(112px,calc(50svh-260px))]'
+                }
               >
                 <Link
                   href={localePath(locale, `/services/${service.slug}`)}
                   className={
-                    'group relative flex w-full flex-col gap-3 rounded-card border border-line bg-card p-5 no-underline ' +
-                    'transition-colors duration-300 pointer-fine:hover:bg-paper ' +
-                    'md:grid md:grid-cols-[minmax(0,4fr)_minmax(0,6fr)_48px] md:gap-10 md:rounded-none md:border-0 ' +
-                    'md:bg-transparent md:px-4 md:py-8'
+                    'group pointer-events-auto relative flex w-full max-w-[460px] flex-col gap-3 rounded-card bg-card p-5 no-underline ' +
+                    'shadow-[0_30px_60px_-30px_rgb(0_0_0/0.6)] transition-colors duration-300 pointer-fine:hover:bg-paper ' +
+                    'md:gap-4 md:p-8 lg:gap-5 lg:p-10'
                   }
+                  data-stack-card
                 >
-                  <Icon size={22} strokeWidth={1.3} className="text-haldi md:hidden" />
+                  <Icon size={36} strokeWidth={1.3} className="h-7 w-7 text-haldi md:h-9 md:w-9" />
 
-                  <div className="flex flex-col gap-2">
-                    <h3 className="t-h3 m-0 flex items-center gap-3 text-ink">
-                      <Icon size={26} strokeWidth={1.4} className="hidden shrink-0 text-haldi md:block" />
-                      {service.name}
-                    </h3>
+                  <div className="flex flex-col gap-1.5 md:gap-2">
+                    <h3 className="t-h3 m-0 text-ink">{service.name}</h3>
                     <span className="t-small text-muted">{service.question}</span>
                   </div>
 
                   <div className="flex flex-1 flex-col gap-3">
-                    <p className="t-body m-0 line-clamp-3 max-w-[52ch] text-body md:line-clamp-none">{service.summary}</p>
+                    <p className="t-body m-0 line-clamp-3 text-body md:line-clamp-none">{service.summary}</p>
                     <p className="t-small m-0 text-muted">
                       <span className="font-semibold text-ink">{servicesSection.needLabel}:</span>{' '}
                       {servicesSection.needLine(service.youWillNeed)}
                       <span aria-hidden="true" className="px-2">·</span>
                       {serviceFeeLine(c, service)}
                     </p>
-                    <span aria-hidden="true" className="mt-auto inline-flex items-center gap-2 pt-1 text-[15.5px] font-semibold text-sindoor md:hidden">
+                    <span className="mt-auto inline-flex items-center gap-2 pt-1 text-[15.5px] font-semibold text-sindoor">
                       {service.detailLinkLabel}
                       <ArrowRightIcon size={15} className="nudge" />
                     </span>
                   </div>
-
-                  <span
-                    aria-hidden="true"
-                    className="hidden h-12 w-12 items-center justify-center self-center rounded-full border border-line-strong text-ink transition-colors duration-300 group-hover:border-sindoor group-hover:bg-sindoor group-hover:text-card md:flex"
-                  >
-                    <ArrowRightIcon size={18} className="nudge" />
-                  </span>
-                  <span className="sr-only">{service.detailLinkLabel}</span>
                 </Link>
               </li>
             );
           })}
         </ol>
+      </div>
+
+      <Container>
 
         <p className="t-small m-0 mt-6 text-muted md:mt-8" data-reveal>
           {servicesSection.footnote}

@@ -151,9 +151,13 @@ links, prices, slugs, icons, images and the shape of each section stay in code.
   `app/globals.css` (paper, ink, sindoor, haldi, night). Use the token classes
   (`bg-paper`, `text-sindoor`) rather than raw hex values.
 - **Motion is opt-in by attribute.** `data-reveal`, `data-reveal-group` /
-  `data-reveal-item` and `data-parallax` are read by `components/motion/Motion.tsx`.
-  The HTML is always complete without JavaScript, and nothing moves under
-  `prefers-reduced-motion`.
+  `data-reveal-item`, `data-parallax`, the services stage (`data-stack`), the
+  hero's `data-turn` / `data-drift-out`, `data-unveil`, `data-magnetic`,
+  `data-ease-open`, `data-band` and `data-scroll-boost` are read by
+  `components/motion/Motion.tsx`; its header says what each does. Smooth
+  scrolling (Lenis) is `motion/SmoothScroll.tsx`, and pages cross-fade through
+  the `<ViewTransition>` in `layout/SiteBody.tsx`. The HTML is always complete
+  without JavaScript, and nothing moves under `prefers-reduced-motion`.
 - **Links:** use `SmartLink` (or `ButtonLink`) so routes, WhatsApp and
   external links are handled the same way everywhere. WhatsApp URLs come from
   `whatsappHref()`.

@@ -1,15 +1,17 @@
+import { ViewTransition } from 'react';
 import type { Content, Locale } from '@/content';
 import { LocaleProvider } from '@/components/locale/LocaleProvider';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
 import { StickyWhatsApp } from '@/components/layout/StickyWhatsApp';
 import { Motion } from '@/components/motion/Motion';
+import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import { siteGraph, jsonLd } from '@/lib/structured-data';
 
 /**
  * Everything inside `<body>` that every page shares: the site's structured
- * data, the skip link, the nav, the footer, the pinned WhatsApp button and the
- * scroll-reveal layer. Both root layouts (English and Hindi) render it, so the
+ * data, the skip link, the nav, the footer, the pinned WhatsApp button, the
+ * scroll layer, smooth scrolling and the page cross-fade. Both root layouts (English and Hindi) render it, so the
  * two languages cannot drift apart in anything but their words.
  */
 export function SiteBody({ c, locale, children }: { c: Content; locale: Locale; children: React.ReactNode }) {
@@ -23,10 +25,18 @@ export function SiteBody({ c, locale, children }: { c: Content; locale: Locale; 
         {c.nav.labels.skipToContent}
       </a>
       <Nav />
-      <main id="main">{children}</main>
+      {/*
+        Pages cross-fade when a link is followed: Next's navigations are
+        React transitions, which run this. Browsers without the View
+        Transitions API, and reduced motion (globals.css), just switch.
+      */}
+      <main id="main">
+        <ViewTransition>{children}</ViewTransition>
+      </main>
       <Footer c={c} locale={locale} />
       <StickyWhatsApp />
       <Motion />
+      <SmoothScroll />
     </LocaleProvider>
   );
 }

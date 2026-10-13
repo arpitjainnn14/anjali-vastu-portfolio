@@ -168,6 +168,7 @@ export function Nav() {
         <div
           ref={drawerRef}
           id="mobile-drawer"
+          data-lenis-prevent
           role="dialog"
           aria-modal="true"
           aria-label={nav.labels.menu}

@@ -287,6 +287,7 @@ export function TestimonialsRail({
         <div
           data-quote-rail
           className="marquee relative mt-10 md:mt-12"
+          data-scroll-boost
           data-paused={paused || openIndex !== null ? 'true' : 'false'}
         >
           <div className="marquee-viewport overflow-hidden py-2">
@@ -342,6 +343,7 @@ export function TestimonialsRail({
       */}
       <dialog
         ref={dialogRef}
+        data-lenis-prevent
         onClose={() => setOpenIndex(null)}
         onClick={(event) => {
           if (event.target === event.currentTarget) event.currentTarget.close();

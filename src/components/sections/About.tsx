@@ -32,7 +32,7 @@ export function About({ c, heading = 'h2' }: { c: Content; heading?: 'h1' | 'h2'
           <figure className="relative m-0 self-start" data-reveal>
             <div className="relative" data-parallax="-24">
               <div aria-hidden="true" className="absolute -bottom-4 -right-4 h-2/3 w-2/3 bg-haldi-soft md:-bottom-6 md:-right-6" />
-              <div className="relative border border-line-strong bg-card p-2.5 md:p-3">
+              <div className="relative border border-line-strong bg-card p-2.5 md:p-3" data-unveil>
                 <Image
                   src={about.portrait.src}
                   alt={about.portrait.alt}

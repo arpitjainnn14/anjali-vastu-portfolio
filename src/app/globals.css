@@ -195,6 +195,41 @@ html {
   scroll-padding-top: 96px;
 }
 
+/* Lenis (components/motion/SmoothScroll.tsx) does the smoothing when it runs. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Short screens need natural card scrolling: a full sticky card can otherwise
+   extend behind the nav. This fallback also works before hydration/without JS. */
+@media (max-height: 700px) {
+  [data-stack-slot] {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100svh;
+    align-items: flex-start;
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
+
+/* Page cross-fade (SiteBody's <ViewTransition>): a little slower than the default. */
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.4s;
+}
+
 body {
   background: var(--color-paper);
   color: var(--color-body);
@@ -268,9 +303,9 @@ body::before {
   animation: breathe 3.6s ease-in-out infinite;
 }
 
-/* Hero headline: each line rises out of its own mask. */
+/* Hero headline: each word rises out of its line's mask, in turn. */
 @keyframes line-rise {
-  from { transform: translateY(105%); }
+  from { transform: translateY(110%) rotate(4deg); }
   to { transform: none; }
 }
 .line-mask {
@@ -283,6 +318,10 @@ body::before {
 }
 .line-mask > span {
   display: inline-block;
+}
+.line-mask .word {
+  display: inline-block;
+  transform-origin: left bottom;
   animation: line-rise 0.9s var(--ease-out-soft) both;
   animation-delay: var(--d, 0s);
 }
@@ -450,6 +489,12 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
   .ink-line,
   .brush {
     animation: none;
@@ -457,7 +502,7 @@ body::before {
   }
   .planet,
   .enter,
-  .line-mask > span {
+  .line-mask .word {
     animation: none;
     opacity: 1;
     transform: none;

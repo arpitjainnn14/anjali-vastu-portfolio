@@ -23,7 +23,7 @@ export function Faq({ c }: { c: Content }) {
 
           <div className="border-t border-line-strong" data-reveal-group>
             {faq.items.map((item, i) => (
-              <details key={item.q} className="faq group border-b border-line-strong" open={i === 0} data-reveal-item>
+              <details key={item.q} className="faq group border-b border-line-strong" open={i === 0} data-reveal-item data-ease-open>
                 <summary className="flex min-h-11 items-center justify-between gap-6 py-6 md:py-7">
                   <span className="font-display text-[20px] leading-[1.3] text-ink md:text-[23px]">{item.q}</span>
                   <svg

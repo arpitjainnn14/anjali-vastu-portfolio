@@ -30,7 +30,7 @@ export function Testimonials({ c, heading = 'h2' }: { c: Content; heading?: 'h1'
      * band already reads as a strong block; at full padding it became a
      * ~950px slab with one row of cards in it.
      */
-    <Section id="testimonials" tone="night" className="py-14! md:py-20!">
+    <Section id="testimonials" tone="night" className="py-14! md:py-20!" data-band>
       {/* Full-bleed: the rail runs edge to edge, past the content gutters. */}
       <div className="relative z-10">
         <TestimonialsRail

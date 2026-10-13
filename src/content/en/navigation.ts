@@ -1,7 +1,6 @@
 /** The nav bar and the footer. */
 
 import { contact, site } from './site';
-import { siteMap } from './sitemap';
 
 export const nav = {
   /** Screen-reader labels for the bar and the mobile menu. */
@@ -52,7 +51,7 @@ export const footer = {
         { label: 'How your details are used', href: '/privacy' },
         { label: 'Terms of consultation', href: '/terms' },
         { label: 'Refunds and cancellations', href: '/refund-policy' },
-        { label: siteMap.footerLabel, href: siteMap.href },
+        { label: 'Blog', href: '/blog' },
       ],
     },
     {

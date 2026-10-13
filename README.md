@@ -116,7 +116,7 @@ it uses the **service binding `SITEDESK`** (so `SITEDESK_URL` must stay unset in
 Sitedesk only ever serves the *published* copy of a live post, already converted to safe HTML.
 
 If Sitedesk cannot be reached, the blog pages say so and the sitemap leaves the blog out; nothing else is affected.
-The blog has no menu link yet: adding one is a design decision for Anjali.
+The blog is linked from the footer ("Blog"). The site map for people, `/sitemap.html`, is still served and listed in `sitemap.xml`, but the footer no longer links to it.
 
 ## Website content (words edited in Sitedesk)
 

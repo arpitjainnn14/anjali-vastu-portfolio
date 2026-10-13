@@ -4,7 +4,6 @@ import { site } from './site';
 
 export const siteMap = {
   href: '/sitemap.html',
-  footerLabel: 'Site map',
   meta: {
     title: 'Site map',
     description: `Every page on the ${site.brand} site: consultations, classes, and how to reach Anjali Jain.`,

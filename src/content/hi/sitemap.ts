@@ -4,7 +4,6 @@ import { site } from './site';
 
 export const siteMap = {
   href: '/sitemap.html',
-  footerLabel: 'साइट मैप',
   meta: {
     title: 'साइट मैप',
     description: `${site.brand} की साइट के सभी पेज: consultation, क्लास, और अंजलि जैन से संपर्क कैसे करें।`,

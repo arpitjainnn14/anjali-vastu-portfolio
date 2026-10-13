@@ -1,7 +1,6 @@
 /** The nav bar and the footer. */
 
 import { contact, site } from './site';
-import { siteMap } from './sitemap';
 
 export const nav = {
   labels: {
@@ -46,7 +45,7 @@ export const footer = {
         { label: 'आपकी जानकारी का उपयोग', href: '/privacy' },
         { label: 'Consultation की शर्तें', href: '/terms' },
         { label: 'रिफ़ंड और कैंसिलेशन', href: '/refund-policy' },
-        { label: siteMap.footerLabel, href: siteMap.href },
+        { label: 'ब्लॉग', href: '/blog' },
       ],
     },
     {
